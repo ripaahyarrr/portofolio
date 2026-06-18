@@ -1,0 +1,318 @@
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
+
+function easeOutCubic(t: number) { return 1 - Math.pow(1 - t, 3); }
+function easeOutBack(t: number) {
+  const c1 = 1.70158, c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
+function easeInQuad(t: number) { return t * t; }
+
+type AnimProps = { x: number; y: number; scale?: number; opacity?: number; rotate?: number };
+
+function animate(el: HTMLElement, from: AnimProps, to: AnimProps, duration: number, easeFn: (t: number) => number) {
+  return new Promise<void>(resolve => {
+    const start = performance.now();
+    function tick(now: number) {
+      const t = Math.min((now - start) / duration, 1);
+      const e = easeFn(t);
+      const x = from.x + (to.x - from.x) * e;
+      const y = from.y + (to.y - from.y) * e;
+      const scale = (from.scale ?? 1) + ((to.scale ?? 1) - (from.scale ?? 1)) * e;
+      const opacity = (from.opacity ?? 1) + ((to.opacity ?? 1) - (from.opacity ?? 1)) * e;
+      const rotate = (from.rotate ?? 0) + ((to.rotate ?? 0) - (from.rotate ?? 0)) * e;
+      el.style.opacity = String(opacity);
+      el.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale}) rotate(${rotate}deg)`;
+      el.dataset.posX = String(x);
+      el.dataset.posY = String(y);
+      if (t < 1) requestAnimationFrame(tick);
+      else resolve();
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+function delay(ms: number) { return new Promise(r => setTimeout(r, ms)); }
+
+export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [maskCircle, setMaskCircle] = useState<{ x: number; y: number } | null>(null);
+  const [maskExpand, setMaskExpand] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const FONT_SIZE = 100;
+    const CENTER_X = window.innerWidth / 2;
+    const CENTER_Y = window.innerHeight / 2;
+
+    const firstWord = "Ripa";
+    const secondWord = "Ahyar";
+    const letterDefs = [
+      ...firstWord.split("").map(char => ({ char, group: "first" as const })),
+      ...secondWord.split("").map(char => ({ char, group: "second" as const })),
+    ];
+    const firstWordCount = firstWord.length;
+    const firstAnchorIndex = 0;
+    const secondAnchorIndex = firstWordCount;
+    const iIndex = letterDefs.findIndex(letter => letter.char === "i");
+
+    // Inner wrapper for letters — shake applies here, not the background
+    const lettersWrapper = document.createElement("div");
+    Object.assign(lettersWrapper.style, {
+      position: "absolute", inset: "0", pointerEvents: "none",
+    });
+    container.appendChild(lettersWrapper);
+
+    // Create dot for "i"
+    const iDot = document.createElement("div");
+    Object.assign(iDot.style, {
+      position: "absolute", width: "22px", height: "22px",
+      borderRadius: "50%", background: "#FFFFFF", boxShadow: "0 0 12px 4px rgba(255,255,255,0.4)", opacity: "0", willChange: "transform, opacity",
+    });
+    lettersWrapper.appendChild(iDot);
+
+    // Create letter elements
+    const els = letterDefs.map(def => {
+      const el = document.createElement("div");
+      Object.assign(el.style, {
+        position: "absolute", fontSize: "100px", fontWeight: "900",
+        color: "#ffffff", opacity: "0", willChange: "transform, opacity",
+        userSelect: "none", lineHeight: "1", fontFamily: "'Noto Sans', sans-serif",
+      });
+      el.textContent = def.char === "i" ? "\u0131" : def.char;
+      lettersWrapper.appendChild(el);
+      return { el, char: def.char, group: def.group };
+    });
+
+    // Measure and compute final positions
+    els.forEach(o => { o.el.style.opacity = "0.01"; });
+
+    const firstWordGaps = [-2, 2, 2];
+    const secondWordGaps = [0, 2, 2, 2];
+    const wordGap = 36;
+    const widths = els.map(o => o.el.offsetWidth);
+    const firstWordWidth = widths.slice(0, firstWordCount).reduce((sum, width, index) => {
+      return sum + width + (firstWordGaps[index] ?? 0);
+    }, 0);
+    const secondWordWidth = widths.slice(firstWordCount).reduce((sum, width, index) => {
+      return sum + width + (secondWordGaps[index] ?? 0);
+    }, 0);
+    const totalWidth = firstWordWidth + wordGap + secondWordWidth;
+
+    let x = CENTER_X - totalWidth / 2;
+    const y = CENTER_Y - FONT_SIZE / 2;
+    const finalPos: { x: number; y: number }[] = [];
+
+    for (let index = 0; index < firstWordCount; index += 1) {
+      finalPos.push({ x, y });
+      x += widths[index] + (firstWordGaps[index] ?? 0);
+    }
+    x += wordGap;
+    for (let index = firstWordCount; index < widths.length; index += 1) {
+      finalPos.push({ x, y });
+      x += widths[index] + (secondWordGaps[index - firstWordCount] ?? 0);
+    }
+
+    els.forEach(o => { o.el.style.opacity = "0"; });
+
+    // Flash element
+    const flash = document.createElement("div");
+    Object.assign(flash.style, {
+      position: "absolute", width: "10px", height: "10px", borderRadius: "50%",
+      background: "radial-gradient(circle, rgba(200,160,120,0.6) 0%, transparent 70%)",
+      pointerEvents: "none", opacity: "0",
+    });
+    lettersWrapper.appendChild(flash);
+
+    async function run() {
+      const firstAnchorEl = els[firstAnchorIndex];
+      const secondAnchorEl = els[secondAnchorIndex];
+
+      // STEP 1: First letter rises from bottom
+      const firstAnchorX = CENTER_X - firstAnchorEl.el.offsetWidth / 2;
+      const firstAnchorStartY = window.innerHeight + 50;
+      const firstAnchorEndY = CENTER_Y - FONT_SIZE / 2;
+
+      await animate(firstAnchorEl.el,
+        { x: firstAnchorX, y: firstAnchorStartY, scale: 4, opacity: 0.5 },
+        { x: firstAnchorX, y: firstAnchorEndY, scale: 1.2, opacity: 1 },
+        700, easeOutCubic
+      );
+      await delay(150);
+
+      // STEP 2: First letter of second word falls from top
+      const secondAnchorStartX = CENTER_X - secondAnchorEl.el.offsetWidth / 2 + 20;
+      const secondAnchorStartY = -120;
+      const secondAnchorCollideY = CENTER_Y - FONT_SIZE / 2;
+
+      secondAnchorEl.el.style.opacity = "1";
+      await animate(secondAnchorEl.el,
+        { x: secondAnchorStartX, y: secondAnchorStartY, scale: 1, opacity: 1 },
+        { x: secondAnchorStartX, y: secondAnchorCollideY, scale: 1, opacity: 1 },
+        600, easeInQuad
+      );
+
+      // STEP 3: Collision flash + shake
+      flash.style.left = CENTER_X - 5 + "px";
+      flash.style.top = CENTER_Y - 5 + "px";
+      flash.style.animation = "flashBurst 0.5s ease-out forwards";
+      lettersWrapper.style.animation = "shake 0.4s ease-out";
+
+      await Promise.all([
+        animate(firstAnchorEl.el,
+          { x: CENTER_X - firstAnchorEl.el.offsetWidth / 2, y: CENTER_Y - FONT_SIZE / 2, scale: 1.2, opacity: 1 },
+          { x: CENTER_X - firstAnchorEl.el.offsetWidth / 2 - 40, y: CENTER_Y - FONT_SIZE / 2, scale: 1.3, opacity: 1 },
+          150, easeOutCubic
+        ),
+        animate(secondAnchorEl.el,
+          { x: secondAnchorStartX, y: secondAnchorCollideY, scale: 1, opacity: 1 },
+          { x: secondAnchorStartX + 40, y: secondAnchorCollideY, scale: 1.3, opacity: 1 },
+          150, easeOutCubic
+        ),
+      ]);
+
+      // STEP 4: Other letters burst out immediately
+      const burstAngles = [-160, -130, -95, -20, 15, 45, 75];
+      const burstDistances = [260, 230, 210, 200, 220, 245, 215];
+      const burstLetters = els
+        .filter((_, index) => index !== firstAnchorIndex && index !== secondAnchorIndex)
+        .map((obj, index) => ({
+          obj,
+          angle: burstAngles[index] ?? (index * 25) - 90,
+          dist: burstDistances[index] ?? 220,
+          burstX: 0,
+          burstY: 0,
+        }));
+
+      const burstPromises = burstLetters.map(bl => {
+        const rad = bl.angle * Math.PI / 180;
+        bl.burstX = CENTER_X + Math.cos(rad) * bl.dist - 25;
+        bl.burstY = CENTER_Y + Math.sin(rad) * bl.dist - FONT_SIZE / 2;
+        return animate(bl.obj.el,
+          { x: CENTER_X - 25, y: CENTER_Y - FONT_SIZE / 2, scale: 0.3, opacity: 0, rotate: (Math.random() - 0.5) * 60 },
+          { x: bl.burstX, y: bl.burstY, scale: 1.1, opacity: 1, rotate: (Math.random() - 0.5) * 20 },
+          450, easeOutCubic
+        );
+      });
+      await Promise.all(burstPromises);
+      lettersWrapper.style.animation = "";
+      await delay(200);
+
+      // STEP 5: Settle into final positions
+      const settlePromises = els.map((obj, i) => {
+        const currentX = parseFloat(obj.el.dataset.posX || "0");
+        const currentY = parseFloat(obj.el.dataset.posY || "0");
+        const currentScale = parseFloat(obj.el.style.transform?.match(/scale\(([^)]+)\)/)?.[1] || "1");
+        return animate(obj.el,
+          { x: currentX, y: currentY, scale: currentScale, opacity: 1, rotate: 0 },
+          { x: finalPos[i].x, y: finalPos[i].y, scale: 1, opacity: 1, rotate: 0 },
+          800, easeOutBack
+        );
+      });
+      await Promise.all(settlePromises);
+
+      // STEP 6: Dot of "i" bounces in immediately
+      await delay(100);
+      const iEl = iIndex >= 0 ? els[iIndex]?.el : null;
+      if (!iEl) {
+        await delay(150);
+        setMaskCircle({ x: CENTER_X, y: CENTER_Y });
+        await delay(30);
+        setMaskExpand(true);
+        setTimeout(onComplete, 900);
+        return;
+      }
+      const iRect = iEl.getBoundingClientRect();
+      const dotFinalX = iRect.left + iRect.width / 2 - 11;
+      const dotFinalY = iRect.top - 2;
+
+      await animate(iDot,
+        { x: dotFinalX, y: -50, scale: 1, opacity: 1 },
+        { x: dotFinalX, y: dotFinalY, scale: 1, opacity: 1 },
+        400, easeInQuad
+      );
+      await animate(iDot,
+        { x: dotFinalX, y: dotFinalY, scale: 1.3, opacity: 1 },
+        { x: dotFinalX, y: dotFinalY - 15, scale: 1, opacity: 1 },
+        150, easeOutCubic
+      );
+      await animate(iDot,
+        { x: dotFinalX, y: dotFinalY - 15, scale: 1, opacity: 1 },
+        { x: dotFinalX, y: dotFinalY, scale: 1, opacity: 1 },
+        200, easeInQuad
+      );
+
+      // Glow intensifies and immediately triggers mask reveal
+      const dotCenterX = dotFinalX + 11;
+      const dotCenterY = dotFinalY + 11;
+
+      iDot.style.transition = "box-shadow 0.6s ease-out";
+      iDot.style.boxShadow = "0 0 30px 12px rgba(255,255,255,0.7), 0 0 60px 24px rgba(255,255,255,0.3)";
+
+      // Start mask while glow is still expanding
+      await delay(150);
+      setMaskCircle({ x: dotCenterX, y: dotCenterY });
+      await delay(30);
+      setMaskExpand(true);
+      setTimeout(onComplete, 900);
+    }
+
+    const timer = setTimeout(run, 100);
+    return () => {
+      clearTimeout(timer);
+      if (container.contains(lettersWrapper)) container.removeChild(lettersWrapper);
+      if (container.contains(flash)) container.removeChild(flash);
+    };
+  }, [onComplete]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundColor: "#1e1e1e",
+        fontFamily: "'Noto Sans', sans-serif",
+        cursor: "none",
+        ...(maskCircle ? {
+          clipPath: maskExpand
+            ? `circle(0% at ${maskCircle.x}px ${maskCircle.y}px)`
+            : `circle(150% at ${maskCircle.x}px ${maskCircle.y}px)`,
+          transition: "clip-path 0.85s cubic-bezier(0.4, 0, 0.2, 1)",
+        } : {}),
+      }}
+    >
+      <style>{`
+        @keyframes flashBurst {
+          0% { transform: scale(0); opacity: 1; }
+          100% { transform: scale(40); opacity: 0; }
+        }
+        @keyframes shake {
+          0%, 100% { transform: translate(0, 0); }
+          10% { transform: translate(-4px, 2px); }
+          20% { transform: translate(3px, -3px); }
+          30% { transform: translate(-2px, 4px); }
+          40% { transform: translate(4px, -1px); }
+          50% { transform: translate(-3px, -2px); }
+          60% { transform: translate(2px, 3px); }
+          70% { transform: translate(-1px, -4px); }
+          80% { transform: translate(3px, 2px); }
+          90% { transform: translate(-2px, -1px); }
+        }
+      `}</style>
+      {/* Paper texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url(/paper-texture.jpg)",
+          backgroundSize: "600px",
+          backgroundRepeat: "repeat",
+          mixBlendMode: "soft-light",
+          opacity: 0.35,
+        }}
+      />
+    </div>
+  );
+}
