@@ -19,19 +19,19 @@ const folderColors = [
 ];
 
 const folderImages = [
-  "/sheet-work.jpg",
-  "/sheet-ai.jpg",
-  "/sheet-community.jpg",
-  "/through-my-lens.jpg",
-  "/sheet-sketch.jpg",
+  "/assets/images/sheet-work.jpg",
+  "/assets/images/sheet-ai.jpg",
+  "/assets/images/sheet-community.jpg",
+  "/assets/images/through-my-lens.jpg",
+  "/assets/images/sheet-sketch.jpg",
 ];
 
 const folderIcons = [
-  "/folder-icon-work.svg",
-  "/folder-icon-ai.svg",
-  "/folder-icon-community.svg",
-  "/folder-icon-lens.svg",
-  "/folder-icon-sketch.svg",
+  "/assets/icons/folder-icon-work.svg",
+  "/assets/icons/folder-icon-ai.svg",
+  "/assets/icons/folder-icon-community.svg",
+  "/assets/icons/folder-icon-lens.svg",
+  "/assets/icons/folder-icon-sketch.svg",
 ];
 
 const folderContent = [
@@ -72,7 +72,7 @@ const workProjects = [
     label: "SIMT - Sistem Informasi Management Talenta",
     year: "2023",
     role: "UI/UX Designer (Freelance)",
-    previewVideo: "/projects-at-work.mp4",
+    previewVideo: "/assets/videos/projects-at-work.mp4",
     previewUrl: "https://simt.kemendikdasmen.go.id/",
     summary:
       "Talent data management in the education sector is often spread across multiple systems and handled manually. This creates inefficiencies in identifying, mapping, and developing talent, while also making the process difficult to monitor and more prone to data errors. To address this challenge, SIMT Kemendikdasmen was developed as a centralized platform that integrates the entire talent management process into one digital system.",
@@ -100,7 +100,7 @@ const workProjects = [
     label: "Sinar Mas Multiartha Website — Corporate & Big Data Product Platform",
     year: "2021",
     role: "UI/UX Designer",
-    previewVideo: "/Sinarmas.mov",
+    previewVideo: "/assets/videos/Sinarmas.mov",
     previewUrl: "/sinar-mas-preview",
     summary:
       "Sinar Mas Multiartha Website is a corporate and technology platform that presents the company’s financial services background, big data solutions, ready-to-use products, customized technology services, API integration, and web dashboard capabilities.",
@@ -129,7 +129,7 @@ const workProjects = [
     label: "Kedaireka Web",
     year: "2022",
     role: "UI/UX Designer (Freelance)",
-    previewVideo: "/Kedaireka.mov",
+    previewVideo: "/assets/videos/Kedaireka.mov",
     previewUrl: "https://kedaireka.id/",
     summary:
       "A digital collaboration platform that connects higher education institutions with industry partners to support innovation, proposal submission, funding programs, and cross-sector collaboration within one integrated ecosystem.",
@@ -160,7 +160,7 @@ const workProjects = [
     label: "Tracer Study Web",
     year: "2022",
     role: "UI/UX Designer",
-    previewVideo: "/Tracer Study.mov",
+    previewVideo: "/assets/videos/Tracer Study.mov",
     previewUrl: "https://tracerstudy.kemdiktisaintek.go.id/",
     summary:
       "Tracer Study is a digital platform developed to support higher education institutions in collecting, managing, and reporting alumni outcome data. The system helps track graduate activities after graduation, including employment status, entrepreneurship, further study, job relevance, and transition into the workforce. Tracer Study plays an important role in evaluating the quality of higher education outcomes, supporting accreditation needs, and providing data for institutional improvement and policy decision-making.",
@@ -189,7 +189,7 @@ const workProjects = [
     label: "IISMA — Indonesian International Student Mobility Awards",
     year: "2022",
     role: "UI/UX Designer",
-    previewVideo: "/IISMA.mov",
+    previewVideo: "/assets/videos/IISMA.mov",
     previewUrl: "/iisma-preview",
     summary:
       "IISMA is a digital platform that supports the international student mobility program, helping Indonesian students apply for overseas study opportunities through a structured scholarship application, document submission, selection, and monitoring process.",
@@ -212,14 +212,14 @@ const workProjects = [
 ];
 
 const appTools = [
-  { label: "Claude", icon: "/app-claude.jpg" },
-  { label: "Figma", icon: "/app-figma.jpg" },
-  { label: "Cursor", icon: "/app-cursor.jpg" },
-  { label: "Google AI Studio", icon: "/app-google-ai.jpg" },
-  { label: "Lovable", icon: "/app-lovable.jpg" },
-  { label: "Codex", icon: "/app-codex.jpg" },
-  { label: "GitHub", icon: "/app-github.jpg" },
-  { label: "ChatGPT", icon: "/app-chatgpt.jpg" },
+  { label: "Claude", icon: "/assets/images/app-claude.jpg" },
+  { label: "Figma", icon: "/assets/images/app-figma.jpg" },
+  { label: "Cursor", icon: "/assets/images/app-cursor.jpg" },
+  { label: "Google AI Studio", icon: "/assets/images/app-google-ai.jpg" },
+  { label: "Lovable", icon: "/assets/images/app-lovable.jpg" },
+  { label: "Codex", icon: "/assets/images/app-codex.jpg" },
+  { label: "GitHub", icon: "/assets/images/app-github.jpg" },
+  { label: "ChatGPT", icon: "/assets/images/app-chatgpt.jpg" },
 ];
 
 const sidebarItems = [
@@ -334,7 +334,7 @@ function FolderSideSheet({ folderIndex, onClose, onNavigate }: {
         transition={{ type: "spring", damping: 28, stiffness: 300 }}
       >
         <div className="absolute inset-0 pointer-events-none opacity-[0.06] rounded-l-xl overflow-hidden" style={{
-          backgroundImage: "url(/noise-texture.png)",
+          backgroundImage: "url(/assets/textures/noise-texture.png)",
           backgroundRepeat: "repeat",
           backgroundSize: "200px 200px",
         }} />
@@ -500,7 +500,7 @@ export function FolderWindowContent() {
         <div className="relative bg-[#F5F5F4] rounded-2xl overflow-hidden border border-stone-300/40" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)" }}>
           {/* Paper texture overlay */}
           <div className="absolute inset-0 pointer-events-none z-[1] rounded-2xl overflow-hidden" style={{
-            backgroundImage: "url(/paper-texture.jpg)",
+            backgroundImage: "url(/assets/textures/paper-texture.jpg)",
             backgroundSize: "500px",
             backgroundRepeat: "repeat",
             mixBlendMode: "multiply",
@@ -769,7 +769,7 @@ export function FolderWindowContent() {
                                     <div className="relative w-full aspect-video lg:aspect-auto lg:h-[340px] overflow-hidden">
                                       {openFolder === 1 ? (
                                         <video
-                                          src="/design-with-ai.mp4"
+                                          src="/assets/videos/design-with-ai.mp4"
                                           autoPlay
                                           muted
                                           loop
@@ -778,7 +778,7 @@ export function FolderWindowContent() {
                                         />
                                       ) : openFolder === 2 ? (
                                         <video
-                                          src="/community-impact.mp4"
+                                          src="/assets/videos/community-impact.mp4"
                                           autoPlay
                                           muted
                                           loop
@@ -787,7 +787,7 @@ export function FolderWindowContent() {
                                         />
                                       ) : openFolder === 4 ? (
                                         <video
-                                          src="/sketch-to-merch.mp4"
+                                          src="/assets/videos/sketch-to-merch.mp4"
                                           autoPlay
                                           muted
                                           loop
@@ -796,7 +796,7 @@ export function FolderWindowContent() {
                                         />
                                       ) : openFolder === 3 ? (
                                         <video
-                                          src="/2025-nature.mp4"
+                                          src="/assets/videos/2025-nature.mp4"
                                           autoPlay
                                           muted
                                           loop

@@ -121,7 +121,7 @@ function MobileTerminal() {
         ))}
         {tapped && allDone && (
           <div className="flex justify-center mt-1">
-            <img src="/cat-dance.gif" alt="Dancing cat" className="h-[70px]" draggable={false} />
+            <img src="/assets/images/cat-dance.gif" alt="Dancing cat" className="h-[70px]" draggable={false} />
           </div>
         )}
       </div>
@@ -168,7 +168,7 @@ export function MobileHero() {
             style={{ transform: ticketTapped ? "scale(1.08) rotate(1deg)" : "rotate(4deg)" }}
             onPointerDown={(e) => { e.stopPropagation(); setTicketTapped(t => !t); }}
           >
-            <img src="/ticket.png?v=2" alt="Design x Technology ticket" className="w-full rounded-sm shadow-md" draggable={false} />
+            <img src="/assets/images/ticket.png?v=2" alt="Design x Technology ticket" className="w-full rounded-sm shadow-md" draggable={false} />
             {ticketTapped && (
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div
@@ -197,7 +197,7 @@ export function MobileHero() {
                 filter: vinylTapped ? "drop-shadow(0 12px 30px rgba(0,0,0,0.35))" : "none",
               }}
             >
-              <img src="/Vinyl.png?v=2" alt="Vinyl record" className={`w-20 h-20 vinyl-spin ${vinylTapped ? "vinyl-spin-active" : ""}`} draggable={false} />
+              <img src="/assets/images/Vinyl.png?v=2" alt="Vinyl record" className={`w-20 h-20 vinyl-spin ${vinylTapped ? "vinyl-spin-active" : ""}`} draggable={false} />
             </div>
             <div
               className="relative border rounded-xl shadow-sm flex flex-col items-center w-[145px] pt-7 pb-3 overflow-hidden"
@@ -265,7 +265,7 @@ export function MobileHero() {
 
         {/* Name + tagline */}
         <div className="flex flex-col items-center">
-          <img src="/Ripa Ahyar.svg" alt="Ripa Ahyar" className="h-[45px] mb-1.5" draggable={false} />
+          <img src="/assets/icons/Ripa%20Ahyar.svg" alt="Ripa Ahyar" className="h-[45px] mb-1.5" draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-[9px] text-stone-500 text-center tracking-[0.18em] uppercase" style={{ lineHeight: "1.8" }}>
             I think, then I build.
           </p>
@@ -280,10 +280,10 @@ export function MobileHero() {
           }}
           onPointerDown={(e) => { e.stopPropagation(); setFolderTapped(t => !t); }}
         >
-          <img src="/mac-folder-back-opt.svg" alt="" className="absolute inset-0 w-full h-full z-0" draggable={false} />
+          <img src="/assets/icons/mac-folder-back-opt.svg" alt="" className="absolute inset-0 w-full h-full z-0" draggable={false} />
           {/* Items that pop out on tap */}
           <img
-            src="/Claude logo.svg"
+            src="/assets/icons/Claude logo.svg"
             alt="Claude"
             className="absolute left-1/2 bottom-[30%] w-[40px] -translate-x-1/2 transition-all duration-500 ease-out z-10"
             style={{
@@ -294,7 +294,7 @@ export function MobileHero() {
             draggable={false}
           />
           <img
-            src="/mac-folder-front-opt.svg"
+            src="/assets/icons/mac-folder-front-opt.svg"
             alt="Folder"
             className="absolute inset-0 w-full h-full z-20 transition-transform duration-500 ease-out origin-bottom"
             style={{ transform: folderTapped ? "rotateX(-22deg)" : "none" }}

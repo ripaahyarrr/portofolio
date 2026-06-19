@@ -8,7 +8,7 @@ export default function IISMAPreviewPage() {
       <div
         className="absolute inset-0 opacity-[0.08]"
         style={{
-          backgroundImage: "url(/paper-texture.jpg)",
+          backgroundImage: "url(/assets/textures/paper-texture.jpg)",
           backgroundRepeat: "repeat",
           backgroundSize: "420px 420px",
         }}
@@ -21,25 +21,25 @@ export default function IISMAPreviewPage() {
       </div>
 
       <img
-        src="/sticky-notes.svg?v=3"
+        src="/assets/icons/sticky-notes.svg?v=3"
         alt=""
         className="pointer-events-none absolute left-[6%] top-[12%] hidden w-[220px] rotate-[-12deg] opacity-80 drop-shadow-[0_12px_18px_rgba(0,0,0,0.08)] lg:block"
         draggable={false}
       />
       <img
-        src="/ticket.png?v=2"
+        src="/assets/images/ticket.png?v=2"
         alt=""
         className="pointer-events-none absolute right-[7%] top-[10%] hidden w-[240px] rotate-[10deg] opacity-90 drop-shadow-[0_14px_20px_rgba(0,0,0,0.12)] lg:block"
         draggable={false}
       />
       <img
-        src="/flower.png?v=3"
+        src="/assets/images/flower.png?v=3"
         alt=""
         className="pointer-events-none absolute bottom-[10%] left-[7%] hidden w-[110px] rotate-[-10deg] opacity-90 drop-shadow-[0_10px_18px_rgba(0,0,0,0.12)] lg:block"
         draggable={false}
       />
       <img
-        src="/apple-pencil.png?v=2"
+        src="/assets/images/apple-pencil.png?v=2"
         alt=""
         className="pointer-events-none absolute bottom-[8%] right-[8%] hidden w-[130px] rotate-[18deg] opacity-90 drop-shadow-[0_12px_20px_rgba(0,0,0,0.12)] lg:block"
         draggable={false}
@@ -49,7 +49,7 @@ export default function IISMAPreviewPage() {
         <div className="grid w-full gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div className="order-2 lg:order-1">
             <div className="mb-6 flex items-center gap-3">
-              <img src="/star.svg" alt="" className="h-5 w-5 opacity-60" draggable={false} />
+              <img src="/assets/icons/star.svg" alt="" className="h-5 w-5 opacity-60" draggable={false} />
               <p className="text-[12px] font-medium uppercase tracking-[0.26em] text-stone-400">
                 IISMA Preview
               </p>
@@ -117,11 +117,11 @@ export default function IISMAPreviewPage() {
               <div className="relative rotate-[-2deg] rounded-[34px] border border-stone-300/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(249,245,238,0.92)_100%)] p-5 shadow-[0_28px_60px_rgba(0,0,0,0.12)]">
                 <div className="rounded-[28px] border border-stone-200/80 bg-[#fbfaf7] p-4">
                   <div className="relative overflow-hidden rounded-[24px] border border-stone-200 bg-[#efe7db]">
-                    <div className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "url(/paper-texture.jpg)", backgroundSize: "280px 280px" }} />
+                    <div className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "url(/assets/textures/paper-texture.jpg)", backgroundSize: "280px 280px" }} />
                     <div className="relative px-6 pb-8 pt-7">
                       <div className="flex items-center justify-between">
                         <p className="text-[12px] uppercase tracking-[0.22em] text-stone-400">Missing Destination</p>
-                        <img src="/star.svg" alt="" className="h-4 w-4 opacity-50" draggable={false} />
+                        <img src="/assets/icons/star.svg" alt="" className="h-4 w-4 opacity-50" draggable={false} />
                       </div>
 
                       <div className="mt-8 rounded-[22px] border border-dashed border-stone-300/90 bg-white/60 px-6 py-10 text-center">
@@ -154,7 +154,7 @@ export default function IISMAPreviewPage() {
               </div>
 
               <img
-                src="/cat.png?v=2"
+                src="/assets/images/cat.png?v=2"
                 alt=""
                 className="pointer-events-none absolute -right-8 bottom-[-24px] hidden w-[150px] rotate-[8deg] drop-shadow-[0_14px_24px_rgba(0,0,0,0.16)] lg:block"
                 draggable={false}

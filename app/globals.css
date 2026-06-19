@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Brand & UI Colors */
+  --bg-primary: #d7d2ca;
+  --text-primary: #1C1917;
+  --text-muted: #9e9e9e;
+  --selection-bg: #1C1917;
+  --selection-text: #FFFFFF;
+
+  /* Background Gradient Steps */
+  --grad-1: rgba(255, 255, 255, 0.9);
+  --grad-2: rgba(250, 247, 242, 0.82);
+  --grad-3: rgba(230, 224, 216, 0.55);
+  --grad-4: rgba(180, 172, 163, 0.16);
+  --grad-5: rgba(96, 92, 88, 0);
+
+  --grad-radial-start: #f4efe8;
+  --grad-radial-mid1: #ddd7cf;
+  --grad-radial-mid2: #bcb4ab;
+  --grad-radial-end: #857d76;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -13,13 +34,13 @@ html {
 }
 
 body {
-  background-color: #d7d2ca;
-  color: #1C1917;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   background-image:
-    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.9) 0%, rgba(250, 247, 242, 0.82) 12%, rgba(230, 224, 216, 0.55) 26%, rgba(180, 172, 163, 0.16) 42%, rgba(96, 92, 88, 0) 58%),
+    radial-gradient(circle at 50% 18%, var(--grad-1) 0%, var(--grad-2) 12%, var(--grad-3) 26%, var(--grad-4) 42%, var(--grad-5) 58%),
     linear-gradient(rgba(120, 112, 102, 0.13) 1px, transparent 1px),
     linear-gradient(90deg, rgba(120, 112, 102, 0.13) 1px, transparent 1px),
-    radial-gradient(circle at center, #f4efe8 0%, #ddd7cf 44%, #bcb4ab 74%, #857d76 100%);
+    radial-gradient(circle at center, var(--grad-radial-start) 0%, var(--grad-radial-mid1) 44%, var(--grad-radial-mid2) 74%, var(--grad-radial-end) 100%);
   background-size: auto, 56px 56px, 56px 56px, auto;
   background-position: center top, center center, center center, center center;
   position: relative;
@@ -35,7 +56,7 @@ body::before {
   opacity: 0.12;
   background-image:
     linear-gradient(to bottom, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.58) 12%, rgba(255, 255, 255, 0.12) 26%, rgba(255, 255, 255, 0) 42%),
-    url("/noise-texture.png");
+    url("/assets/textures/noise-texture.png");
   background-repeat: no-repeat, repeat;
   background-size: 100% 48vh, 220px 220px;
   background-position: center top, center center;
@@ -55,8 +76,8 @@ body::after {
 }
 
 ::selection {
-  background-color: #1C1917;
-  color: #FFFFFF;
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
 }
 
 /* Social morph — text dissolves into icon */

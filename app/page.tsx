@@ -413,23 +413,23 @@ export default function Home() {
         {/* Ripped paper + ice coffee + plant */}
         <div className="hidden lg:block absolute top-[20px] left-[650px] -translate-x-1/2 z-20 rotate-[-5deg] transition-all duration-300 hover:scale-200 hover:rotate-[1deg] group/paper hero-entrance" style={{ animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 2.65s both" }}>
           <img
-            src="/ripped-paper.png?v=3"
+            src="/assets/images/ripped-paper.png?v=3"
             alt="Ripped paper note"
             className="w-[520px] opacity-100 drop-shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-all duration-300"
             draggable={false}
           />
           <div className="absolute top-[50%] left-[55%] -translate-x-1/2 -translate-y-1/2">
-            <img src="/ice-coffee.png?v=3" alt="Ice coffee" className="w-[130px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
+            <img src="/assets/images/ice-coffee.png?v=3" alt="Ice coffee" className="w-[130px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
           </div>
           <div className="absolute top-[70%] left-[16%] -translate-x-1/2 -translate-y-1/2">
-            <img src="/plant.png?v=6" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 scale-[1.3] rotate-[-5deg] -translate-y-3 hover:drop-shadow-[0_12px_20px_rgba(0,0,0,0.3)] plant-hover" draggable={false} />
+            <img src="/assets/images/plant.png?v=6" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 scale-[1.3] rotate-[-5deg] -translate-y-3 hover:drop-shadow-[0_12px_20px_rgba(0,0,0,0.3)] plant-hover" draggable={false} />
           </div>
           <div className="absolute top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2 group/pencil">
-            <img src="/apple-pencil.png?v=2" alt="Apple Pencil" className="pencil-img w-[90px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 group-hover/pencil:scale-200 group-hover/pencil:-translate-y-2" draggable={false} />
+            <img src="/assets/images/apple-pencil.png?v=2" alt="Apple Pencil" className="pencil-img w-[90px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 group-hover/pencil:scale-200 group-hover/pencil:-translate-y-2" draggable={false} />
             {/* Hand drawn line that reveals on hover */}
             <div className="absolute -bottom-[6px] left-[0px] w-[90px] h-[12px] pointer-events-none overflow-hidden">
               <img
-                src="/hand-drawn-line.svg"
+                src="/assets/icons/hand-drawn-line.svg"
                 alt=""
                 className="w-full h-full object-contain pencil-line"
                 draggable={false}
@@ -442,13 +442,13 @@ export default function Home() {
         <div className="hidden lg:block absolute left-[380px] top-[355px] z-20 group/flower hero-entrance" style={{ animation: "hero-pop 0.7s cubic-bezier(0.4,0,0.2,1) 3.1s both" }}>
           <div className="relative w-[120px] rotate-[-6deg] transition-all duration-500 ease-out group-hover/flower:scale-[1.8] group-hover/flower:rotate-[-2deg] group-hover/flower:-translate-y-6 group-hover/flower:z-40" style={{ willChange: "transform" }}>
             <img
-              src="/flower.png?v=3"
+              src="/assets/images/flower.png?v=3"
               alt=""
               className="w-full scale-[2.5] transition-opacity duration-500 ease-out group-hover/flower:opacity-0"
               draggable={false}
             />
             <img
-              src="/flower hover.png?v=3"
+              src="/assets/images/flower hover.png?v=3"
               alt=""
               className="absolute inset-x-0 top-[20px] w-full scale-[1.1] opacity-0 transition-opacity duration-500 ease-out group-hover/flower:opacity-100 flower-glitch-target"
               draggable={false}
@@ -463,7 +463,7 @@ export default function Home() {
           style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.25s both" }}
         >
           <img
-            src="/ticket.png?v=2"
+            src="/assets/images/ticket.png?v=2"
             alt="Design x Technology ticket"
             className="w-full opacity-95"
             draggable={false}
@@ -485,13 +485,13 @@ export default function Home() {
       style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.4s both" }}>
           <div className="relative overflow-visible">
             <img
-              src="/cat.png?v=2"
+              src="/assets/images/cat.png?v=2"
               alt="Cat peeking"
               className="absolute top-[40%] right-[20%] w-[250px] z-20 transition-[transform,opacity] duration-500 ease-out scale-0 opacity-0 origin-center group-hover/collage:scale-100 group-hover/collage:opacity-100 group-hover/collage:rotate-[8deg] drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] group-hover/collage:-translate-y-3"
               style={{ willChange: "transform, opacity" }}
             />
             <img
-              src="/image-collage.jpg?v=2"
+              src="/assets/images/image-collage.jpg?v=2"
               alt="Photo collage"
               className="w-[340px] rounded-xl shadow-lg relative z-10"
             />
@@ -500,7 +500,7 @@ export default function Home() {
         {/* Center text */}
         <div className="absolute top-[42%] left-[calc(50%+30px)] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
           <div className="relative mb-4 hero-entrance overflow-hidden" style={{ animation: "hero-blur-in 0.6s ease-out 0.3s both" }}>
-            <img src="/Ripa Ahyar.svg" alt="Ripa Ahyar Hero" className="h-[80px] md:h-[100px]" draggable={false} />
+            <img src="/assets/icons/Ripa%20Ahyar.svg" alt="Ripa Ahyar Hero" className="h-[80px] md:h-[100px]" draggable={false} />
             {/* Glare sweep */}
             <div className="absolute inset-0 pointer-events-none" style={{ animation: "hero-glare 1.2s ease-in-out 5s both" }}>
               <div className="absolute top-0 h-full w-[60%] -skew-x-12" style={{
@@ -581,12 +581,12 @@ export default function Home() {
         viewport={{ once: true, margin: "-50px" }}
       >
         <div className="flex items-center gap-3">
-          <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
+          <img src="/assets/icons/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-[13px] tracking-wide" style={{ color: "#212121" }}>
             Build with Codex - Shipped on Vercel
 
           </p>
-          <img src="/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
+          <img src="/assets/icons/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
         </div>
       </motion.footer>
 

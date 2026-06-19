@@ -5,14 +5,14 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import Matter from "matter-js";
 
 const appTools = [
-  { label: "Claude", icon: "/app-claude.jpg", glow: "#D97706" },
-  { label: "Figma", icon: "/app-figma.jpg", glow: "#A259FF" },
-  { label: "Cursor", icon: "/app-cursor.jpg", glow: "#3B82F6" },
-  { label: "Google AI Studio", icon: "/app-google-ai.jpg", glow: "#4285F4" },
-  { label: "Lovable", icon: "/app-lovable.jpg", glow: "#F472B6" },
-  { label: "Codex", icon: "/app-codex.jpg", glow: "#10B981" },
-  { label: "GitHub", icon: "/app-github.jpg", glow: "#8B5CF6" },
-  { label: "ChatGPT", icon: "/app-chatgpt.jpg", glow: "#10A37F" },
+  { label: "Claude", icon: "/assets/images/app-claude.jpg", glow: "#D97706" },
+  { label: "Figma", icon: "/assets/images/app-figma.jpg", glow: "#A259FF" },
+  { label: "Cursor", icon: "/assets/images/app-cursor.jpg", glow: "#3B82F6" },
+  { label: "Google AI Studio", icon: "/assets/images/app-google-ai.jpg", glow: "#4285F4" },
+  { label: "Lovable", icon: "/assets/images/app-lovable.jpg", glow: "#F472B6" },
+  { label: "Codex", icon: "/assets/images/app-codex.jpg", glow: "#10B981" },
+  { label: "GitHub", icon: "/assets/images/app-github.jpg", glow: "#8B5CF6" },
+  { label: "ChatGPT", icon: "/assets/images/app-chatgpt.jpg", glow: "#10A37F" },
 ];
 
 export function WidgetClock() {
@@ -57,17 +57,17 @@ export function WidgetClock() {
 const funFacts = [
   {
     front: "Boba Tea",
-    emoji: "", image: "/Boba tea.png",
+    emoji: "", image: "/assets/images/Boba tea.png",
     back: "~500 cups in 3 years.",
   },
   {
     front: "Robotics",
-    emoji: "", image: "/Robot.png",
+    emoji: "", image: "/assets/images/Robot.png",
     back: "Former Global Launch Manager at ABB Robotics. Launched the IRB 120 robot — now displayed at the Shanghai Science and Technology Museum.",
   },
   {
     front: "2014",
-    emoji: "", image: "/Seattle.png",
+    emoji: "", image: "/assets/images/Seattle.png",
     back: "Moved to Seattle.\nMany ideas — and coffees — later.",
   },
 ];
@@ -621,7 +621,7 @@ function WeatherCard() {
       onMouseLeave={() => setHovered(false)}
     >
       <div className="flex items-center gap-2">
-        <img src="/weather-thumbnail.jpg" alt="Seattle" className="w-[48px] h-[48px] rounded-lg object-cover flex-shrink-0" />
+        <img src="/assets/images/weather-thumbnail.jpg" alt="Seattle" className="w-[48px] h-[48px] rounded-lg object-cover flex-shrink-0" />
         <div>
           <div className="text-[9px] text-stone-400 uppercase tracking-wider mb-1">Seattle</div>
           <div className="flex items-center gap-1.5">

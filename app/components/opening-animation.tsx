@@ -306,7 +306,7 @@ export function OpeningAnimation({ onComplete }: { onComplete: () => void }) {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: "url(/paper-texture.jpg)",
+          backgroundImage: "url(/assets/textures/paper-texture.jpg)",
           backgroundSize: "600px",
           backgroundRepeat: "repeat",
           mixBlendMode: "soft-light",

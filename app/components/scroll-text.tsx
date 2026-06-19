@@ -182,7 +182,7 @@ export function ScrollRevealText() {
       >
        I believe great{" "}
         <img
-          src="/messy.svg"
+          src="/assets/icons/messy.svg"
           alt=""
           className="inline-block w-[45px] h-auto align-middle -mt-6 -mx-3"
           draggable={false}
@@ -190,7 +190,7 @@ export function ScrollRevealText() {
         design is not just about {" "}
         <span className="relative inline-block">
           <img
-            src="/highlights.svg"
+            src="/assets/icons/highlights.svg"
             alt=""
             className="absolute -top-4 left-[10%] -translate-x-1/2 w-[22px] h-auto pointer-events-none"
             draggable={false}
@@ -212,7 +212,7 @@ export function ScrollRevealText() {
         }}
       >
         <img
-          src="/star.svg"
+          src="/assets/icons/star.svg"
           alt=""
           className="inline-block w-[36px] h-auto align-middle -ml-0.5 mr-1 -mt-1"
           draggable={false}

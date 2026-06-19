@@ -54,14 +54,14 @@ export function IdBadgeCard({
           <div className="mt-3 flex justify-center">
             <div className={`relative shrink-0 ${photoSizeClassName} rounded-full border-[3px] border-[#f4e6da] bg-white shadow-[0_8px_18px_rgba(0,0,0,0.1)]`}>
               <img
-                src="/profile.png"
+                src="/assets/images/profile.png"
                 alt="Ripa Ahyar"
                 className={photoImageClassName}
                 style={revealMode === "toggle" ? { opacity: showVideo ? 0 : 1 } : undefined}
                 draggable={false}
               />
               <video
-                src="/badge-hover.mp4?v=2"
+                src="/assets/videos/badge-hover.mp4?v=2"
                 muted
                 loop
                 playsInline

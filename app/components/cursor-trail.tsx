@@ -25,7 +25,7 @@ export function PencilCursor() {
       className="fixed top-0 left-0 pointer-events-none z-[9999] hidden lg:block"
       style={{ width: SIZE, height: SIZE }}
     >
-      <img src="/pencil-cursor.svg" alt="" width={SIZE} height={SIZE} draggable={false} />
+      <img src="/assets/icons/pencil-cursor.svg" alt="" width={SIZE} height={SIZE} draggable={false} />
     </div>
   );
 }

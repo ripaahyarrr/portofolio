@@ -9,7 +9,7 @@ export function VinylCard() {
         {/* Vinyl record — outside card, centered with margin */}
         <div className="absolute inset-x-0 top-[24px] flex justify-center z-10 pointer-events-none" style={{ overflow: "visible" }}>
           <img
-            src="/Vinyl.png?v=2"
+            src="/assets/images/Vinyl.png?v=2"
             alt="Vinyl record"
             className="w-36 h-36 vinyl-spin transition-all duration-500 ease-out group-hover/vinyl:scale-[2.3] group-hover/vinyl:-translate-y-[70px] group-hover/vinyl:-translate-x-[20px] group-hover/vinyl:drop-shadow-[0_12px_30px_rgba(0,0,0,0.35)]"
             style={{ willChange: "transform" }}

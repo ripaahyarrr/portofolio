@@ -19,7 +19,7 @@ export function RippedPaperNote() {
           style={{ filter: "drop-shadow(0 6px 16px rgba(0,0,0,0.12)) drop-shadow(0 2px 4px rgba(0,0,0,0.08))" }}
         >
           <img
-            src="/sticky-notes.svg?v=3"
+            src="/assets/icons/sticky-notes.svg?v=3"
             alt=""
             className="w-full h-auto block"
             draggable={false}

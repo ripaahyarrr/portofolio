@@ -16,7 +16,7 @@ function PixelFlower({ flower, isNew, size = 32 }: { flower: Flower; isNew: bool
 
   return (
     <img
-      src="/pixel-flower.svg"
+      src="/assets/icons/pixel-flower.svg"
       alt=""
       className="absolute pointer-events-none"
       draggable={false}

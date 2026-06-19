@@ -4,8 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "sync-assets": "sh ./scripts/sync-assets.sh"
+    "start": "next start"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.99.3",

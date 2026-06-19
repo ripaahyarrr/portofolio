@@ -84,7 +84,7 @@ export function RetroWindows() {
             ))}
             {hovered && allDone && (
               <div className="flex justify-center">
-                <img src="/cat-dance.gif" alt="Dancing cat" className="h-[90px]" draggable={false} />
+                <img src="/assets/images/cat-dance.gif" alt="Dancing cat" className="h-[90px]" draggable={false} />
               </div>
             )}
           </div>
