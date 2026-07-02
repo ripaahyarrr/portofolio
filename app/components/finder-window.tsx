@@ -840,7 +840,7 @@ export function FolderWindowContent() {
                                         />
                                       ) : openFolder === 3 ? (
                                         <video
-                                          src="/assets/videos/2025-nature.mp4"
+                                          src="/assets/videos/2025-nature.MP4"
                                           autoPlay
                                           muted
                                           loop
