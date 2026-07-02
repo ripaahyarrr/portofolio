@@ -55,14 +55,6 @@ const folderContent = [
     description: "Nature helps me step away from daily routines and reset my perspective.\n\nMy photography has reached **20M+ views** and **150K+ downloads**, and has been used across platforms including BuzzFeed, Notion, Trello, Mailchimp, Fever, and Figma.",
     cta: { label: "Photos on Unsplash", url: "https://unsplash.com/@ripaahyar" },
   },
-  {
-    title: "From Sketch to Merch",
-    description: "I create illustrations and black-and-white doodles as a way to unwind and explore visual ideas.\n\nIn 2022, I collaborated with **SHEIN X Artist** to launch my merchandise collection, YANLIU. I share my work on Instagram and RedNote, where my illustrations have reached **50K+** likes, as a space to experiment, explore, and stay curious.",
-    cta: [
-      { label: "Instagram", url: "https://www.instagram.com/ripaahyar" },
-      { label: "RedNote", url: "https://www.xiaohongshu.com/user/profile/5cf87836000000001803f1b3?xhsshare=CopyLink&appuid=5cf87836000000001803f1b3&apptime=1654372327" },
-    ],
-  },
 ];
 
 const workProjects = [

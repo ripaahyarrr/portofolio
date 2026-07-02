@@ -79,21 +79,6 @@ export const siteConfig = {
       ],
       cta: { label: "See my photos on Unsplash", url: "#" },
     },
-    {
-      id: "from-sketch-to-merch",
-      title: "From Sketch to Merch",
-      description:
-        "In my spare time, I love to do illustrations and create black and white doodles. These activities allow me to express my creativity and unwind, turning simple ideas into visual art.",
-      highlights: [
-        {
-          text: 'In 2022, I collaborated with SHEIN X Artist to launch my merchandise collection, "**YANLIU**."',
-        },
-      ],
-      cta: {
-        label: "See my fun illustrations on Instagram (1K+) and black&white doodles on RED (8K+)",
-        url: "#",
-      },
-    },
   ],
   footer: {
     copyright: "2025",
