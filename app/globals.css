@@ -56,7 +56,7 @@ body::before {
   opacity: 0.12;
   background-image:
     linear-gradient(to bottom, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.58) 12%, rgba(255, 255, 255, 0.12) 26%, rgba(255, 255, 255, 0) 42%),
-    url("/assets/textures/noise-texture.png");
+    url("/assets/textures/noise-texture.webp");
   background-repeat: no-repeat, repeat;
   background-size: 100% 48vh, 220px 220px;
   background-position: center top, center center;

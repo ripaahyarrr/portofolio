@@ -3,7 +3,7 @@ export const siteConfig = {
   fullName: "Yan Liu",
   subtitle: "Seattle-based Senior Product Designer",
   tagline: "Design like a strategist · Ship like a builder",
-  photo: "/assets/images/yan-photo.jpg",
+  photo: "/assets/images/profile.webp",
   links: {
     resume: "#",
     linkedin: "#",

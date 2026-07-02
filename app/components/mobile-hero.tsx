@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { IdBadgeCard } from "./id-badge-card";
 
@@ -168,7 +169,7 @@ export function MobileHero() {
             style={{ transform: ticketTapped ? "scale(1.08) rotate(1deg)" : "rotate(4deg)" }}
             onPointerDown={(e) => { e.stopPropagation(); setTicketTapped(t => !t); }}
           >
-            <img src="/assets/images/ticket.png?v=2" alt="Design x Technology ticket" className="w-full rounded-sm shadow-md" draggable={false} />
+            <Image src="/assets/images/ticket.webp?v=2" alt="Design x Technology ticket" width={1719} height={732} className="w-full rounded-sm shadow-md" draggable={false} />
             {ticketTapped && (
               <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div
@@ -197,7 +198,7 @@ export function MobileHero() {
                 filter: vinylTapped ? "drop-shadow(0 12px 30px rgba(0,0,0,0.35))" : "none",
               }}
             >
-              <img src="/assets/images/Vinyl.png?v=2" alt="Vinyl record" className={`w-20 h-20 vinyl-spin ${vinylTapped ? "vinyl-spin-active" : ""}`} draggable={false} />
+              <Image src="/assets/images/Vinyl.webp?v=2" alt="Vinyl record" width={909} height={909} className={`w-20 h-20 vinyl-spin ${vinylTapped ? "vinyl-spin-active" : ""}`} draggable={false} />
             </div>
             <div
               className="relative border rounded-xl shadow-sm flex flex-col items-center w-[145px] pt-7 pb-3 overflow-hidden"
