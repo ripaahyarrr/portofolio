@@ -41,13 +41,13 @@ const folderContent = [
     note: "Feel free to reach out if you'd like to hear more about what I'm working on.",
   },
   {
-    title: "Design with AI and beyond",
-    description: "Experimenting and building with AI tools - prototyping ideas quickly and shipping projects along the way.\n\nHighlights include launching my first **Chrome extension Focus Now** to park extra tabs and reduce clutter, and Cozy Journaling, winner of the **Built with Claude Sonnet 4.5 \"Keep Creating\" Award**.",
-    cta: { label: "Vibe coding projects", url: "https://dengerin-playlist.netlify.app/" },
+    title: "Design with AI",
+    description: 'I explore new tools to boost creativity and productivity, learning through hands-on experimentation.<br><br>Recently, I\'ve been vibe-coding with AI at the intersection of design and technology.<br><br><strong>Cozy Journaling</strong> won the Built with Claude Sonnet 4.5 Challenge – "Keep Creating" Award.',
+    cta: { label: "Dengerin projects", url: "https://cottenpanda.github.io/vibecodingplaylist" },
   },
   {
     title: "Community Impact",
-    description: "My Figma Community files have **670K+** uses. I design and share to help designers speed up workflows, explore ideas, and build faster.\n\n100+ Abstract Shapes / Elements was a finalist for Favorite Graphic Resources in the 2022 Figma Community Awards. 50+ Abstract Geometric Shapes was featured in the Day 2 virtual broadcast at Config 2024.",
+    description: "Through my design work, mentoring, and shared resources, I aim to help designers build better digital experiences faster. I enjoy simplifying complex problems into intuitive products while contributing knowledge to the design community through workshops, mentoring, and practical design resources.",
     cta: { label: "Figma designs", url: "https://www.figma.com/@ripaahyar" },
   },
   {

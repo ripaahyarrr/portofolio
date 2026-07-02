@@ -42,30 +42,23 @@ export const siteConfig = {
     },
     {
       id: "designing-with-ai",
-      title: "Designing with AI",
+      title: "Design with AI",
       description:
-        "I enjoy exploring new tools to fuel my creativity and productivity — staying curious, upbeat, and resilient as I move forward. Lately, I've been vibe coding with AI tools, blending my love for design and technology to experiment, learn by building, and uncover new possibilities along the way.",
+        'I explore new tools to boost creativity and productivity, learning through hands-on experimentation.<br><br>Recently, I\'ve been vibe-coding with AI at the intersection of design and technology.<br><br><strong>Cozy Journaling</strong> won the Built with Claude Sonnet 4.5 Challenge – "Keep Creating" Award.',
       highlights: [
         {
           text: 'My vibe-coding project "Cozy journaling" **won <Built with Claude Sonnet 4.5 Challenge> "Keep Creating" Award**.',
         },
       ],
-      cta: { label: "Check my living vibe-coding playlist", url: "#" },
+      cta: { label: "Dengerin projects", url: "https://cottenpanda.github.io/vibecodingplaylist" },
     },
     {
       id: "community-impact",
       title: "Community Impact",
       description:
-        "Learning, practicing, and sharing have become my habit, bringing fulfillment and growth. My Design files on Figma community has over **670K+** uses.",
-      highlights: [
-        {
-          text: '100+ abstract shapes/elements was nominated as a **finalist for the "Favorite graphic resources for Figma"** category in the **2022 Figma Community Awards**.',
-        },
-        {
-          text: "**50+ abstract geometric shapes** was featured during the virtual broadcast on Day 2 of Config 2024.",
-        },
-      ],
-      cta: { label: "See my design files on Figma community", url: "#" },
+        "Through my design work, mentoring, and shared resources, I aim to help designers build better digital experiences faster. I enjoy simplifying complex problems into intuitive products while contributing knowledge to the design community through workshops, mentoring, and practical design resources.",
+      highlights: [],
+      cta: { label: "Figma designs", url: "https://www.figma.com/@ripaahyar" },
     },
     {
       id: "through-my-lens",

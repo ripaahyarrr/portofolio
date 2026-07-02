@@ -140,10 +140,6 @@ const aiProjects = [
 const additionalAchievements = [
   { year: "2022", title: "Figma Community", detail: "670K+ uses · Finalist, Favorite Graphic Resources" },
   { year: "–", title: "Unsplash", detail: "20M+ views · 150K downloads" },
-  { year: "2018", title: "Google Startup Weekend", detail: "Excellence in Execution" },
-  { year: "2018", title: "UW Dubstech Protothon", detail: "1st place, UX Competition" },
-  { year: "2017", title: "Darby Smart IIT Program", detail: "1st place, video-creation · 150K+ views" },
-  { year: "2016", title: "CommLead — #doyouseeme", detail: "Top 5 Capstone, UW MCDM Master's program" },
 ];
 
 export function RecentStatus() {
