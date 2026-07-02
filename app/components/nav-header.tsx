@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 export function NavHeader() {
   const navLinks = [
     { label: "About", href: "#about" },
@@ -13,9 +14,16 @@ export function NavHeader() {
       <div className="mx-auto max-w-[1400px] px-8 pt-6 pb-3 flex items-center justify-between">
         <a
           href="/"
-          className="font-[family-name:var(--font-noto)] text-[13px] font-medium text-stone-700 hover:text-stone-900 transition-colors tracking-wide"
+          className="inline-flex items-center transition-opacity hover:opacity-80"
         >
-          Ripa Ahyar
+          <Image
+            src="/assets/icons/Logo.png"
+            alt="Ripa Ahyar"
+            width={800}
+            height={800}
+            className="h-[46px] w-auto"
+            priority
+          />
         </a>
         <div className="flex items-center gap-6">
           {navLinks.map((link) => (

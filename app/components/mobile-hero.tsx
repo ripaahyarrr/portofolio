@@ -266,7 +266,7 @@ export function MobileHero() {
 
         {/* Name + tagline */}
         <div className="flex flex-col items-center">
-          <img src="/assets/icons/Ripa%20Ahyar.svg" alt="Ripa Ahyar" className="h-[45px] mb-1.5" draggable={false} />
+          <Image src="/assets/icons/Ripa%20Ahyar.svg" alt="Ripa Ahyar" width={800} height={800} className="h-[45px] w-auto mb-1.5" draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-[9px] text-stone-500 text-center tracking-[0.18em] uppercase" style={{ lineHeight: "1.8" }}>
             I think, then I build.
           </p>
