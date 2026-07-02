@@ -53,7 +53,7 @@ const folderContent = [
   {
     title: "Through My Lens",
     description: "Nature helps me step away from daily routines and reset my perspective.\n\nMy photography has reached **20M+ views** and **150K+ downloads**, and has been used across platforms including BuzzFeed, Notion, Trello, Mailchimp, Fever, and Figma.",
-    cta: { label: "Photos on Unsplash", url: "https://unsplash.com/@yl1980s" },
+    cta: { label: "Photos on Unsplash", url: "https://unsplash.com/@ripaahyar" },
   },
   {
     title: "From Sketch to Merch",
@@ -95,6 +95,41 @@ const workProjects = [
     tags: ["Web Design", "Dashboard", "Education", "System UX"],
   },
   {
+    id: "Conglomeration Reporting System",
+    fileName: "Conglomeration Reporting System.case",
+    label: "Conglomeration Reporting System",
+    year: "2025",
+    role: "UI/UX Designer",
+    previewImage: "/assets/images/Conglomeration.png",
+    previewUrl: "/conglomeration-preview",
+    summary:
+      "A centralized financial conglomeration reporting platform used by multiple business entities within Sinarmas Financial Group to monitor, manage, and analyze consolidated financial data for operational reporting, regulatory compliance, and executive decision-making.",
+    problem:
+      "As the organization grew, reporting activities involved multiple business units, stakeholders, and increasingly complex data structures. Users often needed to access information from different modules and reporting sources to complete their daily tasks.\n\nBased on stakeholder interviews and workflow analysis, several key challenges were identified:\n- Financial data and reports were distributed across multiple modules, making information difficult to locate.\n- Navigation structure had evolved over time without a consistent information architecture, resulting in a fragmented user experience.\n- Users frequently searched for information based on business needs rather than the system's existing structure.\n- Dashboard pages displayed excessive information simultaneously, creating information overload and reducing usability.\n- A significant amount of users' time was spent locating data instead of analyzing and utilizing it for decision-making.\n- Different stakeholders required different levels of information, ranging from detailed operational data to high-level executive summaries.",
+    contributions: [
+      "As a Product Designer, I conducted stakeholder interviews with business teams, reporting specialists, and management stakeholders to understand their reporting workflows, challenges, and decision-making needs.",
+      "I analyzed existing user journeys and reporting workflows to identify bottlenecks, navigation issues, and opportunities to improve information discoverability.",
+      "I restructured the Information Architecture to better align with users' mental models and business objectives rather than system-driven categorization.",
+      "I simplified and reorganized navigation by grouping related functions and reporting modules into clearer business-oriented categories.",
+      "I redesigned the dashboard experience using stronger visual hierarchy principles, ensuring that critical metrics and reporting insights were immediately visible while secondary information remained accessible when needed.",
+      "I applied progressive disclosure techniques to balance the needs of operational users who required detailed data and management users who preferred summarized insights.",
+      "I created wireframes and interactive prototypes in Figma and facilitated design validation sessions with stakeholders before development implementation.",
+      "I collaborated closely with Business Analysts, Product Owners, and Developers to ensure design feasibility, consistency, and alignment with business requirements.",
+      "I contributed to design standardization efforts to improve consistency across reporting modules and future system enhancements.",
+    ],
+    outcome: [
+      "Improved overall data accessibility and discoverability across reporting modules.",
+      "Increased efficiency in finding and accessing reporting information.",
+      "Simplified navigation structure, making the platform easier to learn and use.",
+      "Reduced information overload through better content prioritization and dashboard organization.",
+      "Enabled faster decision-making by presenting key information more clearly and effectively.",
+      "Improved user satisfaction through a more intuitive and business-focused experience.",
+      "Received positive stakeholder feedback regarding dashboard usability and reporting efficiency.",
+      "Established a scalable information architecture foundation to support future reporting and monitoring features across the financial conglomeration ecosystem.",
+    ],
+    tags: ["Internal Tool", "Search", "Operations UX"],
+  },
+  {
     id: "Sinar Mas Multiartha Website",
     fileName: "Sinar Mas Multiartha Website.case",
     label: "Sinar Mas Multiartha Website — Corporate & Big Data Product Platform",
@@ -104,7 +139,7 @@ const workProjects = [
     previewUrl: "/sinar-mas-preview",
     summary:
       "Sinar Mas Multiartha Website is a corporate and technology platform that presents the company’s financial services background, big data solutions, ready-to-use products, customized technology services, API integration, and web dashboard capabilities.",
-    problem: 
+    problem:
       "The previous website experience needed a clearer structure to communicate corporate identity, technology capabilities, and product offerings. Information about big data services, APIs, dashboards, and customized solutions had to be presented in a more organized and user-friendly way so visitors could quickly understand what the company offers and how each solution provides value. Based on the initial analysis, several key problems were identified: product information was scattered, service categories were not easy to scan, visual hierarchy needed improvement, and the website required a more modern layout to support credibility, readability, and business communication.",
     contributions: [
       "As a UI/UX Designer, I analyzed the existing website structure, content flow, and user journey to understand how visitors explore company information, technology services, and product offerings.",
@@ -152,7 +187,7 @@ const workProjects = [
       "Helped stakeholders access proposal data and collaboration progress more easily through a more informative dashboard.",
       "Created a scalable design foundation to support future feature development for Kedaireka’s collaboration ecosystem between universities, industry partners, government, and society.",
     ],
-    tags: ["UI Design","UX Design", "Workflow", "Web Design"],
+    tags: ["UI Design", "UX Design", "Workflow", "Web Design"],
   },
   {
     id: "Tracer Study",
@@ -164,7 +199,7 @@ const workProjects = [
     previewUrl: "https://tracerstudy.kemdiktisaintek.go.id/",
     summary:
       "Tracer Study is a digital platform developed to support higher education institutions in collecting, managing, and reporting alumni outcome data. The system helps track graduate activities after graduation, including employment status, entrepreneurship, further study, job relevance, and transition into the workforce. Tracer Study plays an important role in evaluating the quality of higher education outcomes, supporting accreditation needs, and providing data for institutional improvement and policy decision-making.",
-    problem: 
+    problem:
       "Alumni tracking in higher education is often difficult to manage because graduate data is collected from many institutions, respondents, and reporting formats. The process can become fragmented, repetitive, and difficult to monitor, especially when universities need to ensure that alumni responses are complete, valid, and ready to be reported. Based on the initial analysis, several key problems were identified: the questionnaire flow could feel long and complex for alumni, data validation required clearer status handling, university administrators needed better visibility into response progress, and dashboard information had to be more actionable for reporting, evaluation, accreditation, and graduate outcome analysis.",
     contributions: [
       "As a UI/UX Designer, I conducted user research and workflow analysis to understand the needs of alumni, university administrators, and internal stakeholders.",
@@ -193,7 +228,7 @@ const workProjects = [
     previewUrl: "/iisma-preview",
     summary:
       "IISMA is a digital platform that supports the international student mobility program, helping Indonesian students apply for overseas study opportunities through a structured scholarship application, document submission, selection, and monitoring process.",
-    problem: 
+    problem:
       "The IISMA application process involved multiple steps, required documents, eligibility checks, university preferences, and selection stages. This made the experience potentially overwhelming for students, while administrators needed clearer visibility into applicant data, document completeness, validation status, and selection progress.",
     contributions: [
       "As a UI/UX Designer, I analyzed the end-to-end application journey, from program exploration, registration, eligibility checking, document upload, university selection, submission, review, to announcement tracking.",
@@ -223,9 +258,9 @@ const appTools = [
 ];
 
 const sidebarItems = [
-  { id: "ripaahyar", label: "Projects", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> },
-  { id: "desktop", label: "Snapshot", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> },
-  { id: "recents", label: "Achievements", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> },
+  { id: "ripaahyar", label: "Projects", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg> },
+  { id: "desktop", label: "Snapshot", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg> },
+  { id: "recents", label: "Achievements", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg> },
   { id: "garden", label: "Garden", icon: <span className="material-symbols-outlined" style={{ fontSize: 16, color: "#2196F3" }}>psychiatry</span> },
 ];
 
@@ -287,9 +322,8 @@ function FolderIcon({ color, title, onClick, isSelected, icon }: {
           />
         </motion.div>
       </div>
-      <span className={`text-[11px] leading-tight text-center whitespace-nowrap min-h-[28px] transition-colors duration-200 ${
-        isSelected ? "text-stone-900 font-medium" : "text-stone-500 group-hover:text-stone-700"
-      }`}>
+      <span className={`text-[11px] leading-tight text-center whitespace-nowrap min-h-[28px] transition-colors duration-200 ${isSelected ? "text-stone-900 font-medium" : "text-stone-500 group-hover:text-stone-700"
+        }`}>
         {title}
       </span>
     </motion.button>
@@ -526,11 +560,10 @@ export function FolderWindowContent() {
               <button
                 key={item.id}
                 onClick={() => { setActiveSidebar(item.id); setOpenFolder(null); }}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-[11px] cursor-pointer transition-colors ${
-                  activeSidebar === item.id
+                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 text-[11px] cursor-pointer transition-colors ${activeSidebar === item.id
                     ? "bg-[#E8E0D4] text-stone-800 font-medium"
                     : "text-stone-500"
-                }`}
+                  }`}
               >
                 {item.icon}
                 <span>{item.label}</span>
@@ -546,11 +579,10 @@ export function FolderWindowContent() {
                 <button
                   key={item.id}
                   onClick={() => { setActiveSidebar(item.id); setOpenFolder(null); }}
-                  className={`w-full flex items-center gap-2 px-2 py-[5px] rounded-md text-[12px] text-left cursor-pointer transition-colors ${
-                    activeSidebar === item.id
+                  className={`w-full flex items-center gap-2 px-2 py-[5px] rounded-md text-[12px] text-left cursor-pointer transition-colors ${activeSidebar === item.id
                       ? "bg-[#E8E0D4] text-stone-800"
                       : "text-stone-600 hover:bg-stone-200/40"
-                  }`}
+                    }`}
                 >
                   {item.icon}
                   <span>{item.label}</span>
@@ -650,11 +682,10 @@ export function FolderWindowContent() {
                                             <button
                                               key={project.id}
                                               onClick={() => setSelectedWorkProject(project.id)}
-                                              className={`w-full text-left rounded-xl border px-3 py-3 transition-colors cursor-pointer ${
-                                                active
+                                              className={`w-full text-left rounded-xl border px-3 py-3 transition-colors cursor-pointer ${active
                                                   ? "bg-white border-stone-300 shadow-sm"
                                                   : "bg-transparent border-transparent hover:bg-white/70 hover:border-stone-200"
-                                              }`}
+                                                }`}
                                             >
                                               <div className="flex items-start gap-3">
                                                 <div className="mt-0.5 shrink-0">
@@ -682,14 +713,25 @@ export function FolderWindowContent() {
                                       return (
                                         <div className="flex-1 overflow-y-auto min-h-0">
                                           <div className="relative w-full aspect-video lg:h-[250px] overflow-hidden border-b border-stone-200/60 bg-[#f5f5f4]">
-                                            <video
-                                              src={activeProject.previewVideo}
-                                              autoPlay
-                                              muted
-                                              loop
-                                              playsInline
-                                              className="w-full h-full object-cover"
-                                            />
+                                            {activeProject.previewVideo ? (
+                                              <video
+                                                src={activeProject.previewVideo}
+                                                autoPlay
+                                                muted
+                                                loop
+                                                playsInline
+                                                className="w-full h-full object-cover"
+                                              />
+                                            ) : activeProject.previewImage ? (
+                                              <Image
+                                                src={activeProject.previewImage}
+                                                alt={activeProject.label}
+                                                width={580}
+                                                height={250}
+                                                className="w-full h-full object-cover"
+                                                priority
+                                              />
+                                            ) : null}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
                                             <div className="absolute left-5 bottom-5 text-white">
                                               <p className="text-[11px] uppercase tracking-[0.18em] text-white/70">Case Study</p>
@@ -733,7 +775,7 @@ export function FolderWindowContent() {
 
                                             <div className="space-y-2">
                                               <p className="text-[12px] uppercase tracking-[0.18em] text-stone-400">Problem</p>
-                                              <p className="text-[14px] leading-relaxed text-stone-600">{activeProject.problem}</p>
+                                              <p className="text-[14px] leading-relaxed text-stone-600 whitespace-pre-line">{activeProject.problem}</p>
                                             </div>
 
                                             <div className="space-y-2">
@@ -827,12 +869,12 @@ export function FolderWindowContent() {
                                             {links.map((link, li) => (
                                               <a
                                                 key={li}
-                                                href={(link as {label: string; url: string}).url}
+                                                href={(link as { label: string; url: string }).url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="inline-block text-[13px] px-4 py-1.5 rounded-md border border-stone-700 text-stone-700 hover:bg-stone-700 hover:text-white transition-colors"
                                               >
-                                                {(link as {label: string; url: string}).label}
+                                                {(link as { label: string; url: string }).label}
                                               </a>
                                             ))}
                                           </div>
@@ -893,16 +935,16 @@ export function FolderWindowContent() {
                         >
                           <div className="relative w-[90px] h-[110px]">
                             <svg width="90" height="110" viewBox="0 0 90 110" fill="none">
-                              <path d="M6 2h58l20 20v82a4 4 0 01-4 4H6a4 4 0 01-4-4V6a4 4 0 014-4z" fill="white" stroke="#d4d4d4" strokeWidth="0.8"/>
-                              <path d="M64 2v16a4 4 0 004 4h16" fill="#ebebeb" stroke="#d4d4d4" strokeWidth="0.8" strokeLinejoin="round"/>
-                              <rect x="12" y="28" width="30" height="3" rx="1.5" fill="#c8c8c8"/>
-                              <rect x="12" y="36" width="56" height="2" rx="1" fill="#e0e0e0"/>
-                              <rect x="12" y="42" width="50" height="2" rx="1" fill="#e0e0e0"/>
-                              <rect x="12" y="48" width="54" height="2" rx="1" fill="#e0e0e0"/>
-                              <rect x="12" y="54" width="42" height="2" rx="1" fill="#e0e0e0"/>
-                              <rect x="12" y="60" width="56" height="2" rx="1" fill="#e0e0e0"/>
-                              <rect x="12" y="66" width="38" height="2" rx="1" fill="#e0e0e0"/>
-                              <rect x="12" y="72" width="48" height="2" rx="1" fill="#e0e0e0"/>
+                              <path d="M6 2h58l20 20v82a4 4 0 01-4 4H6a4 4 0 01-4-4V6a4 4 0 014-4z" fill="white" stroke="#d4d4d4" strokeWidth="0.8" />
+                              <path d="M64 2v16a4 4 0 004 4h16" fill="#ebebeb" stroke="#d4d4d4" strokeWidth="0.8" strokeLinejoin="round" />
+                              <rect x="12" y="28" width="30" height="3" rx="1.5" fill="#c8c8c8" />
+                              <rect x="12" y="36" width="56" height="2" rx="1" fill="#e0e0e0" />
+                              <rect x="12" y="42" width="50" height="2" rx="1" fill="#e0e0e0" />
+                              <rect x="12" y="48" width="54" height="2" rx="1" fill="#e0e0e0" />
+                              <rect x="12" y="54" width="42" height="2" rx="1" fill="#e0e0e0" />
+                              <rect x="12" y="60" width="56" height="2" rx="1" fill="#e0e0e0" />
+                              <rect x="12" y="66" width="38" height="2" rx="1" fill="#e0e0e0" />
+                              <rect x="12" y="72" width="48" height="2" rx="1" fill="#e0e0e0" />
                               <text x="45" y="95" textAnchor="middle" fill="#a8a29e" fontSize="12" fontWeight="500">PDF</text>
                             </svg>
                           </div>
