@@ -19,11 +19,11 @@ const folderColors = [
 ];
 
 const folderImages = [
-  "/assets/images/sheet-work.jpg",
-  "/assets/images/sheet-ai.jpg",
-  "/assets/images/sheet-community.jpg",
-  "/assets/images/through-my-lens.jpg",
-  "/assets/images/sheet-sketch.jpg",
+  "/assets/images/sheet-work.webp",
+  "/assets/images/sheet-ai.webp",
+  "/assets/images/sheet-community.webp",
+  "/assets/images/through-my-lens.webp",
+  "/assets/images/sheet-sketch.webp",
 ];
 
 const folderIcons = [
@@ -41,27 +41,19 @@ const folderContent = [
     note: "Feel free to reach out if you'd like to hear more about what I'm working on.",
   },
   {
-    title: "Design with AI and beyond",
-    description: "Experimenting and building with AI tools - prototyping ideas quickly and shipping projects along the way.\n\nHighlights include launching my first **Chrome extension Focus Now** to park extra tabs and reduce clutter, and Cozy Journaling, winner of the **Built with Claude Sonnet 4.5 \"Keep Creating\" Award**.",
-    cta: { label: "Vibe coding projects", url: "https://dengerin-playlist.netlify.app/" },
+    title: "Design with AI",
+    description: 'I explore new tools to boost creativity and productivity, learning through hands-on experimentation.<br><br>Recently, I\'ve been vibe-coding with AI at the intersection of design and technology.<br><br><strong>Cozy Journaling</strong> won the Built with Claude Sonnet 4.5 Challenge – "Keep Creating" Award.',
+    cta: { label: "Dengerin projects", url: "https://cottenpanda.github.io/vibecodingplaylist" },
   },
   {
     title: "Community Impact",
-    description: "My Figma Community files have **670K+** uses. I design and share to help designers speed up workflows, explore ideas, and build faster.\n\n100+ Abstract Shapes / Elements was a finalist for Favorite Graphic Resources in the 2022 Figma Community Awards. 50+ Abstract Geometric Shapes was featured in the Day 2 virtual broadcast at Config 2024.",
+    description: "Through my design work, mentoring, and shared resources, I aim to help designers build better digital experiences faster. I enjoy simplifying complex problems into intuitive products while contributing knowledge to the design community through workshops, mentoring, and practical design resources.",
     cta: { label: "Figma designs", url: "https://www.figma.com/@ripaahyar" },
   },
   {
     title: "Through My Lens",
     description: "Nature helps me step away from daily routines and reset my perspective.\n\nMy photography has reached **20M+ views** and **150K+ downloads**, and has been used across platforms including BuzzFeed, Notion, Trello, Mailchimp, Fever, and Figma.",
     cta: { label: "Photos on Unsplash", url: "https://unsplash.com/@ripaahyar" },
-  },
-  {
-    title: "From Sketch to Merch",
-    description: "I create illustrations and black-and-white doodles as a way to unwind and explore visual ideas.\n\nIn 2022, I collaborated with **SHEIN X Artist** to launch my merchandise collection, YANLIU. I share my work on Instagram and RedNote, where my illustrations have reached **50K+** likes, as a space to experiment, explore, and stay curious.",
-    cta: [
-      { label: "Instagram", url: "https://www.instagram.com/ripaahyar" },
-      { label: "RedNote", url: "https://www.xiaohongshu.com/user/profile/5cf87836000000001803f1b3?xhsshare=CopyLink&appuid=5cf87836000000001803f1b3&apptime=1654372327" },
-    ],
   },
 ];
 
@@ -100,7 +92,7 @@ const workProjects = [
     label: "Conglomeration Reporting System",
     year: "2025",
     role: "UI/UX Designer",
-    previewImage: "/assets/images/Conglomeration.png",
+    previewImage: "/assets/images/Conglomeration.webp",
     previewUrl: "/conglomeration-preview",
     summary:
       "A centralized financial conglomeration reporting platform used by multiple business entities within Sinarmas Financial Group to monitor, manage, and analyze consolidated financial data for operational reporting, regulatory compliance, and executive decision-making.",
@@ -247,14 +239,14 @@ const workProjects = [
 ];
 
 const appTools = [
-  { label: "Claude", icon: "/assets/images/app-claude.jpg" },
-  { label: "Figma", icon: "/assets/images/app-figma.jpg" },
-  { label: "Cursor", icon: "/assets/images/app-cursor.jpg" },
-  { label: "Google AI Studio", icon: "/assets/images/app-google-ai.jpg" },
-  { label: "Lovable", icon: "/assets/images/app-lovable.jpg" },
-  { label: "Codex", icon: "/assets/images/app-codex.jpg" },
-  { label: "GitHub", icon: "/assets/images/app-github.jpg" },
-  { label: "ChatGPT", icon: "/assets/images/app-chatgpt.jpg" },
+  { label: "Claude", icon: "/assets/images/app-claude.webp" },
+  { label: "Figma", icon: "/assets/images/app-figma.webp" },
+  { label: "Cursor", icon: "/assets/images/app-cursor.webp" },
+  { label: "Google AI Studio", icon: "/assets/images/app-google-ai.webp" },
+  { label: "Lovable", icon: "/assets/images/app-lovable.webp" },
+  { label: "Codex", icon: "/assets/images/app-codex.webp" },
+  { label: "GitHub", icon: "/assets/images/app-github.webp" },
+  { label: "ChatGPT", icon: "/assets/images/app-chatgpt.webp" },
 ];
 
 const sidebarItems = [
@@ -314,9 +306,11 @@ function FolderIcon({ color, title, onClick, isSelected, icon }: {
           }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
         >
-          <img
+          <Image
             src={icon}
             alt=""
+            width={44}
+            height={44}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[44px] h-[44px] object-contain pointer-events-none"
             style={{ filter: "brightness(0) saturate(0)", opacity: 0.1, mixBlendMode: "multiply" }}
           />
@@ -368,14 +362,14 @@ function FolderSideSheet({ folderIndex, onClose, onNavigate }: {
         transition={{ type: "spring", damping: 28, stiffness: 300 }}
       >
         <div className="absolute inset-0 pointer-events-none opacity-[0.06] rounded-l-xl overflow-hidden" style={{
-          backgroundImage: "url(/assets/textures/noise-texture.png)",
+          backgroundImage: "url(/assets/textures/noise-texture.webp)",
           backgroundRepeat: "repeat",
           backgroundSize: "200px 200px",
         }} />
 
         <div className="relative flex items-center justify-between px-5 py-3 border-b border-stone-200/60 z-10" style={{ backgroundColor: `${color.bg}08` }}>
           <div className="flex items-center gap-2.5">
-            <img src={icon} alt="" className="w-5 h-5 object-contain" style={{ filter: `brightness(0) saturate(0) opacity(0.5)` }} />
+            <Image src={icon} alt="" width={20} height={20} className="w-5 h-5 object-contain" style={{ filter: `brightness(0) saturate(0) opacity(0.5)` }} />
             <span className="text-[14px] text-stone-700 font-medium">
               {content.title}
             </span>
@@ -534,7 +528,7 @@ export function FolderWindowContent() {
         <div className="relative bg-[#F5F5F4] rounded-2xl overflow-hidden border border-stone-300/40" style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)" }}>
           {/* Paper texture overlay */}
           <div className="absolute inset-0 pointer-events-none z-[1] rounded-2xl overflow-hidden" style={{
-            backgroundImage: "url(/assets/textures/paper-texture.jpg)",
+          backgroundImage: "url(/assets/textures/paper-texture.webp)",
             backgroundSize: "500px",
             backgroundRepeat: "repeat",
             mixBlendMode: "multiply",
@@ -838,7 +832,7 @@ export function FolderWindowContent() {
                                         />
                                       ) : openFolder === 3 ? (
                                         <video
-                                          src="/assets/videos/2025-nature.mp4"
+                                          src="/assets/videos/2025-nature.MP4"
                                           autoPlay
                                           muted
                                           loop
@@ -902,7 +896,7 @@ export function FolderWindowContent() {
                     <div className="grid grid-cols-5 gap-y-6 gap-x-2 px-8 py-8 justify-items-center">
                       {appTools.map((tool, i) => (
                         <div key={i} className="flex flex-col items-center gap-1.5">
-                          <img src={tool.icon} alt={tool.label} className="w-[56px] h-[56px] object-cover rounded-[13px] shadow-sm" />
+                          <Image src={tool.icon} alt={tool.label} width={56} height={56} className="w-[56px] h-[56px] object-cover rounded-[13px] shadow-sm" />
                           <span className="text-[11px] text-stone-600 text-center leading-tight">{tool.label}</span>
                         </div>
                       ))}

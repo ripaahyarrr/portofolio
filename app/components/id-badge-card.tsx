@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 type IdBadgeCardProps = {
   compact?: boolean;
@@ -53,9 +54,11 @@ export function IdBadgeCard({
 
           <div className="mt-3 flex justify-center">
             <div className={`relative shrink-0 ${photoSizeClassName} rounded-full border-[3px] border-[#f4e6da] bg-white shadow-[0_8px_18px_rgba(0,0,0,0.1)]`}>
-              <img
-                src="/assets/images/profile.png"
+              <Image
+                src="/assets/images/profile.webp"
                 alt="Ripa Ahyar"
+                fill
+                sizes={compact ? "66px" : "102px"}
                 className={photoImageClassName}
                 style={revealMode === "toggle" ? { opacity: showVideo ? 0 : 1 } : undefined}
                 draggable={false}

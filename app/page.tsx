@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { siteConfig } from "@/lib/siteConfig";
 import { renderBold } from "@/lib/renderBold";
@@ -412,20 +413,22 @@ export default function Home() {
             <RetroWindows />
             {/* Ripped paper + ice coffee + plant */}
             <div className="hidden lg:block absolute top-[20px] left-[650px] -translate-x-1/2 z-20 rotate-[-5deg] transition-all duration-300 hover:scale-200 hover:rotate-[1deg] group/paper hero-entrance" style={{ animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 2.65s both" }}>
-              <img
-                src="/assets/images/ripped-paper.png?v=3"
+              <Image
+                src="/assets/images/ripped-paper.webp?v=3"
                 alt="Ripped paper note"
+                width={1610}
+                height={701}
                 className="w-[520px] opacity-100 drop-shadow-[0_6px_20px_rgba(0,0,0,0.25)] transition-all duration-300"
                 draggable={false}
               />
               <div className="absolute top-[50%] left-[55%] -translate-x-1/2 -translate-y-1/2">
-                <img src="/assets/images/ice-coffee.png?v=3" alt="Ice coffee" className="w-[130px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
+                <Image src="/assets/images/ice-coffee.webp?v=3" alt="Ice coffee" width={1004} height={757} className="w-[130px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] hover:coffee-wobble" draggable={false} />
               </div>
               <div className="absolute top-[70%] left-[16%] -translate-x-1/2 -translate-y-1/2">
-                <img src="/assets/images/plant.png?v=6" alt="Plant" className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 scale-[1.3] rotate-[-5deg] -translate-y-3 hover:drop-shadow-[0_12px_20px_rgba(0,0,0,0.3)] plant-hover" draggable={false} />
+                <Image src="/assets/images/plant.webp?v=6" alt="Plant" width={1200} height={1200} className="w-[150px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 scale-[1.3] rotate-[-5deg] -translate-y-3 hover:drop-shadow-[0_12px_20px_rgba(0,0,0,0.3)] plant-hover" draggable={false} />
               </div>
               <div className="absolute top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2 group/pencil">
-                <img src="/assets/images/apple-pencil.png?v=2" alt="Apple Pencil" className="pencil-img w-[90px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 group-hover/pencil:scale-200 group-hover/pencil:-translate-y-2" draggable={false} />
+                <Image src="/assets/images/apple-pencil.webp?v=2" alt="Apple Pencil" width={1024} height={1536} className="pencil-img w-[90px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.2)] transition-all duration-300 group-hover/pencil:scale-200 group-hover/pencil:-translate-y-2" draggable={false} />
                 {/* Hand drawn line that reveals on hover */}
                 <div className="absolute -bottom-[6px] left-[0px] w-[90px] h-[12px] pointer-events-none overflow-hidden">
                   <img
@@ -441,15 +444,19 @@ export default function Home() {
             {/* Flower vase sticker */}
             <div className="hidden lg:block absolute left-[380px] top-[355px] z-20 group/flower hero-entrance" style={{ animation: "hero-pop 0.7s cubic-bezier(0.4,0,0.2,1) 3.1s both" }}>
               <div className="relative w-[120px] rotate-[-6deg] transition-all duration-500 ease-out group-hover/flower:scale-[1.8] group-hover/flower:rotate-[-2deg] group-hover/flower:-translate-y-6 group-hover/flower:z-40" style={{ willChange: "transform" }}>
-                <img
-                  src="/assets/images/flower.png?v=3"
+                <Image
+                  src="/assets/images/flower.webp?v=3"
                   alt=""
+                  width={1536}
+                  height={1024}
                   className="w-full scale-[2.5] transition-opacity duration-500 ease-out group-hover/flower:opacity-0"
                   draggable={false}
                 />
-                <img
-                  src="/assets/images/flower hover.png?v=3"
+                <Image
+                  src="/assets/images/flower%20hover.webp?v=3"
                   alt=""
+                  width={1536}
+                  height={1024}
                   className="absolute inset-x-0 top-[20px] w-full scale-[1.1] opacity-0 transition-opacity duration-500 ease-out group-hover/flower:opacity-100 flower-glitch-target"
                   draggable={false}
                 />
@@ -462,9 +469,11 @@ export default function Home() {
               className="hidden lg:block absolute right-[50px] top-[50px] z-30 w-[370px] rotate-[4deg] transition-transform duration-300 ease-out hover:scale-[1.2] hover:rotate-[1deg] group/ticket hero-entrance"
               style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.25s both" }}
             >
-              <img
-                src="/assets/images/ticket.png?v=2"
+              <Image
+                src="/assets/images/ticket.webp?v=2"
                 alt="Design x Technology ticket"
+                width={1719}
+                height={732}
                 className="w-full opacity-95"
                 draggable={false}
               />
@@ -484,15 +493,19 @@ export default function Home() {
             <a href="https://unsplash.com/@ripaahyar" target="_blank" rel="noopener noreferrer" className="hidden lg:block absolute right-[-30px] top-[200px] z-10 rotate-[6deg] transition-transform duration-300 ease-out hover:rotate-[2deg] hover:scale-105 cursor-pointer group/collage overflow-visible hero-entrance"
               style={{ willChange: "transform", animation: "hero-fade-in 0.7s cubic-bezier(0.4,0,0.2,1) 3.4s both" }}>
               <div className="relative overflow-visible">
-                <img
-                  src="/assets/images/cat.png?v=2"
+                <Image
+                  src="/assets/images/cat.webp?v=2"
                   alt="Cat peeking"
+                  width={789}
+                  height={492}
                   className="absolute top-[40%] right-[20%] w-[250px] z-20 transition-[transform,opacity] duration-500 ease-out scale-0 opacity-0 origin-center group-hover/collage:scale-100 group-hover/collage:opacity-100 group-hover/collage:rotate-[8deg] drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] group-hover/collage:-translate-y-3"
                   style={{ willChange: "transform, opacity" }}
                 />
-                <img
-                  src="/assets/images/image-collage.jpg?v=2"
+                <Image
+                  src="/assets/images/image-collage.webp?v=2"
                   alt="Photo collage"
+                  width={1086}
+                  height={1448}
                   className="w-[340px] rounded-xl shadow-lg relative z-10"
                 />
               </div>
@@ -500,7 +513,7 @@ export default function Home() {
             {/* Center text */}
             <div className="absolute top-[42%] left-[calc(50%+30px)] -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
               <div className="relative mb-4 hero-entrance overflow-hidden" style={{ animation: "hero-blur-in 0.6s ease-out 0.3s both" }}>
-                <img src="/assets/icons/Ripa%20Ahyar.svg" alt="Ripa Ahyar Hero" className="h-[80px] md:h-[100px]" draggable={false} />
+                <Image src="/assets/icons/Ripa%20Ahyar.svg" alt="Ripa Ahyar Hero" width={800} height={800} className="h-[80px] md:h-[100px] w-auto" draggable={false} />
                 {/* Glare sweep */}
                 <div className="absolute inset-0 pointer-events-none" style={{ animation: "hero-glare 1.2s ease-in-out 5s both" }}>
                   <div className="absolute top-0 h-full w-[60%] -skew-x-12" style={{
@@ -583,7 +596,7 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <img src="/assets/icons/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
           <p className="font-[family-name:var(--font-noto)] text-[13px] tracking-wide" style={{ color: "#212121" }}>
-            Build with Codex - Shipped on Vercel
+            Build with Codex - Shipped on Netlify
 
           </p>
           <img src="/assets/icons/star.svg" alt="" className="w-5 h-5 brightness-0 opacity-70 animate-spin" style={{ animationDuration: "4s" }} draggable={false} />
@@ -654,7 +667,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="mt-24 text-center">
           <p className="font-mono text-xs text-text-muted">
-            Build with Codex - Shipped on Vercel
+            Build with Codex - Shipped on Netlify
 
           </p>
         </footer>

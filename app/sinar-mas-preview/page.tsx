@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { YellowDotCursor } from "../components/yellow-dot-cursor";
 
@@ -9,7 +10,7 @@ export default function SinarMasPreviewPage() {
       <div
         className="absolute inset-0 opacity-[0.08]"
         style={{
-          backgroundImage: "url(/assets/textures/paper-texture.jpg)",
+          backgroundImage: "url(/assets/textures/paper-texture.webp)",
           backgroundRepeat: "repeat",
           backgroundSize: "420px 420px",
         }}
@@ -21,9 +22,11 @@ export default function SinarMasPreviewPage() {
         <div className="absolute bottom-[-80px] left-[30%] h-[240px] w-[240px] rounded-full bg-[#d6afb0]/25 blur-3xl" />
       </div>
 
-      <img
-        src="/assets/images/ticket.png?v=2"
+      <Image
+        src="/assets/images/ticket.webp?v=2"
         alt=""
+        width={1719}
+        height={732}
         className="pointer-events-none absolute left-[5%] top-[10%] hidden w-[220px] rotate-[-11deg] opacity-90 drop-shadow-[0_14px_20px_rgba(0,0,0,0.12)] lg:block"
         draggable={false}
       />
@@ -33,9 +36,11 @@ export default function SinarMasPreviewPage() {
         className="pointer-events-none absolute right-[7%] top-[13%] hidden w-[210px] rotate-[9deg] opacity-80 drop-shadow-[0_12px_18px_rgba(0,0,0,0.08)] lg:block"
         draggable={false}
       />
-      <img
-        src="/assets/images/apple-pencil.png?v=2"
+      <Image
+        src="/assets/images/apple-pencil.webp?v=2"
         alt=""
+        width={1024}
+        height={1536}
         className="pointer-events-none absolute bottom-[9%] right-[8%] hidden w-[130px] rotate-[16deg] opacity-90 drop-shadow-[0_12px_20px_rgba(0,0,0,0.12)] lg:block"
         draggable={false}
       />
@@ -103,7 +108,7 @@ export default function SinarMasPreviewPage() {
               <div className="relative rotate-[1deg] rounded-[34px] border border-stone-300/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(249,245,238,0.92)_100%)] p-5 shadow-[0_28px_60px_rgba(0,0,0,0.12)]">
                 <div className="rounded-[28px] border border-stone-200/80 bg-[#fbfaf7] p-4">
                   <div className="relative overflow-hidden rounded-[24px] border border-stone-200 bg-[#ece7dd]">
-                    <div className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "url(/assets/textures/paper-texture.jpg)", backgroundSize: "280px 280px" }} />
+                    <div className="absolute inset-0 opacity-[0.14]" style={{ backgroundImage: "url(/assets/textures/paper-texture.webp)", backgroundSize: "280px 280px" }} />
                     <div className="relative px-6 pb-8 pt-7">
                       <div className="flex items-center justify-between">
                         <p className="text-[12px] uppercase tracking-[0.22em] text-stone-400">Unavailable Destination</p>
