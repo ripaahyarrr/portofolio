@@ -3,6 +3,9 @@ import { Source_Code_Pro, Noto_Sans, Courier_Prime } from "next/font/google";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ripaahyar.netlify.app";
+const coverImageUrl = new URL(`/assets/images/Cover.webp?v=${Date.now()}`, siteUrl).toString();
+const siteDescription =
+  "Designing experiences from insight to interface. UI/UX Designer with 5+ years of experience.";
 
 const sourceCodePro = Source_Code_Pro({
   subsets: ["latin"],
@@ -23,15 +26,13 @@ const courierPrime = Courier_Prime({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Ripa Ahyar — UI/UX Designer",
-  description:
-    "Designing experiences from insight to interface. UI/UX Designer with 5+ years of experience.",
+  description: siteDescription,
   openGraph: {
     title: "Ripa Ahyar — UI/UX Designer",
-    description:
-      "Designing experiences from insight to interface. UI/UX Designer with 5+ years of experience.",
+    description: siteDescription,
     images: [
       {
-        url: "/assets/images/Cover.webp",
+        url: coverImageUrl,
         width: 1586,
         height: 992,
         alt: "Ripa Ahyar cover preview",
@@ -41,9 +42,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Ripa Ahyar — UI/UX Designer",
-    description:
-      "Designing experiences from insight to interface. UI/UX Designer with 5+ years of experience.",
-    images: ["/assets/images/Cover.webp"],
+    description: siteDescription,
+    images: [coverImageUrl],
   },
   icons: {
     icon: "/favicon.svg",
