@@ -57,17 +57,17 @@ export function WidgetClock() {
 const funFacts = [
   {
     front: "Boba Tea",
-    emoji: "", image: "/assets/images/Boba tea.png",
+    emoji: "", image: "/assets/images/Eat.webp",
     back: "~500 cups in 3 years.",
   },
   {
     front: "Robotics",
-    emoji: "", image: "/assets/images/Robot.png",
+    emoji: "", image: "/assets/images/Mountain.webp",
     back: "Former Global Launch Manager at ABB Robotics. Launched the IRB 120 robot — now displayed at the Shanghai Science and Technology Museum.",
   },
   {
     front: "2014",
-    emoji: "", image: "/assets/images/Seattle.png",
+    emoji: "", image: "/assets/images/Ai Powered.webp",
     back: "Moved to Seattle.\nMany ideas — and coffees — later.",
   },
 ];
@@ -99,7 +99,7 @@ function PolaroidCard({ fact, index, spread, isFlipped, onFlip, onHoverCard }: {
       >
         {/* Front */}
         <div
-          className="rounded-xl bg-[#fafaf8] shadow-[0_2px_10px_rgba(0,0,0,0.12),0_1px_3px_rgba(0,0,0,0.08)] flex flex-col p-[8px] pb-[22px]"
+          className="rounded-xl bg-[#fafaf8] shadow-[0_4px_14px_rgba(0,0,0,0.08),0_1px_3px_rgba(0,0,0,0.05)] flex flex-col p-[8px] pb-[22px] border border-stone-200/60"
           style={{ backfaceVisibility: "hidden" }}
         >
           <div className="bg-stone-100 rounded-lg flex items-center justify-center overflow-hidden" style={{ aspectRatio: "4/5" }}>
@@ -112,11 +112,11 @@ function PolaroidCard({ fact, index, spread, isFlipped, onFlip, onHoverCard }: {
         </div>
         {/* Back */}
         <div
-          className="rounded-xl bg-stone-800 shadow-[0_2px_10px_rgba(0,0,0,0.15)] p-4 absolute inset-0 flex flex-col justify-center"
+          className="rounded-xl bg-stone-800 shadow-[0_4px_14px_rgba(0,0,0,0.1)] p-4 absolute inset-0 flex flex-col justify-center border border-stone-700"
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
-          <div className="text-[12px] text-stone-400 uppercase tracking-wider mb-2">{fact.front}</div>
-          <p className="text-[12px] text-stone-200 leading-relaxed">{fact.back}</p>
+          <div className="text-[12px] text-stone-400 uppercase tracking-wider mb-2 font-[family-name:var(--font-courier-prime)] font-bold">{fact.front}</div>
+          <p className="text-[11px] text-stone-200 leading-relaxed font-[family-name:var(--font-noto)]">{fact.back}</p>
         </div>
       </motion.div>
     </motion.div>
@@ -132,26 +132,40 @@ function FunFactsWidget() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.25 }}
-      className="col-span-2 bg-white/90 rounded-xl p-3 flex flex-col"
+      className="col-span-2 relative pt-2"
       onMouseLeave={() => { setSpread(false); setFlippedSet(new Set()); }}
     >
-      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-2 self-start">Fun Facts</div>
-      <div className="flex-1 flex items-center justify-center relative" style={{ minHeight: 180 }}>
-        {funFacts.map((fact, i) => (
-          <PolaroidCard
-            key={fact.front}
-            fact={fact}
-            index={i}
-            spread={spread}
-            isFlipped={flippedSet.has(i)}
-            onFlip={(idx) => setFlippedSet(prev => {
-              const next = new Set(prev);
-              if (next.has(idx)) next.delete(idx); else next.add(idx);
-              return next;
-            })}
-            onHoverCard={() => setSpread(true)}
-          />
-        ))}
+      {/* Masking tape */}
+      <div className="absolute left-1/2 -translate-x-1/2 w-[70px] h-[16px] top-0 rounded-[4px] bg-[#efe5d7]/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] backdrop-blur-[0.5px] border border-[#e5dcd0]/50 rotate-[-2deg] z-20" />
+
+      {/* Card Container */}
+      <div className="relative overflow-hidden rounded-[22px] border border-stone-200/80 bg-[#fffdfa] shadow-[0_12px_28px_rgba(0,0,0,0.06)] h-full flex flex-col p-4">
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.14] pointer-events-none" style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(120,113,108,0.3) 1px, transparent 0)",
+          backgroundSize: "10px 10px",
+        }} />
+        {/* Subtle warm top gradient */}
+        <div className="absolute inset-x-0 top-0 h-[30%] bg-[linear-gradient(180deg,rgba(214,120,91,0.06),rgba(214,120,91,0))] pointer-events-none" />
+
+        <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-2 self-start z-10">Fun Facts</div>
+        <div className="flex-1 flex items-center justify-center relative z-10" style={{ minHeight: 180 }}>
+          {funFacts.map((fact, i) => (
+            <PolaroidCard
+              key={fact.front}
+              fact={fact}
+              index={i}
+              spread={spread}
+              isFlipped={flippedSet.has(i)}
+              onFlip={(idx) => setFlippedSet(prev => {
+                const next = new Set(prev);
+                if (next.has(idx)) next.delete(idx); else next.add(idx);
+                return next;
+              })}
+              onHoverCard={() => setSpread(true)}
+            />
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -166,44 +180,58 @@ function EnergyCircle() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="bg-white/90 rounded-xl p-3 flex flex-col items-start cursor-pointer"
+      className="cursor-pointer relative h-full pt-2"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[10px] text-stone-400 uppercase tracking-wider self-start mb-3">Energy Level</div>
-      <div className="flex-1 flex flex-col items-center justify-center w-full">
-        <div className="relative w-[110px] h-[110px]">
-          <svg width="110" height="110" viewBox="0 0 110 110">
-            <circle cx="55" cy="55" r="44" fill="none" stroke="#e7e5e4" strokeWidth="7" />
-            <motion.circle
-              key={hovered ? "active" : "idle"}
-              cx="55" cy="55" r="44"
-              fill="none" stroke="#5A9E82" strokeWidth="7"
-              strokeLinecap="butt"
-              strokeDasharray={Math.PI * 2 * 44}
-              initial={hovered ? { strokeDashoffset: Math.PI * 2 * 44 } : false}
-              animate={{ strokeDashoffset: Math.PI * 2 * 44 * (1 - 0.95) }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              transform="rotate(-90 55 55)"
-            />
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-[22px] font-semibold text-stone-700 leading-none">95%</span>
+      {/* Masking tape */}
+      <div className="absolute left-1/2 -translate-x-1/2 w-[70px] h-[16px] top-0 rounded-[4px] bg-[#efe5d7]/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] backdrop-blur-[0.5px] border border-[#e5dcd0]/50 rotate-[2deg] z-20" />
+
+      {/* Card Container */}
+      <div className="relative overflow-hidden rounded-[22px] border border-stone-200/80 bg-[#fffdfa] shadow-[0_12px_28px_rgba(0,0,0,0.06)] h-full flex flex-col p-4">
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.14] pointer-events-none" style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(120,113,108,0.3) 1px, transparent 0)",
+          backgroundSize: "10px 10px",
+        }} />
+        {/* Subtle warm top gradient */}
+        <div className="absolute inset-x-0 top-0 h-[30%] bg-[linear-gradient(180deg,rgba(214,120,91,0.06),rgba(214,120,91,0))] pointer-events-none" />
+
+        <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-3 z-10 self-start">Energy Level</div>
+        <div className="flex-1 flex flex-col items-center justify-center w-full z-10">
+          <div className="relative w-[110px] h-[110px]">
+            <svg width="110" height="110" viewBox="0 0 110 110">
+              <circle cx="55" cy="55" r="44" fill="none" stroke="#e2dbd2" strokeWidth="7" />
+              <motion.circle
+                key={hovered ? "active" : "idle"}
+                cx="55" cy="55" r="44"
+                fill="none" stroke="#5A9E82" strokeWidth="7"
+                strokeLinecap="butt"
+                strokeDasharray={Math.PI * 2 * 44}
+                initial={hovered ? { strokeDashoffset: Math.PI * 2 * 44 } : false}
+                animate={{ strokeDashoffset: Math.PI * 2 * 44 * (1 - 0.95) }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                transform="rotate(-90 55 55)"
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-[22px] font-bold text-stone-700 leading-none font-[family-name:var(--font-courier-prime)]">95%</span>
+            </div>
           </div>
+          <div className="text-[12px] text-stone-600 font-[family-name:var(--font-noto)] mt-2">Morning Run ☀️</div>
         </div>
-        <div className="text-[12px] text-stone-600 mt-2">Feeling great</div>
       </div>
     </motion.div>
   );
 }
 
 const radarStats = [
+  { label: "AI Tools", value: 95 },
   { label: "Coffee", value: 90 },
-  { label: "Tea", value: 65 },
-  { label: "Music", value: 80 },
-  { label: "Sunlight", value: 55 },
+  { label: "Research", value: 85 },
+  { label: "Design", value: 80 },
   { label: "Curiosity", value: 100 },
-  { label: "Ideas", value: 95 },
+  { label: "Nature", value: 75 },
 ];
 const radarCx = 85, radarCy = 82, radarMaxR = 60, radarLevels = 4, radarN = radarStats.length;
 const radarAngle = (i: number) => (Math.PI * 2 * i) / radarN - Math.PI / 2;
@@ -232,62 +260,77 @@ function FuelMixRadar() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.15 }}
-      className="bg-white/90 rounded-xl p-3 flex flex-col items-start cursor-pointer"
+      className="cursor-pointer relative h-full pt-2"
       onMouseEnter={startReveal}
       onMouseLeave={stopReveal}
     >
-      <div className="text-[10px] text-stone-400 uppercase tracking-wider self-start mb-1">Fuel Mix</div>
-      <svg className="self-center" width="240" height="200" viewBox="-40 -5 230 190">
-        {[...Array(radarLevels)].map((_, l) => {
-          const r = radarMaxR * ((l + 1) / radarLevels);
-          const pts = radarStats.map((_, i) => radarPt(i, r)).join(" ");
-          return <polygon key={l} points={pts} fill="none" stroke="#e7e5e4" strokeWidth="0.5" />;
-        })}
-        {radarStats.map((_, i) => (
-          <line key={i} x1={radarCx} y1={radarCy} x2={Number(radarPt(i, radarMaxR).split(",")[0])} y2={Number(radarPt(i, radarMaxR).split(",")[1])} stroke="#e7e5e4" strokeWidth="0.5" />
-        ))}
-        <motion.polygon
-          animate={{ points: getPoints(revealCount) }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          fill="rgba(106,158,192,0.2)"
-          stroke="#6A9EC0"
-          strokeWidth="1.5"
-        />
-        {radarStats.map((_, i) => {
-          const [x, y] = radarPt(i, (radarStats[i].value / 100) * radarMaxR).split(",").map(Number);
-          return (
-            <motion.circle
-              key={i}
-              cx={x} cy={y} r="2" fill="#6A9EC0"
-              animate={{ opacity: i < revealCount ? 1 : 0 }}
-              transition={{ duration: 0.2 }}
-            />
-          );
-        })}
-        {radarStats.map((s, i) => {
-          const angle = radarAngle(i);
-          const cos = Math.cos(angle);
-          const sin = Math.sin(angle);
-          const lR = radarMaxR + 14;
-          const x = radarCx + lR * cos;
-          const y = radarCy + lR * sin;
-          const anchor = cos < -0.1 ? "end" : cos > 0.1 ? "start" : "middle";
-          const dx = cos < -0.1 ? -4 : cos > 0.1 ? 4 : 0;
-          const dy = sin < -0.5 ? -4 : sin > 0.5 ? 8 : 0;
-          return <text key={i} x={x + dx} y={y + dy} textAnchor={anchor} dominantBaseline="middle" className="text-[12px] fill-stone-600">{s.label}</text>;
-        })}
-      </svg>
+      {/* Masking tape */}
+      <div className="absolute left-1/2 -translate-x-1/2 w-[70px] h-[16px] top-0 rounded-[4px] bg-[#efe5d7]/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] backdrop-blur-[0.5px] border border-[#e5dcd0]/50 rotate-[-2.5deg] z-20" />
+
+      {/* Card Container */}
+      <div className="relative overflow-hidden rounded-[22px] border border-stone-200/80 bg-[#fffdfa] shadow-[0_12px_28px_rgba(0,0,0,0.06)] h-full flex flex-col p-4">
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.14] pointer-events-none" style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(120,113,108,0.3) 1px, transparent 0)",
+          backgroundSize: "10px 10px",
+        }} />
+        {/* Subtle warm top gradient */}
+        <div className="absolute inset-x-0 top-0 h-[30%] bg-[linear-gradient(180deg,rgba(214,120,91,0.06),rgba(214,120,91,0))] pointer-events-none" />
+
+        <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-1 z-10 self-start">Fuel Mix</div>
+        <svg className="self-center z-10" width="240" height="200" viewBox="-40 -5 230 190">
+          {[...Array(radarLevels)].map((_, l) => {
+            const r = radarMaxR * ((l + 1) / radarLevels);
+            const pts = radarStats.map((_, i) => radarPt(i, r)).join(" ");
+            return <polygon key={l} points={pts} fill="none" stroke="#e2dbd2" strokeWidth="0.5" />;
+          })}
+          {radarStats.map((_, i) => (
+            <line key={i} x1={radarCx} y1={radarCy} x2={Number(radarPt(i, radarMaxR).split(",")[0])} y2={Number(radarPt(i, radarMaxR).split(",")[1])} stroke="#e2dbd2" strokeWidth="0.5" />
+          ))}
+          <motion.polygon
+            animate={{ points: getPoints(revealCount) }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            fill="rgba(106,158,192,0.2)"
+            stroke="#6A9EC0"
+            strokeWidth="1.5"
+          />
+          {radarStats.map((_, i) => {
+            const [x, y] = radarPt(i, (radarStats[i].value / 100) * radarMaxR).split(",").map(Number);
+            return (
+              <motion.circle
+                key={i}
+                cx={x} cy={y} r="2.5" fill="#6A9EC0"
+                animate={{ opacity: i < revealCount ? 1 : 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            );
+          })}
+          {radarStats.map((s, i) => {
+            const angle = radarAngle(i);
+            const cos = Math.cos(angle);
+            const sin = Math.sin(angle);
+            const lR = radarMaxR + 14;
+            const x = radarCx + lR * cos;
+            const y = radarCy + lR * sin;
+            const anchor = cos < -0.1 ? "end" : cos > 0.1 ? "start" : "middle";
+            const dx = cos < -0.1 ? -4 : cos > 0.1 ? 4 : 0;
+            const dy = sin < -0.5 ? -4 : sin > 0.5 ? 8 : 0;
+            return <text key={i} x={x + dx} y={y + dy} textAnchor={anchor} dominantBaseline="middle" className="text-[10px] font-semibold font-[family-name:var(--font-courier-prime)] fill-stone-500">{s.label}</text>;
+          })}
+        </svg>
+      </div>
     </motion.div>
   );
 }
 
 const designChips = [
-  { label: "Think deeply", color: "#5A9E82" },
+  { label: "Strategic Thinking", color: "#5A9E82" },
   { label: "Data-driven", color: "#6A9EC0" },
   { label: "Detail-focused", color: "#9680C2" },
-  { label: "Stay curious", color: "#C9A060" },
-  { label: "Exploring often", color: "#D4746E" },
-  { label: "Learn by building", color: "#5A8FA0" },
+  { label: "Systems Mindset", color: "#C9A060" },
+  { label: "Problem Solver", color: "#D4746E" },
+  { label: "Impact-Oriented", color: "#5A8FA0" },
+  { label: "Design Systems", color: "#7e5aa0ff" },
 ];
 
 const CHIP_W = 95;
@@ -296,14 +339,14 @@ const AREA_W = 280;
 const AREA_H = 155;
 
 /* Organized grid positions for hover state */
-const chipWidths = [85, 78, 95, 82, 100, 110];
+const chipWidths = [124, 84, 101, 107, 101, 107, 101];
 function getOrganizedPositions(areaH: number) {
   const gap = 6;
   const rows: { x: number; y: number }[][] = [];
   let row: { x: number; y: number }[] = [];
   let cx = 0;
   designChips.forEach((_, i) => {
-    const w = chipWidths[i];
+    const w = chipWidths[i] || CHIP_W;
     if (cx + w > AREA_W && row.length > 0) {
       rows.push(row);
       row = [];
@@ -353,11 +396,12 @@ function ReminderCard() {
     const wallR = Matter.Bodies.rectangle(AREA_W + 10, areaH / 2, 20, areaH * 2, { isStatic: true });
     Matter.Composite.add(engine.world, [floor, wallL, wallR]);
 
-    const startXs = [35, 110, 190, 55, 160, 240];
     const bodies = designChips.map((_, i) => {
+      const w = chipWidths[i] || CHIP_W;
+      const startX = 40 + (i * 65) % (AREA_W - 80);
       return Matter.Bodies.rectangle(
-        startXs[i], -20 - i * 35,
-        CHIP_W, CHIP_H,
+        startX, -20 - i * 35,
+        w, CHIP_H,
         { restitution: 0.25, friction: 0.5, frictionAir: 0.01, angle: ((Math.random() - 0.5) * Math.PI) / 5 }
       );
     });
@@ -366,11 +410,14 @@ function ReminderCard() {
     setPhysicsActive(true);
     const step = () => {
       Matter.Engine.update(engine, 1000 / 60);
-      setChipStates(bodies.map(b => ({
-        x: b.position.x - CHIP_W / 2,
-        y: b.position.y - CHIP_H / 2,
-        angle: b.angle,
-      })));
+      setChipStates(bodies.map((b, i) => {
+        const w = chipWidths[i] || CHIP_W;
+        return {
+          x: b.position.x - w / 2,
+          y: b.position.y - CHIP_H / 2,
+          angle: b.angle,
+        };
+      }));
       // Check if all bodies are nearly still
       const allStopped = bodies.every(b => {
         const speed = Math.sqrt(b.velocity.x ** 2 + b.velocity.y ** 2);
@@ -399,9 +446,8 @@ function ReminderCard() {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ boxShadow: "4px 6px 16px rgba(0,0,0,0.1)" }}
       transition={{ delay: 0.05 }}
-      className="cursor-pointer origin-top-left relative flex flex-col h-full"
+      className="cursor-pointer relative h-full pt-2 flex flex-col"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => {
         setHovered(false);
@@ -409,39 +455,45 @@ function ReminderCard() {
         startPhysics();
       }}
     >
-      <div className="relative flex-1">
-        <div className="absolute top-[4px] left-[3px] right-[-6px] bottom-[-6px] bg-stone-700 rounded-[4px]" />
-      <div className="bg-white rounded-[3px] shadow-[0_1px_4px_rgba(0,0,0,0.08)] relative overflow-hidden h-full flex flex-col">
-        <div className="h-[6px] w-full shrink-0" style={{ background: "repeating-linear-gradient(90deg, #d6d3d1 0px, #d6d3d1 6px, transparent 6px, transparent 14px)" }} />
-        <div className="p-3 pt-2 pb-5 flex flex-col flex-1">
-          <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3">Design Notes</div>
-          <div ref={chipAreaRef} className="relative flex-1" style={{ width: AREA_W }}>
-            {designChips.map((chip, i) => {
-              const orgPositions = getOrganizedPositions(chipAreaRef.current?.clientHeight || AREA_H);
-              const target = hovered && !physicsActive
-                ? { x: orgPositions[i].x, y: orgPositions[i].y, angle: 0 }
-                : chipStates[i];
-              return (
-                <span
-                  key={chip.label}
-                  className="absolute px-[10px] py-[4px] rounded-full text-[10px] font-medium text-white whitespace-nowrap"
-                  style={{
-                    backgroundColor: chip.color,
-                    left: target.x,
-                    top: target.y,
-                    transform: `rotate(${target.angle}rad)`,
-                    transition: hovered && !physicsActive
-                      ? `left 0.5s ease-in ${i * 0.06}s, top 0.5s ease-in ${i * 0.06}s, transform 0.5s ease-in ${i * 0.06}s`
-                      : "none",
-                  }}
-                >
-                  {chip.label}
-                </span>
-              );
-            })}
-          </div>
+      {/* Masking tape */}
+      <div className="absolute left-1/2 -translate-x-1/2 w-[70px] h-[16px] top-0 rounded-[4px] bg-[#efe5d7]/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] backdrop-blur-[0.5px] border border-[#e5dcd0]/50 rotate-[-1.5deg] z-20" />
+
+      {/* Card Container */}
+      <div className="relative overflow-hidden rounded-[22px] border border-stone-200/80 bg-[#fffdfa] shadow-[0_12px_28px_rgba(0,0,0,0.06)] h-full flex flex-col p-4 flex-1">
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.14] pointer-events-none" style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(120,113,108,0.3) 1px, transparent 0)",
+          backgroundSize: "10px 10px",
+        }} />
+        {/* Subtle warm top gradient */}
+        <div className="absolute inset-x-0 top-0 h-[30%] bg-[linear-gradient(180deg,rgba(214,120,91,0.06),rgba(214,120,91,0))] pointer-events-none" />
+
+        <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-3 z-10 self-start">Design Notes</div>
+        <div ref={chipAreaRef} className="relative flex-1 z-10" style={{ width: AREA_W }}>
+          {designChips.map((chip, i) => {
+            const orgPositions = getOrganizedPositions(chipAreaRef.current?.clientHeight || AREA_H);
+            const target = hovered && !physicsActive
+              ? { x: orgPositions[i].x, y: orgPositions[i].y, angle: 0 }
+              : chipStates[i];
+            return (
+              <span
+                key={chip.label}
+                className="absolute px-[10px] py-[4px] rounded-full text-[10px] font-medium text-white whitespace-nowrap shadow-[0_2px_4px_rgba(0,0,0,0.05)] border border-black/5 font-[family-name:var(--font-courier-prime)]"
+                style={{
+                  backgroundColor: chip.color,
+                  left: target.x,
+                  top: target.y,
+                  transform: `rotate(${target.angle}rad)`,
+                  transition: hovered && !physicsActive
+                    ? `left 0.5s ease-in ${i * 0.06}s, top 0.5s ease-in ${i * 0.06}s, transform 0.5s ease-in ${i * 0.06}s`
+                    : "none",
+                }}
+              >
+                {chip.label}
+              </span>
+            );
+          })}
         </div>
-      </div>
       </div>
     </motion.div>
   );
@@ -514,14 +566,11 @@ function DockIcon({ tool, mouseX }: {
 }
 
 const journeyData = [
-  { step: "Studied law", tag: "LAW" },
-  { step: "Worked in robotics", tag: "AUTOMATION" },
-  { step: "Became a product designer", tag: "TECH" },
-  { step: "Designing AI products", tag: "AI" },
-  { step: "Building with AI", tag: "AI" },
-  { step: "Won Claude vibe-coding challenge", tag: "AI" },
-  { step: "Shipped a chrome extension", tag: "AI" },
-  { step: "AI native designer", tag: "NOW", hollow: true, pulse: true },
+  { step: "Staff Designer", company: "Gunadarma University Computing Center", tag: "2018 - 2020" },
+  { step: "UI/UX & QA Mentor (Part-Time)", company: "Ministry of Education and Culture", tag: "2022 - 2024" },
+  { step: "UI/UX Designer (Freelance)", company: "Ministry of Education and Culture", tag: "2021 - 2024" },
+  { step: "Project Management Officer (Seconded Role)", company: "Sinar Mas Multiartha Tbk", tag: "2023" },
+  { step: "UI/UX Designer", company: "Sinar Mas Multiartha Tbk", tag: "2021 - NOW", hollow: true, pulse: true },
 ];
 
 function JourneyTimeline() {
@@ -543,66 +592,84 @@ function JourneyTimeline() {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.25 }}
-      className="rounded-xl p-4 flex-1 cursor-default bg-white/90"
+      className="relative flex-1 pt-2 cursor-default"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-4">My Journey</div>
-      <div className="space-y-0">
-        {journeyData.map((item, i) => {
-          const isLast = i === journeyData.length - 1;
-          if (isLast) return null;
-          const total = journeyData.length - 1;
-          const fadeOpacity = 0.5 + (i / (total - 1)) * 0.5;
-          return (
-            <div
-              key={i}
-              className="flex items-center gap-3 py-[10px] transition-opacity duration-300"
-              style={{
-                opacity: hovered ? (i < visibleCount ? fadeOpacity : 0) : fadeOpacity,
-                borderBottom: i < journeyData.length - 2 ? "1px solid rgba(214,211,209,0.5)" : "none",
-              }}
-            >
-              <span className="text-[11px] text-stone-500 font-mono w-[20px] shrink-0">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div className="shrink-0 w-[8px] h-[8px] rounded-full bg-stone-300" />
-              <span className="text-[12px] text-stone-600 flex-1">{item.step}</span>
-              <span
-                className="text-[8px] font-medium tracking-wider px-2 py-0.5 rounded-full shrink-0"
-                style={{ background: "#f5f5f4", color: "#a8a29e" }}
+      {/* Masking tape */}
+      <div className="absolute left-1/2 -translate-x-1/2 w-[70px] h-[16px] top-0 rounded-[4px] bg-[#efe5d7]/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] backdrop-blur-[0.5px] border border-[#e5dcd0]/50 rotate-[1deg] z-20" />
+
+      {/* Card Container */}
+      <div className="relative overflow-hidden rounded-[22px] border border-stone-200/80 bg-[#fffdfa] shadow-[0_12px_28px_rgba(0,0,0,0.06)] h-full flex flex-col p-4">
+        {/* Dot grid */}
+        <div className="absolute inset-0 opacity-[0.14] pointer-events-none" style={{
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(120,113,108,0.3) 1px, transparent 0)",
+          backgroundSize: "10px 10px",
+        }} />
+        {/* Subtle warm top gradient */}
+        <div className="absolute inset-x-0 top-0 h-[30%] bg-[linear-gradient(180deg,rgba(214,120,91,0.06),rgba(214,120,91,0))] pointer-events-none" />
+
+        <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-4 z-10 self-start">My Journey</div>
+        <div className="space-y-0 z-10 flex-1">
+          {journeyData.map((item, i) => {
+            const isLast = i === journeyData.length - 1;
+            if (isLast) return null;
+            const total = journeyData.length - 1;
+            const fadeOpacity = 0.5 + (i / (total - 1)) * 0.5;
+            return (
+              <div
+                key={i}
+                className="flex items-center gap-3 py-[10px] transition-opacity duration-300"
+                style={{
+                  opacity: hovered ? (i < visibleCount ? fadeOpacity : 0) : fadeOpacity,
+                  borderBottom: i < journeyData.length - 2 ? "1px solid #efe5d7" : "none",
+                }}
               >
-                {item.tag}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-      {/* Highlighted last item */}
-      <div
-        className="mt-3 rounded-xl px-5 py-4 flex items-center gap-3 transition-opacity duration-300"
-        style={{
-          background: "#f5f5f4",
-          border: "1px solid rgba(214,211,209,0.6)",
-          opacity: hovered ? (journeyData.length - 1 < visibleCount ? 1 : 0) : 1,
-        }}
-      >
-        <span className="text-[11px] text-stone-400 font-mono w-[20px] shrink-0">
-          {String(journeyData.length).padStart(2, "0")}
-        </span>
-        <div className="relative shrink-0 w-[10px] h-[10px]">
-          <div className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-30" />
-          <div className="w-[10px] h-[10px] rounded-full bg-emerald-500 relative" />
+                <span className="text-[11px] text-stone-400 font-[family-name:var(--font-courier-prime)] w-[20px] shrink-0 font-bold">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="shrink-0 w-[8px] h-[8px] rounded-full bg-stone-300" />
+                <div className="flex-1 min-w-0 flex flex-col">
+                  <span className="text-[12px] text-stone-600 font-medium leading-snug font-[family-name:var(--font-noto)]">{item.step}</span>
+                  <span className="text-[10px] text-stone-400 mt-0.5 leading-normal truncate font-[family-name:var(--font-noto)]">{item.company}</span>
+                </div>
+                <span
+                  className="text-[8px] font-medium tracking-wider px-2 py-0.5 rounded-full shrink-0 font-[family-name:var(--font-courier-prime)]"
+                  style={{ background: "#efe5d7", color: "#857d76" }}
+                >
+                  {item.tag}
+                </span>
+              </div>
+            );
+          })}
         </div>
-        <div className="flex-1">
-          <span className="text-[15px] text-stone-800 font-semibold block leading-tight whitespace-nowrap">{journeyData[journeyData.length - 1].step}</span>
-        </div>
-        <span
-          className="text-[10px] font-medium tracking-wider px-3 py-1.5 rounded-full shrink-0"
-          style={{ background: "#ecfdf5", color: "#059669" }}
+        {/* Highlighted last item */}
+        <div
+          className="mt-3 rounded-xl px-5 py-4 flex items-center gap-3 transition-opacity duration-300 z-10"
+          style={{
+            background: "rgba(90, 158, 130, 0.08)",
+            border: "1px solid rgba(90, 158, 130, 0.2)",
+            opacity: hovered ? (journeyData.length - 1 < visibleCount ? 1 : 0) : 1,
+          }}
         >
-          NOW
-        </span>
+          <span className="text-[11px] text-[#5A9E82] font-[family-name:var(--font-courier-prime)] w-[20px] shrink-0 font-bold">
+            {String(journeyData.length).padStart(2, "0")}
+          </span>
+          <div className="relative shrink-0 w-[10px] h-[10px]">
+            <div className="absolute inset-0 rounded-full bg-[#5A9E82] animate-ping opacity-30" />
+            <div className="w-[10px] h-[10px] rounded-full bg-[#5A9E82] relative" />
+          </div>
+          <div className="flex-1 min-w-0 flex flex-col">
+            <span className="text-[15px] text-stone-800 font-bold block leading-tight truncate font-[family-name:var(--font-noto)]">{journeyData[journeyData.length - 1].step}</span>
+            <span className="text-[11px] text-stone-500 mt-1 leading-normal truncate font-[family-name:var(--font-noto)]">{journeyData[journeyData.length - 1].company}</span>
+          </div>
+          <span
+            className="text-[10px] font-bold tracking-wider px-3 py-1.5 rounded-full shrink-0 font-[family-name:var(--font-courier-prime)]"
+            style={{ background: "#5A9E82", color: "white" }}
+          >
+            {journeyData[journeyData.length - 1].tag}
+          </span>
+        </div>
       </div>
     </motion.div>
   );
@@ -644,78 +711,99 @@ function WeatherCard() {
 
 /* ── Mobile list versions of widgets ── */
 
+/* ── Mobile list versions of widgets ── */
+
+function MobileCardWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative overflow-hidden rounded-[22px] border border-stone-200/80 bg-[#fffdfa] shadow-[0_6px_16px_rgba(0,0,0,0.04)] p-4 flex flex-col">
+      {/* Dot grid */}
+      <div className="absolute inset-0 opacity-[0.14] pointer-events-none" style={{
+        backgroundImage: "radial-gradient(circle at 1px 1px, rgba(120,113,108,0.3) 1px, transparent 0)",
+        backgroundSize: "10px 10px",
+      }} />
+      {/* Subtle warm top gradient */}
+      <div className="absolute inset-x-0 top-0 h-[30%] bg-[linear-gradient(180deg,rgba(214,120,91,0.06),rgba(214,120,91,0))] pointer-events-none" />
+      <div className="relative z-10 flex flex-col w-full">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function MobileDesignNotes() {
   return (
-    <div className="bg-white/90 rounded-xl p-4">
-      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3 font-medium">Design Notes</div>
+    <MobileCardWrapper>
+      <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-3">Design Notes</div>
       <div className="flex flex-wrap gap-2">
         {designChips.map((chip) => (
           <span
             key={chip.label}
-            className="px-3 py-1.5 rounded-full text-[11px] font-medium text-white"
+            className="px-3 py-1.5 rounded-full text-[10px] font-medium text-white font-[family-name:var(--font-courier-prime)] shadow-[0_2px_4px_rgba(0,0,0,0.04)] border border-black/5"
             style={{ backgroundColor: chip.color }}
           >
             {chip.label}
           </span>
         ))}
       </div>
-    </div>
+    </MobileCardWrapper>
   );
 }
 
 function MobileEnergyLevel() {
   return (
-    <div className="bg-white/90 rounded-xl p-4 flex items-center gap-4">
-      <div className="relative w-[72px] h-[72px] shrink-0">
-        <svg width="72" height="72" viewBox="0 0 72 72">
-          <circle cx="36" cy="36" r="30" fill="none" stroke="#e7e5e4" strokeWidth="5" />
-          <circle
-            cx="36" cy="36" r="30"
-            fill="none" stroke="#5A9E82" strokeWidth="5"
-            strokeLinecap="butt"
-            strokeDasharray={Math.PI * 2 * 30}
-            strokeDashoffset={Math.PI * 2 * 30 * (1 - 0.95)}
-            transform="rotate(-90 36 36)"
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-[16px] font-semibold text-stone-700">95%</span>
+    <MobileCardWrapper>
+      <div className="flex items-center gap-4">
+        <div className="relative w-[72px] h-[72px] shrink-0">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle cx="36" cy="36" r="30" fill="none" stroke="#e2dbd2" strokeWidth="5" />
+            <circle
+              cx="36" cy="36" r="30"
+              fill="none" stroke="#5A9E82" strokeWidth="5"
+              strokeLinecap="butt"
+              strokeDasharray={Math.PI * 2 * 30}
+              strokeDashoffset={Math.PI * 2 * 30 * (1 - 0.95)}
+              transform="rotate(-90 36 36)"
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-[16px] font-bold text-stone-700 font-[family-name:var(--font-courier-prime)]">95%</span>
+          </div>
+        </div>
+        <div>
+          <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-1">Energy Level</div>
+          <div className="text-[13px] text-stone-600 font-[family-name:var(--font-noto)]">Morning Run ☀️</div>
         </div>
       </div>
-      <div>
-        <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-1">Energy Level</div>
-        <div className="text-[13px] text-stone-600">Feeling great</div>
-      </div>
-    </div>
+    </MobileCardWrapper>
   );
 }
 
 function MobileFuelMix() {
   return (
-    <div className="bg-white/90 rounded-xl p-4">
-      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3">Fuel Mix</div>
+    <MobileCardWrapper>
+      <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-3">Fuel Mix</div>
       <div className="space-y-2.5">
         {radarStats.map((s) => (
           <div key={s.label} className="flex items-center gap-3">
-            <span className="text-[12px] text-stone-500 w-[64px] shrink-0">{s.label}</span>
-            <div className="flex-1 h-[6px] bg-stone-100 rounded-full overflow-hidden">
+            <span className="text-[11px] font-bold text-stone-500 w-[74px] shrink-0 font-[family-name:var(--font-courier-prime)]">{s.label}</span>
+            <div className="flex-1 h-[6px] bg-[#efe5d7] rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#6A9EC0] rounded-full"
                 style={{ width: `${s.value}%` }}
               />
             </div>
-            <span className="text-[11px] text-stone-400 w-[28px] text-right">{s.value}</span>
+            <span className="text-[11px] font-bold text-stone-400 w-[28px] text-right font-[family-name:var(--font-courier-prime)]">{s.value}</span>
           </div>
         ))}
       </div>
-    </div>
+    </MobileCardWrapper>
   );
 }
 
 function MobileJourney() {
   return (
-    <div className="bg-white/90 rounded-xl p-4">
-      <div className="text-[10px] text-stone-400 uppercase tracking-[0.2em] mb-3 font-mono">My Journey</div>
+    <MobileCardWrapper>
+      <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-3">My Journey</div>
       <div className="space-y-0">
         {journeyData.map((item, i) => {
           const isLast = i === journeyData.length - 1;
@@ -727,20 +815,20 @@ function MobileJourney() {
               className={`flex items-center gap-2.5 py-2 ${isLast ? "mt-2 rounded-lg px-3 py-3" : ""}`}
               style={{
                 opacity: fadeOpacity,
-                borderBottom: !isLast && i < journeyData.length - 2 ? "1px solid rgba(214,211,209,0.5)" : "none",
-                ...(isLast ? { background: "#f5f5f4", border: "1px solid rgba(214,211,209,0.6)" } : {}),
+                borderBottom: !isLast && i < journeyData.length - 2 ? "1px solid #efe5d7" : "none",
+                ...(isLast ? { background: "rgba(90, 158, 130, 0.08)", border: "1px solid rgba(90, 158, 130, 0.2)" } : {}),
               }}
             >
-              <span className="text-[10px] text-stone-400 font-mono w-[16px] shrink-0">
+              <span className="text-[10px] text-stone-400 font-[family-name:var(--font-courier-prime)] w-[16px] shrink-0 font-bold">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <div className={`shrink-0 rounded-full ${isLast ? "w-[8px] h-[8px] bg-emerald-500" : "w-[6px] h-[6px] bg-stone-300"}`} />
-              <span className={`flex-1 ${isLast ? "text-[13px] text-stone-800 font-semibold" : "text-[11px] text-stone-500"}`}>
+              <div className={`shrink-0 rounded-full ${isLast ? "w-[8px] h-[8px] bg-[#5A9E82]" : "w-[6px] h-[6px] bg-stone-300"}`} />
+              <span className={`flex-1 font-[family-name:var(--font-noto)] ${isLast ? "text-[13px] text-stone-800 font-bold" : "text-[11px] text-stone-500"}`}>
                 {item.step}
               </span>
               <span
-                className="text-[8px] font-medium tracking-wider px-2 py-0.5 rounded-full shrink-0"
-                style={isLast ? { background: "#ecfdf5", color: "#059669" } : { background: "#f5f5f4", color: "#a8a29e" }}
+                className="text-[8px] font-bold tracking-wider px-2 py-0.5 rounded-full shrink-0 font-[family-name:var(--font-courier-prime)]"
+                style={isLast ? { background: "#5A9E82", color: "white" } : { background: "#efe5d7", color: "#857d76" }}
               >
                 {item.tag}
               </span>
@@ -748,7 +836,7 @@ function MobileJourney() {
           );
         })}
       </div>
-    </div>
+    </MobileCardWrapper>
   );
 }
 
@@ -756,8 +844,8 @@ function MobileFunFacts() {
   const [flippedSet, setFlippedSet] = useState<Set<number>>(new Set());
 
   return (
-    <div className="bg-white/90 rounded-xl p-4">
-      <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-3">Fun Facts</div>
+    <MobileCardWrapper>
+      <div className="font-[family-name:var(--font-courier-prime)] uppercase tracking-[0.2em] text-[#c26f51] text-[10px] font-semibold mb-3">Fun Facts</div>
       <div className="flex gap-3 overflow-x-auto pb-1">
         {funFacts.map((fact, i) => (
           <div
@@ -793,15 +881,15 @@ function MobileFunFacts() {
                 className="rounded-lg bg-stone-800 shadow-sm p-3 absolute inset-0 flex flex-col justify-center"
                 style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
               >
-                <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-1.5">{fact.front}</div>
-                <p className="text-[10px] text-stone-200 leading-relaxed">{fact.back}</p>
+                <div className="text-[10px] text-stone-400 uppercase tracking-wider mb-1.5 font-[family-name:var(--font-courier-prime)] font-bold">{fact.front}</div>
+                <p className="text-[10px] text-stone-200 leading-relaxed font-[family-name:var(--font-noto)]">{fact.back}</p>
               </div>
             </motion.div>
           </div>
         ))}
       </div>
-      <div className="text-[10px] text-stone-400 text-center mt-2">Tap to flip</div>
-    </div>
+      <div className="text-[9px] text-stone-400 text-center mt-2 font-[family-name:var(--font-courier-prime)]">Tap to flip</div>
+    </MobileCardWrapper>
   );
 }
 

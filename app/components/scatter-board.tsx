@@ -7,13 +7,13 @@ import { ClickBurst } from "./click-burst";
 
 /* ── Board images data ── */
 const BOARD_IMAGES = [
-  { src: "/assets/bulletin/1.jpg", top: "1%", left: "8%", rotate: "-5deg", w: 220, z: 1, side: "left" as const, startVY: 0.1, label: "Search trend tools (GettyImages & iStock)" },
+  { src: "/assets/bulletin/1.jpg", top: "3%", left: "8%", rotate: "-5deg", w: 270, z: 1, side: "left" as const, startVY: 0.2, label: "Search Image Nature Unsplash" },
   { src: "/assets/bulletin/6.jpg", top: "3%", left: "32%", rotate: "-2deg", w: 250, z: 1, side: "left" as const, startVY: 0.05, label: "50 emojis (Figma design)" },
-  { src: "/assets/bulletin/2.jpg", top: "4%", left: "55%", rotate: "3deg", w: 210, z: 1, side: "right" as const, startVY: 0.15, label: "Contribution submission app (GettyImages & iStock)" },
+  { src: "/assets/bulletin/2.jpg", top: "4%", left: "55%", rotate: "3deg", w: 240, z: 1, side: "right" as const, startVY: 0.15, label: "Contribution submission app (Adobe Stock)" },
   { src: "/assets/bulletin/10.jpg", top: "2%", left: "80%", rotate: "6deg", w: 235, z: 1, side: "right" as const, startVY: 0.2, label: "Abstract poster/wallpaper (Figma design)" },
   { src: "/assets/bulletin/11.jpg", top: "30%", left: "2%", rotate: "4deg", w: 215, z: 1, side: "left" as const, startVY: 0.4, label: "Anonymous Letters Across Time (Figma Make)" },
   { src: "/assets/bulletin/5.jpg", top: "28%", left: "26%", rotate: "6deg", w: 270, z: 3, side: "right" as const, startVY: 0.35, label: "yanliuos (Claude Code)" },
-  { src: "/assets/bulletin/3.jpg", top: "33%", left: "52%", rotate: "2deg", w: 340, z: 1, side: "right" as const, startVY: 0.45, label: "Vibe coding playlist (Claude Code)" },
+  { src: "/assets/bulletin/3.jpg", top: "33%", left: "52%", rotate: "2deg", w: 240, z: 1, side: "right" as const, startVY: 0.45, label: "Dengerin Playlist" },
   { src: "/assets/bulletin/9.jpg", top: "30%", left: "78%", rotate: "-4deg", w: 260, z: 1, side: "right" as const, startVY: 0.5, label: "Food delivery app (Figma design)" },
   { src: "/assets/bulletin/7.jpg", top: "72%", left: "5%", rotate: "-3deg", w: 240, z: 1, side: "left" as const, startVY: 0.7, label: "Abstract elements (Figma design)" },
   { src: "/assets/bulletin/12.jpg", top: "70%", left: "32%", rotate: "-3deg", w: 270, z: 1, side: "right" as const, startVY: 0.7, label: "Landing pages (Figma design)" },

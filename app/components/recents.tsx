@@ -41,57 +41,99 @@ function CountUp({ end, suffix, duration = 1500, autoStart = false }: { end: num
 const aiProjects = [
   {
     year: "2026",
-    title: "Awwwards",
-    detail: "Vibe-coded portfolio received Awwwards Honorable Mention",
-    tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
-  },
-  {
-    year: "2026",
-    title: "Bestfolios",
-    detail: "Vibe-coded portfolio featured on Bestfolios",
-    tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
-  },
-  {
-    year: "2026",
-    title: "Wall of Portfolios",
-    detail: "Vibe-coded portfolio featured on Wall of Portfolios",
-    tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
-  },
-  {
-    year: "2026",
-    title: "CSSDesign Award",
-    detail: "Vibe-coded portfolio recognized with Special Kudos (March 18)",
-    tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
-  },
-  {
-    year: "2026",
-    title: "Figma Makeathon — Anonymous Letters Across Time",
-    detail: "15K impressions · 550 likes on X",
-    tags: [{ label: "SHIPPED", color: "#a08060", bg: "#f0e4d6" }],
-  },
-  {
-    year: "2026",
-    title: "Vibe Coding Playlist",
-    detail: "20+ AI experiments using Claude Code, Cursor, Figma Make, Google AI Studio",
-    tags: [{ label: "SHIPPED", color: "#a08060", bg: "#f0e4d6" }],
+    title: "Coglomeration Reporting Dashboard",
+    detail: "Sinar Mas Multiartha Tbk",
+    tags: [{ label: "UI/UX Designer", color: "#9a8058", bg: "#f2ead8" }],
   },
   {
     year: "2025",
-    title: "Cozy Journaling",
-    detail: "Built with Claude Sonnet 4.5",
-    tags: [{ label: "AWARD", color: "#9a8058", bg: "#f2ead8" }],
+    title: "Knowledge Base Document Management",
+    detail: "Sinar Mas Multiartha Tbk",
+    tags: [{ label: "UI/UX Designer", color: "#9a8058", bg: "#f2ead8" }],
   },
   {
-    year: "2025",
-    title: "Focus Now Chrome Extension",
-    detail: "Built with Claude Code · Shipped on Chrome Web Store",
-    tags: [{ label: "SHIPPED", color: "#a08060", bg: "#f0e4d6" }],
+    year: "2024",
+    title: "Sistem Informasi Manajement Talenta",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX Designer (Freelance)", color: "#9a8058", bg: "#f2ead8" }],
   },
   {
-    year: "2025",
-    title: "yanliu Desktop OS",
-    detail: "Fully functional desktop environment · 40K impressions · 1K engagements on X",
-    tags: [{ label: "SHIPPED", color: "#a08060", bg: "#f0e4d6" }],
+    year: "2024",
+    title: "Kedaireka Website",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX Designer (Freelance)", color: "#9a8058", bg: "#f2ead8" }],
+  },
+  {
+    year: "2024",
+    title: "PDDIKTI Website",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX Designer (Freelance)", color: "#9a8058", bg: "#f2ead8" }],
+  },
+  {
+    year: "2024",
+    title: "Website Tracer Study",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX Designer (Freelance)", color: "#9a8058", bg: "#f2ead8" }],
+  },
+  {
+    year: "2024",
+    title: "Layouting Tableau Dashboard",
+    detail: "Sinar Mas Multiartha Tbk",
+    tags: [{ label: "UI/UX Designer", color: "#9a8058", bg: "#f2ead8" }],
+  },
+  {
+    year: "2023",
+    title: " SuperApps Intra DIKTI",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX Designer (Freelance)", color: "#a08060", bg: "#f0e4d6" }],
+  },
+  {
+    year: "2022",
+    title: "SatuDikti Apps",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX & QA Mentor (Part-time)", color: "#9a8058", bg: "#f2ead8" }],
+  },
+  {
+    year: "2022",
+    title: "Penomeran Sertifikat Nasional",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX Designer (Freelance)", color: "#a08060", bg: "#f0e4d6" }],
+  },
+  {
+    year: "2022",
+    title: "Indonesian International Student Mobility Awards",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX Designer (Freelance)", color: "#9a8058", bg: "#f2ead8" }],
+  },
+  {
+    year: "2022",
+    title: "Customer 360",
+    detail: "Sinar Mas Multiartha Tbk",
+    tags: [{ label: "UI/UX Designer", color: "#9a8058", bg: "#f2ead8" }],
+  },
+  {
+    year: "2021",
+    title: "Dashboard Neo Feeder",
+    detail: "Ministry of Education and Culture",
+    tags: [{ label: "UI/UX Designer (Freelance)", color: "#a08060", bg: "#f0e4d6" }],
+  },
+  {
+    year: "2021",
+    title: "Absenq - Mobile Apps Design",
+    detail: "Sinar Mas Multiartha Tbk",
+    tags: [{ label: "UI/UX Designer", color: "#a08060", bg: "#f0e4d6" }],
+  },
+  {
+    year: "2021",
+    title: "Sinar Mas Multiartha Website",
+    detail: "Sinar Mas Multiartha Tbk",
+    tags: [{ label: "UI/UX Designer", color: "#a08060", bg: "#f0e4d6" }],
+  },
+  {
+    year: "2020",
+    title: "Gunadarma University Website",
+    detail: "Gunadarma University Computing Center",
+    tags: [{ label: "Staff Designer", color: "#a08060", bg: "#f0e4d6" }],
   },
 ];
 
@@ -136,9 +178,9 @@ export function RecentStatus() {
         ))}
       </motion.div>
 
-      {/* AI Projects & Builds */}
+      {/* PROJECTS & BUILDS */}
       <motion.div {...fadeIn(0.1)} className="text-[11px] text-stone-400 uppercase tracking-[0.2em] font-mono mb-3 pb-2 border-b border-stone-200/50">
-        AI Projects & Builds
+        PROJECTS & BUILDS
       </motion.div>
       <div className="space-y-0">
         {aiProjects.map((item, i) => (
