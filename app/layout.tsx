@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Source_Code_Pro, Noto_Sans, Courier_Prime } from "next/font/google";
+import { getBuildVersion, getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ripaahyar.netlify.app";
-const coverImageUrl = new URL(`/assets/images/Cover.webp?v=${Date.now()}`, siteUrl).toString();
+const siteUrl = getSiteUrl();
+const buildVersion = getBuildVersion();
+const coverImageUrl = new URL(`/assets/images/Cover.webp?v=${buildVersion}`, siteUrl).toString();
 const siteDescription =
   "Designing experiences from insight to interface. UI/UX Designer with 5+ years of experience.";
 
@@ -27,6 +29,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Ripa Ahyar — UI/UX Designer",
   description: siteDescription,
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: "Ripa Ahyar — UI/UX Designer",
     description: siteDescription,
