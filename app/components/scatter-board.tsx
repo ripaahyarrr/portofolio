@@ -7,17 +7,21 @@ import { ClickBurst } from "./click-burst";
 
 /* ── Board images data ── */
 const BOARD_IMAGES = [
-  { src: "/assets/bulletin/1.webp", top: "3%", left: "8%", rotate: "-5deg", w: 270, z: 1, side: "left" as const, startVY: 0.2, label: "Search Image Nature Unsplash" },
-  { src: "/assets/bulletin/6.webp", top: "3%", left: "32%", rotate: "-2deg", w: 250, z: 1, side: "left" as const, startVY: 0.05, label: "Interactive Aurora Experience (Figma Make)" },
-  { src: "/assets/bulletin/2.webp", top: "4%", left: "55%", rotate: "3deg", w: 240, z: 1, side: "right" as const, startVY: 0.15, label: "Contribution submission app (Adobe Stock)" },
-  { src: "/assets/bulletin/10.webp", top: "2%", left: "80%", rotate: "6deg", w: 235, z: 1, side: "right" as const, startVY: 0.2, label: "Abstract poster/wallpaper (Figma design)" },
-  { src: "/assets/bulletin/11.webp", top: "40%", left: "2%", rotate: "-7deg", w: 250, z: 1, side: "left" as const, startVY: 0.4, label: "Cinematic Mecha Awakening Experience (Figma Make)" },
-  { src: "/assets/bulletin/5.webp", top: "28%", left: "26%", rotate: "6deg", w: 270, z: 3, side: "right" as const, startVY: 0.35, label: "Interactive Music Playground (Figma Make)" },
-  { src: "/assets/bulletin/3.webp", top: "33%", left: "52%", rotate: "2deg", w: 240, z: 1, side: "right" as const, startVY: 0.45, label: "Dengerin Playlist" },
-  { src: "/assets/bulletin/9.webp", top: "30%", left: "78%", rotate: "-4deg", w: 260, z: 1, side: "right" as const, startVY: 0.5, label: "Food delivery app (Figma design)" },
-  { src: "/assets/bulletin/7.webp", top: "72%", left: "5%", rotate: "-3deg", w: 240, z: 1, side: "left" as const, startVY: 0.7, label: "Abstract elements (Figma design)" },
-  { src: "/assets/bulletin/12.webp", top: "70%", left: "32%", rotate: "-3deg", w: 270, z: 1, side: "right" as const, startVY: 0.7, label: "Figma Community" },
-  { src: "/assets/bulletin/8.webp", top: "70%", left: "63%", rotate: "5deg", w: 300, z: 2, side: "right" as const, startVY: 0.65, label: "3D Game (Codex)" },
+  // Row 1
+  { src: "/assets/bulletin/1.webp", top: "3%", left: "4%", rotate: "-4deg", w: 240, z: 1, side: "left" as const, startVY: 0.2, label: "Search Image Nature Unsplash" },
+  { src: "/assets/bulletin/6.webp", top: "3%", left: "27%", rotate: "3deg", w: 230, z: 1, side: "left" as const, startVY: 0.05, label: "Interactive Aurora Experience (Figma Make)" },
+  { src: "/assets/bulletin/2.webp", top: "3%", left: "50%", rotate: "-3deg", w: 220, z: 1, side: "right" as const, startVY: 0.15, label: "Contribution submission app (Adobe Stock)" },
+  { src: "/assets/bulletin/10.webp", top: "3%", left: "73%", rotate: "4deg", w: 225, z: 1, side: "right" as const, startVY: 0.2, label: "Abstract poster/wallpaper (Figma design)" },
+  // Row 2 — the three portrait-style app screenshots are sized down a bit so this
+  // row's height stays close to rows 1 and 3, instead of overlapping into row 3.
+  { src: "/assets/bulletin/11.webp", top: "37%", left: "4%", rotate: "-3deg", w: 225, z: 1, side: "left" as const, startVY: 0.4, label: "Cinematic Mecha Awakening Experience (Figma Make)" },
+  { src: "/assets/bulletin/5.webp", top: "37%", left: "27%", rotate: "4deg", w: 205, z: 3, side: "left" as const, startVY: 0.35, label: "Interactive Music Playground (Figma Make)" },
+  { src: "/assets/bulletin/3.webp", top: "37%", left: "50%", rotate: "-4deg", w: 185, z: 1, side: "right" as const, startVY: 0.45, label: "Dengerin Playlist" },
+  { src: "/assets/bulletin/9.webp", top: "37%", left: "73%", rotate: "3deg", w: 175, z: 1, side: "right" as const, startVY: 0.5, label: "Food delivery app (Figma design)" },
+  // Row 3
+  { src: "/assets/bulletin/7.webp", top: "72%", left: "10%", rotate: "-3deg", w: 230, z: 1, side: "left" as const, startVY: 0.7, label: "Abstract elements (Figma design)" },
+  { src: "/assets/bulletin/12.webp", top: "72%", left: "37%", rotate: "3deg", w: 235, z: 1, side: "left" as const, startVY: 0.7, label: "Figma Community" },
+  { src: "/assets/bulletin/8.webp", top: "72%", left: "64%", rotate: "-4deg", w: 245, z: 2, side: "right" as const, startVY: 0.65, label: "3D Game (Codex)" },
 ];
 
 /* ── ScatterImage — scroll-driven fly-in ── */

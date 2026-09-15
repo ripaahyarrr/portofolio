@@ -3,7 +3,7 @@ import { getSiteUrl } from "@/lib/site";
 
 const siteUrl = getSiteUrl();
 
-const routes = ["", "/conglomeration-preview", "/iisma-preview", "/sinar-mas-preview"];
+const routes = ["", "/contact", "/conglomeration-preview", "/iisma-preview", "/sinar-mas-preview"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((path) => ({

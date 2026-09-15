@@ -7,6 +7,7 @@ export function NavHeader() {
     { label: "About", href: "#about" },
     { label: "Work", href: "#work" },
     { label: "Playground", href: "#playground" },
+    { label: "Contact", href: "/contact" },
   ];
 
   return (

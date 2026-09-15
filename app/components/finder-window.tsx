@@ -9,6 +9,7 @@ import { renderBold } from "@/lib/renderBold";
 import { DesktopWidgets } from "./desktop-widgets";
 import { RecentStatus } from "./recents";
 import { Garden } from "./garden";
+import { workProjects } from "@/lib/workProjects";
 
 const folderColors = [
   { bg: "#8EB4CE", tab: "#7EA4BE", label: "white" },
@@ -57,187 +58,6 @@ const folderContent = [
   },
 ];
 
-const workProjects = [
-  {
-    id: "search-trends",
-    fileName: "Sistem Informasi Management Talenta.case",
-    label: "SIMT - Sistem Informasi Management Talenta",
-    year: "2023",
-    role: "UI/UX Designer (Freelance)",
-    previewVideo: "/assets/videos/projects-at-work.mp4",
-    previewUrl: "https://simt.kemendikdasmen.go.id/",
-    summary:
-      "Talent data management in the education sector is often spread across multiple systems and handled manually. This creates inefficiencies in identifying, mapping, and developing talent, while also making the process difficult to monitor and more prone to data errors. To address this challenge, SIMT Kemendikdasmen was developed as a centralized platform that integrates the entire talent management process into one digital system.",
-    problem:
-      "Based on the initial analysis, several key problems were identified: talent data was scattered and not fully integrated, the data input and validation process was complex, talent development progress was difficult to monitor, and the dashboard did not provide enough actionable information to support decision-making.",
-    contributions: [
-      "Conducted user research and workflow analysis to understand the existing process and identify the main user pain points.",
-      "Simplified the user flow by reducing unnecessary steps and grouping processes based on the user’s main tasks.",
-      "Restructured the information architecture and navigation to make the system more intuitive and easier to understand.",
-      "Created wireframes from low-fidelity to high-fidelity designs, focusing on clarity, usability, and efficiency.",
-      "Improved the dashboard experience through stronger visual hierarchy, charts, summaries, and more actionable insights.",
-      "Collaborated with developers and stakeholders to ensure the design solution aligned with both system requirements and user needs.",
-    ],
-    outcome: [
-      "Reduced workflow complexity in the talent data input, validation, and monitoring process.",
-      "Improved user efficiency through a simpler, faster, and easier-to-understand system.",
-      "Accelerated the decision-making process with a more informative and actionable dashboard.",
-      "Created a scalable design foundation for future feature development.",
-    ],
-    tags: ["Web Design", "Dashboard", "Education", "System UX"],
-  },
-  {
-    id: "Conglomeration Reporting System",
-    fileName: "Conglomeration Reporting System.case",
-    label: "Conglomeration Reporting System",
-    year: "2025",
-    role: "UI/UX Designer",
-    previewImage: "/assets/images/Conglomeration.webp",
-    previewUrl: "/conglomeration-preview",
-    summary:
-      "A centralized financial conglomeration reporting platform used by multiple business entities within Sinarmas Financial Group to monitor, manage, and analyze consolidated financial data for operational reporting, regulatory compliance, and executive decision-making.",
-    problem:
-      "As the organization grew, reporting activities involved multiple business units, stakeholders, and increasingly complex data structures. Users often needed to access information from different modules and reporting sources to complete their daily tasks.\n\nBased on stakeholder interviews and workflow analysis, several key challenges were identified:\n- Financial data and reports were distributed across multiple modules, making information difficult to locate.\n- Navigation structure had evolved over time without a consistent information architecture, resulting in a fragmented user experience.\n- Users frequently searched for information based on business needs rather than the system's existing structure.\n- Dashboard pages displayed excessive information simultaneously, creating information overload and reducing usability.\n- A significant amount of users' time was spent locating data instead of analyzing and utilizing it for decision-making.\n- Different stakeholders required different levels of information, ranging from detailed operational data to high-level executive summaries.",
-    contributions: [
-      "As a Product Designer, I conducted stakeholder interviews with business teams, reporting specialists, and management stakeholders to understand their reporting workflows, challenges, and decision-making needs.",
-      "I analyzed existing user journeys and reporting workflows to identify bottlenecks, navigation issues, and opportunities to improve information discoverability.",
-      "I restructured the Information Architecture to better align with users' mental models and business objectives rather than system-driven categorization.",
-      "I simplified and reorganized navigation by grouping related functions and reporting modules into clearer business-oriented categories.",
-      "I redesigned the dashboard experience using stronger visual hierarchy principles, ensuring that critical metrics and reporting insights were immediately visible while secondary information remained accessible when needed.",
-      "I applied progressive disclosure techniques to balance the needs of operational users who required detailed data and management users who preferred summarized insights.",
-      "I created wireframes and interactive prototypes in Figma and facilitated design validation sessions with stakeholders before development implementation.",
-      "I collaborated closely with Business Analysts, Product Owners, and Developers to ensure design feasibility, consistency, and alignment with business requirements.",
-      "I contributed to design standardization efforts to improve consistency across reporting modules and future system enhancements.",
-    ],
-    outcome: [
-      "Improved overall data accessibility and discoverability across reporting modules.",
-      "Increased efficiency in finding and accessing reporting information.",
-      "Simplified navigation structure, making the platform easier to learn and use.",
-      "Reduced information overload through better content prioritization and dashboard organization.",
-      "Enabled faster decision-making by presenting key information more clearly and effectively.",
-      "Improved user satisfaction through a more intuitive and business-focused experience.",
-      "Received positive stakeholder feedback regarding dashboard usability and reporting efficiency.",
-      "Established a scalable information architecture foundation to support future reporting and monitoring features across the financial conglomeration ecosystem.",
-    ],
-    tags: ["Internal Tool", "Search", "Operations UX"],
-  },
-  {
-    id: "Sinar Mas Multiartha Website",
-    fileName: "Sinar Mas Multiartha Website.case",
-    label: "Sinar Mas Multiartha Website — Corporate & Big Data Product Platform",
-    year: "2021",
-    role: "UI/UX Designer",
-    previewVideo: "/assets/videos/Sinarmas.mov",
-    previewUrl: "/sinar-mas-preview",
-    summary:
-      "Sinar Mas Multiartha Website is a corporate and technology platform that presents the company’s financial services background, big data solutions, ready-to-use products, customized technology services, API integration, and web dashboard capabilities.",
-    problem:
-      "The previous website experience needed a clearer structure to communicate corporate identity, technology capabilities, and product offerings. Information about big data services, APIs, dashboards, and customized solutions had to be presented in a more organized and user-friendly way so visitors could quickly understand what the company offers and how each solution provides value. Based on the initial analysis, several key problems were identified: product information was scattered, service categories were not easy to scan, visual hierarchy needed improvement, and the website required a more modern layout to support credibility, readability, and business communication.",
-    contributions: [
-      "As a UI/UX Designer, I analyzed the existing website structure, content flow, and user journey to understand how visitors explore company information, technology services, and product offerings.",
-      "I restructured the information architecture by grouping content into clearer sections, including company overview, ready-to-use products, customized products, big data services, API integration, and web dashboard solutions.",
-      "I improved the page layout, visual hierarchy, spacing, and content presentation to make the website easier to scan and more professional.",
-      "I created wireframes and high-fidelity designs with a focus on clarity, consistency, responsive layout, and corporate visual identity.",
-      "I redesigned key sections to better highlight product value, service categories, technology capabilities, and call-to-action areas.",
-      "I collaborated with stakeholders and developers to ensure the design was aligned with business objectives, technical feasibility, and brand direction.",
-    ],
-    outcome: [
-      "Improved the website structure into a clearer and more professional corporate digital experience.",
-      "Made product and service information easier to understand through better content grouping and visual hierarchy.",
-      "Enhanced credibility and readability by creating a cleaner, more modern, and responsive interface.",
-      "Helped users explore big data products, API services, and dashboard solutions more efficiently.",
-      "Created a scalable website foundation that can support future product updates, service expansion, and corporate communication needs.",
-    ],
-    tags: ["Internal Tool", "Search", "Operations UX"],
-  },
-  {
-    id: "Kedaireka",
-    fileName: "Kedaireka Web.case",
-    label: "Kedaireka Web",
-    year: "2022",
-    role: "UI/UX Designer (Freelance)",
-    previewVideo: "/assets/videos/Kedaireka.mov",
-    previewUrl: "https://kedaireka.id/",
-    summary:
-      "A digital collaboration platform that connects higher education institutions with industry partners to support innovation, proposal submission, funding programs, and cross-sector collaboration within one integrated ecosystem.",
-    problem:
-      "Collaboration between universities and industry partners often involves multiple stakeholders, complex requirements, and several administrative stages. Users may struggle to understand where to start, what information needs to be prepared, how to find the right collaboration opportunity, and what happens after a proposal is submitted. Based on the initial analysis, several key problems were identified: the proposal submission flow was complex, user needs differed between higher education contributors and industry partners, program information and requirements were spread across multiple sections, and proposal status visibility was not always clear enough to help users understand the next step.",
-    contributions: [
-      "As a UI/UX Designer, I conducted user research and workflow analysis to understand the main needs of higher education users, industry partners, reviewers, and internal stakeholders.",
-      "I analyzed the end-to-end journey, from program exploration, account registration, collaboration discovery, proposal submission, review process, to proposal status monitoring.",
-      "I simplified the user flow by breaking down complex processes into clearer, more guided, and task-based steps.",
-      "I restructured the information architecture so users could find program details, requirements, proposals, partners, and submission status more easily.",
-      "I created wireframes from low-fidelity to high-fidelity designs, focusing on clarity, usability, consistency, and decision-making efficiency.",
-      "I improved the form and submission experience by organizing input fields, adding clearer validation states, progress indicators, and status feedback to help users understand what to do next.",
-      "I designed dashboard and monitoring pages to help stakeholders view proposal summaries, review progress, collaboration activities, and key information more efficiently.",
-      "I collaborated with developers, product owners, and government stakeholders to ensure the design solution aligned with system requirements, program regulations, and real operational scenarios.",
-    ],
-    outcome: [
-      "Improved the proposal submission and collaboration journey into a more structured, clear, and user-friendly experience.",
-      "Reduced user confusion by simplifying the flow, improving information structure, and providing clearer status feedback.",
-      "Increased efficiency across program exploration, registration, submission, review, and proposal monitoring processes.",
-      "Helped stakeholders access proposal data and collaboration progress more easily through a more informative dashboard.",
-      "Created a scalable design foundation to support future feature development for Kedaireka’s collaboration ecosystem between universities, industry partners, government, and society.",
-    ],
-    tags: ["UI Design", "UX Design", "Workflow", "Web Design"],
-  },
-  {
-    id: "Tracer Study",
-    fileName: "Tracer Study Web.case",
-    label: "Tracer Study Web",
-    year: "2022",
-    role: "UI/UX Designer",
-    previewVideo: "/assets/videos/Tracer Study.mov",
-    previewUrl: "https://tracerstudy.kemdiktisaintek.go.id/",
-    summary:
-      "Tracer Study is a digital platform developed to support higher education institutions in collecting, managing, and reporting alumni outcome data. The system helps track graduate activities after graduation, including employment status, entrepreneurship, further study, job relevance, and transition into the workforce. Tracer Study plays an important role in evaluating the quality of higher education outcomes, supporting accreditation needs, and providing data for institutional improvement and policy decision-making.",
-    problem:
-      "Alumni tracking in higher education is often difficult to manage because graduate data is collected from many institutions, respondents, and reporting formats. The process can become fragmented, repetitive, and difficult to monitor, especially when universities need to ensure that alumni responses are complete, valid, and ready to be reported. Based on the initial analysis, several key problems were identified: the questionnaire flow could feel long and complex for alumni, data validation required clearer status handling, university administrators needed better visibility into response progress, and dashboard information had to be more actionable for reporting, evaluation, accreditation, and graduate outcome analysis.",
-    contributions: [
-      "As a UI/UX Designer, I conducted user research and workflow analysis to understand the needs of alumni, university administrators, and internal stakeholders.",
-      "I analyzed the end-to-end journey, from account access, alumni data verification, questionnaire completion, submission, validation, approval, to institutional reporting.",
-      "I simplified the questionnaire flow by grouping questions into clearer sections and reducing cognitive load during form completion.",
-      "I improved the form experience through better input structure, clearer validation messages, progress indicators, and submission status feedback.",
-      "I restructured the information architecture and navigation to help users find questionnaires, reporting data, approval status, and guidance more easily.",
-    ],
-    outcome: [
-      "Simplified the alumni questionnaire and reporting journey into a clearer and more guided digital experience.",
-      "Reduced user confusion through improved information structure, validation feedback, and progress visibility.",
-      "Improved administrative efficiency in monitoring alumni responses, validating submissions, and preparing reportable data.",
-      "Helped stakeholders access graduate outcome insights more easily through a more informative and actionable dashboard.",
-      "Supported better data quality for higher education evaluation, accreditation preparation, and policy decision-making.",
-      "Created a scalable design foundation for future improvements in alumni tracking, reporting, and institutional performance monitoring.",
-    ],
-    tags: ["Internal Tool", "Search", "Operations UX"],
-  },
-  {
-    id: "IISMA — Indonesian International Student Mobility Awards",
-    fileName: "IISMA — Indonesian International Student Mobility Awards.case",
-    label: "IISMA — Indonesian International Student Mobility Awards",
-    year: "2022",
-    role: "UI/UX Designer",
-    previewVideo: "/assets/videos/IISMA.mov",
-    previewUrl: "/iisma-preview",
-    summary:
-      "IISMA is a digital platform that supports the international student mobility program, helping Indonesian students apply for overseas study opportunities through a structured scholarship application, document submission, selection, and monitoring process.",
-    problem:
-      "The IISMA application process involved multiple steps, required documents, eligibility checks, university preferences, and selection stages. This made the experience potentially overwhelming for students, while administrators needed clearer visibility into applicant data, document completeness, validation status, and selection progress.",
-    contributions: [
-      "As a UI/UX Designer, I analyzed the end-to-end application journey, from program exploration, registration, eligibility checking, document upload, university selection, submission, review, to announcement tracking.",
-      "I simplified the application flow by breaking complex steps into clearer stages and improving the structure of forms, document requirements, validation messages, and progress indicators.",
-      "I restructured the information architecture and navigation to make program information, application status, document guidance, and selection updates easier to access.",
-      "I also designed dashboard and monitoring pages to help administrators review applicants, track submission progress, validate documents, and manage selection data more efficiently.",
-    ],
-    outcome: [
-      "Created a clearer and more guided scholarship application experience for students.",
-      "Reduced confusion in document submission, eligibility checking, and application tracking.",
-      "Improved administrative efficiency in monitoring applicant progress and validation status.",
-      "Helped stakeholders manage student mobility data more effectively through a more structured and scalable digital platform.",
-    ],
-    tags: ["Internal Tool", "Search", "Operations UX"],
-  },
-];
-
 const appTools = [
   { label: "Claude", icon: "/assets/images/app-claude.webp" },
   { label: "Figma", icon: "/assets/images/app-figma.webp" },
@@ -252,7 +72,7 @@ const appTools = [
 const sidebarItems = [
   { id: "ripaahyar", label: "Projects", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg> },
   { id: "desktop", label: "Snapshot", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg> },
-  { id: "recents", label: "Achievements", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg> },
+  { id: "recents", label: "Timeline", icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2196F3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><polyline points="12 7 12 12 15.5 14" /></svg> },
   { id: "garden", label: "Garden", icon: <span className="material-symbols-outlined" style={{ fontSize: 16, color: "#2196F3" }}>psychiatry</span> },
 ];
 
@@ -517,6 +337,62 @@ export function FolderWindowContent() {
   const [activeSidebar, setActiveSidebar] = useState("ripaahyar");
   const [isMobile, setIsMobile] = useState(false);
   const [selectedWorkProject, setSelectedWorkProject] = useState(workProjects[0].id);
+  const [filesPanelWidth, setFilesPanelWidth] = useState(220);
+  const workPanelsRef = useRef<HTMLDivElement>(null);
+  const isResizingPanelsRef = useRef(false);
+
+  const FILES_PANEL_MIN = 160;
+  const CASE_STUDY_MIN = 280;
+
+  const handlePanelResizeStart = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    isResizingPanelsRef.current = true;
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handlePanelResizeMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isResizingPanelsRef.current) return;
+    const rect = workPanelsRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const max = rect.width - CASE_STUDY_MIN;
+    const next = Math.min(Math.max(e.clientX - rect.left, FILES_PANEL_MIN), Math.max(max, FILES_PANEL_MIN));
+    setFilesPanelWidth(next);
+  };
+
+  const handlePanelResizeEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+    isResizingPanelsRef.current = false;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+  };
+
+  const [foldersGridWidth, setFoldersGridWidth] = useState(420);
+  const [isResizingOuter, setIsResizingOuter] = useState(false);
+  const outerPanelsRef = useRef<HTMLDivElement>(null);
+  const isResizingOuterRef = useRef(false);
+
+  const FOLDERS_GRID_MIN = 340;
+  const PREVIEW_PANEL_MIN = 400;
+
+  const handleOuterResizeStart = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    isResizingOuterRef.current = true;
+    setIsResizingOuter(true);
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handleOuterResizeMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isResizingOuterRef.current) return;
+    const rect = outerPanelsRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const max = rect.width - PREVIEW_PANEL_MIN;
+    const next = Math.min(Math.max(e.clientX - rect.left, FOLDERS_GRID_MIN), Math.max(max, FOLDERS_GRID_MIN));
+    setFoldersGridWidth(next);
+  };
+
+  const handleOuterResizeEnd = (e: React.PointerEvent<HTMLDivElement>) => {
+    isResizingOuterRef.current = false;
+    setIsResizingOuter(false);
+    e.currentTarget.releasePointerCapture(e.pointerId);
+  };
 
   React.useEffect(() => {
     setIsMobile(window.innerWidth < 1024);
@@ -542,7 +418,7 @@ export function FolderWindowContent() {
             </div>
             <div className="flex-1 text-center">
               <span className="text-[11px] text-stone-400">
-                ~/ripaahyar/{{ ripaahyar: "project", desktop: "snapshot", garden: "garden", recents: "achievements" }[activeSidebar] || activeSidebar}
+                ~/ripaahyar/{{ ripaahyar: "project", desktop: "snapshot", garden: "garden", recents: "timeline" }[activeSidebar] || activeSidebar}
               </span>
             </div>
             <div className="w-[52px]" />
@@ -609,11 +485,12 @@ export function FolderWindowContent() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.2 }}
                     className="h-full flex"
+                    ref={outerPanelsRef}
                   >
                     {/* Left: Folders */}
                     <div
-                      className="pt-6 lg:pt-8 pl-4 lg:pl-8 pr-4 lg:pr-6 w-full lg:shrink-0 lg:transition-[width] lg:duration-[350ms] lg:ease-out"
-                      style={!isMobile ? { width: openFolder !== null ? 420 : "100%" } : undefined}
+                      className={`pt-6 lg:pt-8 pl-4 lg:pl-8 pr-4 lg:pr-6 w-full lg:shrink-0 ${isResizingOuter ? "" : "lg:transition-[width] lg:duration-[350ms] lg:ease-out"}`}
+                      style={!isMobile ? { width: openFolder !== null ? foldersGridWidth : "100%" } : undefined}
                     >
                       <div className={`grid grid-cols-3 ${openFolder !== null ? "lg:grid-cols-3" : "lg:grid-cols-5"} gap-x-4 lg:gap-x-10 gap-y-4 lg:gap-y-6 content-start w-fit`}>
                         {siteConfig.sections.map((section, i) => (
@@ -632,12 +509,28 @@ export function FolderWindowContent() {
                       </div>
                     </div>
 
+                    {/* Resizer between folder grid and content preview */}
+                    {openFolder !== null && (
+                      <div
+                        onPointerDown={handleOuterResizeStart}
+                        onPointerMove={handleOuterResizeMove}
+                        onPointerUp={handleOuterResizeEnd}
+                        className="hidden lg:flex w-[7px] shrink-0 cursor-col-resize items-center justify-center bg-stone-200/30 hover:bg-stone-300/60 active:bg-stone-400/60 transition-colors group/outer-resizer z-20"
+                        style={{ touchAction: "none" }}
+                        role="separator"
+                        aria-orientation="vertical"
+                        aria-label="Resize folder grid panel"
+                      >
+                        <span className="h-8 w-[3px] rounded-full bg-stone-400/50 group-hover/outer-resizer:bg-stone-500 transition-colors" />
+                      </div>
+                    )}
+
                     {/* Right: Content preview */}
                     <AnimatePresence>
                       {openFolder !== null && (
                         <motion.div
                           key="preview"
-                          className="absolute lg:relative inset-0 lg:inset-auto border-l-0 lg:border-l border-stone-200/60 h-full lg:h-[700px] w-full lg:w-[580px] shrink-0 ml-auto flex flex-col z-10"
+                          className="absolute lg:relative inset-0 lg:inset-auto border-l-0 lg:border-l border-stone-200/60 h-full lg:h-[700px] w-full lg:flex-1 lg:min-w-0 flex flex-col z-10"
                           initial={{ opacity: 0, x: 40 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: 40 }}
@@ -664,8 +557,11 @@ export function FolderWindowContent() {
                                 className="h-full"
                               >
                                 {openFolder === 0 ? (
-                                  <div className="flex h-full flex-col lg:flex-row">
-                                    <div className="w-full lg:w-[220px] border-b lg:border-b-0 lg:border-r border-stone-200/70 bg-[#f6f2ea]">
+                                  <div ref={workPanelsRef} className="flex h-full flex-col lg:flex-row">
+                                    <div
+                                      className="w-full lg:w-auto lg:shrink-0 border-b lg:border-b-0 lg:border-r border-stone-200/70 bg-[#f6f2ea] overflow-y-auto"
+                                      style={!isMobile ? { width: filesPanelWidth } : undefined}
+                                    >
                                       <div className="px-4 py-3 border-b border-stone-200/70">
                                         <p className="text-[11px] uppercase tracking-[0.18em] text-stone-400">Project Files</p>
                                       </div>
@@ -676,23 +572,27 @@ export function FolderWindowContent() {
                                             <button
                                               key={project.id}
                                               onClick={() => setSelectedWorkProject(project.id)}
-                                              className={`w-full text-left rounded-xl border px-3 py-3 transition-colors cursor-pointer ${active
+                                              title={project.fileName}
+                                              className={`relative w-full text-left rounded-xl border pl-3 pr-3 py-2.5 transition-colors cursor-pointer ${active
                                                   ? "bg-white border-stone-300 shadow-sm"
                                                   : "bg-transparent border-transparent hover:bg-white/70 hover:border-stone-200"
                                                 }`}
                                             >
-                                              <div className="flex items-start gap-3">
-                                                <div className="mt-0.5 shrink-0">
-                                                  <svg width="24" height="28" viewBox="0 0 24 28" fill="none">
+                                              {active && (
+                                                <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-full bg-stone-800" />
+                                              )}
+                                              <div className="flex items-center gap-3">
+                                                <div className="shrink-0">
+                                                  <svg width="22" height="26" viewBox="0 0 24 28" fill="none">
                                                     <path d="M4 1.5h10l6 6V24a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 2 24V4A2.5 2.5 0 0 1 4.5 1.5Z" fill="white" stroke="#d6d3d1" />
                                                     <path d="M14 1.5v5a2 2 0 0 0 2 2h4" fill="#f3f4f6" stroke="#d6d3d1" />
                                                     <rect x="6" y="12" width="12" height="1.6" rx="0.8" fill="#d6d3d1" />
                                                     <rect x="6" y="15.5" width="9" height="1.6" rx="0.8" fill="#e7e5e4" />
                                                   </svg>
                                                 </div>
-                                                <div className="min-w-0">
-                                                  <p className="text-[12px] font-medium text-stone-700 leading-snug">{project.fileName}</p>
-                                                  <p className="text-[11px] text-stone-400 mt-1">{project.year}</p>
+                                                <div className="min-w-0 flex-1">
+                                                  <p className="text-[12px] font-medium text-stone-700 truncate">{project.fileName}</p>
+                                                  <p className="text-[11px] text-stone-400 mt-0.5">{project.year}</p>
                                                 </div>
                                               </div>
                                             </button>
@@ -701,12 +601,25 @@ export function FolderWindowContent() {
                                       </div>
                                     </div>
 
+                                    <div
+                                      onPointerDown={handlePanelResizeStart}
+                                      onPointerMove={handlePanelResizeMove}
+                                      onPointerUp={handlePanelResizeEnd}
+                                      className="hidden lg:flex w-[7px] shrink-0 cursor-col-resize items-center justify-center bg-stone-200/30 hover:bg-stone-300/60 active:bg-stone-400/60 transition-colors group/resizer"
+                                      style={{ touchAction: "none" }}
+                                      role="separator"
+                                      aria-orientation="vertical"
+                                      aria-label="Resize project files panel"
+                                    >
+                                      <span className="h-8 w-[3px] rounded-full bg-stone-400/50 group-hover/resizer:bg-stone-500 transition-colors" />
+                                    </div>
+
                                     {(() => {
                                       const activeProject = workProjects.find((project) => project.id === selectedWorkProject) ?? workProjects[0];
                                       const isInternalPreview = activeProject.previewUrl.startsWith("/");
                                       return (
-                                        <div className="flex-1 overflow-y-auto min-h-0">
-                                          <div className="relative w-full aspect-video lg:h-[250px] overflow-hidden border-b border-stone-200/60 bg-[#f5f5f4]">
+                                        <div className="flex-1 min-w-0 overflow-y-auto min-h-0">
+                                          <div className="relative w-full aspect-video lg:h-[280px] overflow-hidden border-b border-stone-200/60 bg-[#f5f5f4]">
                                             {activeProject.previewVideo ? (
                                               <video
                                                 src={activeProject.previewVideo}
@@ -727,18 +640,18 @@ export function FolderWindowContent() {
                                               />
                                             ) : null}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
-                                            <div className="absolute left-5 bottom-5 text-white">
-                                              <p className="text-[11px] uppercase tracking-[0.18em] text-white/70">Case Study</p>
-                                              <h3 className="text-[24px] font-medium mt-1">{activeProject.label}</h3>
+                                            <div className="absolute left-5 bottom-4 text-white">
+                                              <p className="text-[11px] uppercase tracking-[0.18em] text-white/80">Case Study</p>
                                             </div>
                                           </div>
 
                                           <div className="p-5 space-y-5">
-                                            <div className="flex flex-wrap gap-2">
-                                              <span className="rounded-full bg-stone-100 px-3 py-1 text-[11px] text-stone-600">{activeProject.role}</span>
-                                              <span className="rounded-full bg-stone-100 px-3 py-1 text-[11px] text-stone-600">{activeProject.year}</span>
+                                            <div className="flex flex-wrap items-center gap-2">
+                                              <span className="rounded-full bg-stone-800 px-3 py-1 text-[11px] font-medium text-white">{activeProject.role}</span>
+                                              <span className="text-[11px] text-stone-400">{activeProject.year}</span>
+                                              <span className="h-1 w-1 rounded-full bg-stone-300" />
                                               {activeProject.tags.map((tag) => (
-                                                <span key={tag} className="rounded-full bg-[#efe7db] px-3 py-1 text-[11px] text-stone-600">{tag}</span>
+                                                <span key={tag} className="rounded-full border border-stone-200 px-3 py-1 text-[11px] text-stone-500">{tag}</span>
                                               ))}
                                             </div>
 
@@ -767,13 +680,19 @@ export function FolderWindowContent() {
                                               )}
                                             </div>
 
-                                            <div className="space-y-2">
-                                              <p className="text-[12px] uppercase tracking-[0.18em] text-stone-400">Problem</p>
+                                            <div className="space-y-2 pt-4 border-t border-stone-200/70">
+                                              <p className="flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] text-stone-400">
+                                                <span className="h-[3px] w-3 rounded-full bg-stone-400" />
+                                                Problem
+                                              </p>
                                               <p className="text-[14px] leading-relaxed text-stone-600 whitespace-pre-line">{activeProject.problem}</p>
                                             </div>
 
-                                            <div className="space-y-2">
-                                              <p className="text-[12px] uppercase tracking-[0.18em] text-stone-400">What I Did</p>
+                                            <div className="space-y-2 pt-4 border-t border-stone-200/70">
+                                              <p className="flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] text-stone-400">
+                                                <span className="h-[3px] w-3 rounded-full bg-stone-400" />
+                                                What I Did
+                                              </p>
                                               <div className="space-y-2">
                                                 {activeProject.contributions.map((item) => (
                                                   <div key={item} className="flex gap-2 text-[14px] text-stone-600 leading-relaxed">
@@ -784,8 +703,11 @@ export function FolderWindowContent() {
                                               </div>
                                             </div>
 
-                                            <div className="space-y-2">
-                                              <p className="text-[12px] uppercase tracking-[0.18em] text-stone-400">Outcome</p>
+                                            <div className="space-y-2 pt-4 border-t border-stone-200/70">
+                                              <p className="flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] text-stone-400">
+                                                <span className="h-[3px] w-3 rounded-full bg-[#8EB4CE]" />
+                                                Outcome
+                                              </p>
                                               <div className="space-y-2">
                                                 {activeProject.outcome.map((item) => (
                                                   <div key={item} className="flex gap-2 text-[14px] text-stone-600 leading-relaxed">

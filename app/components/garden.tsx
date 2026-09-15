@@ -1,1162 +1,592 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { supabase } from "@/lib/supabase";
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
+import { workProjects, type WorkProject } from "@/lib/workProjects";
 
-interface WorldItem {
-  id: number;
-  x: number;
-  z: number;
-  type: "tree" | "rock" | "flower";
-  color?: string;
+const CHAR_W = 20;
+const CHAR_H = 30;
+const CHAR_SPEED = 2.6;
+const HOUSE_SIZE = 78;
+const INTERACT_PADDING = 30;
+const WALK_FRAME_MS = 160;
+
+type Direction = "up" | "down" | "left" | "right";
+type Rect = { x: number; y: number; w: number; h: number };
+
+const buildingPalette = [
+  { wall: "#8EB4CE", roof: "#5F86A3", door: "#3F5E75" },
+  { wall: "#DEBB8E", roof: "#B08C5C", door: "#7A5E3B" },
+  { wall: "#8DC4AB", roof: "#5C9A7C", door: "#3E6B54" },
+  { wall: "#E09D98", roof: "#B96C67", door: "#8A4844" },
+  { wall: "#B09AD0", roof: "#8168A8", door: "#5A4778" },
+  { wall: "#E8CE6B", roof: "#C2A63C", door: "#8C7A26" },
+];
+
+function shortName(label: string) {
+  const cut = label.split(/ - | — /)[0].trim();
+  return cut.length > 20 ? `${cut.slice(0, 18)}…` : cut;
 }
 
-interface Particle {
-  x: number;
-  y: number;
-  z: number;
-  vx: number;
-  vy: number;
-  vz: number;
-  color: string;
-  size: number;
-  life: number;
-  maxLife: number;
+function rectsOverlap(a: Rect, b: Rect) {
+  return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 }
 
-// ── 3D Projection Helpers ──
-interface Camera {
-  cx: number;
-  cy: number;
-  cz: number;
-  theta: number;
-  phi: number;
-  F: number;
-  centerX: number;
-  centerY: number;
-}
-
-function projectPoint(wx: number, wy: number, wz: number, camera: Camera) {
-  const dx = wx - camera.cx;
-  const dy = wy - camera.cy;
-  const dz = wz - camera.cz;
-  
-  // Yaw rotation (horizontal angle)
-  const rx = dx * Math.sin(camera.theta) - dz * Math.cos(camera.theta);
-  const rz = dx * Math.cos(camera.theta) + dz * Math.sin(camera.theta);
-  const ry = dy;
-  
-  // Pitch rotation (looking up/down)
-  const ry2 = ry * Math.cos(camera.phi) + rz * Math.sin(camera.phi);
-  const rz2 = -ry * Math.sin(camera.phi) + rz * Math.cos(camera.phi);
-  
-  if (rz2 <= 0.1) return null; // Behind near plane
-  
-  const s = camera.F / rz2;
-  return {
-    x: camera.centerX + rx * s,
-    y: camera.centerY - ry2 * s,
-    depth: rz2
-  };
-}
-
-function draw3DLine(
-  ctx: CanvasRenderingContext2D,
-  x1: number, y1: number, z1: number,
-  x2: number, y2: number, z2: number,
-  camera: Camera,
-  color: string,
-  w: number
-) {
-  const dx1 = x1 - camera.cx;
-  const dy1 = y1 - camera.cy;
-  const dz1 = z1 - camera.cz;
-  const rx1 = dx1 * Math.sin(camera.theta) - dz1 * Math.cos(camera.theta);
-  const rz1 = dx1 * Math.cos(camera.theta) + dz1 * Math.sin(camera.theta);
-  const ry1_2 = dy1 * Math.cos(camera.phi) + rz1 * Math.sin(camera.phi);
-  const rz1_2 = -dy1 * Math.sin(camera.phi) + rz1 * Math.cos(camera.phi);
-
-  const dx2 = x2 - camera.cx;
-  const dy2 = y2 - camera.cy;
-  const dz2 = z2 - camera.cz;
-  const rx2 = dx2 * Math.sin(camera.theta) - dz2 * Math.cos(camera.theta);
-  const rz2 = dx2 * Math.cos(camera.theta) + dz2 * Math.sin(camera.theta);
-  const ry2_2 = dy2 * Math.cos(camera.phi) + rz2 * Math.sin(camera.phi);
-  const rz2_2 = -dy2 * Math.sin(camera.phi) + rz2 * Math.cos(camera.phi);
-
-  let cx1 = rx1, cy1 = ry1_2, cz1 = rz1_2;
-  let cx2 = rx2, cy2 = ry2_2, cz2 = rz2_2;
-
-  if (cz1 < 0.25 && cz2 < 0.25) return;
-
-  if (cz1 < 0.25) {
-    const t = (0.25 - cz1) / (cz2 - cz1);
-    cx1 = cx1 + t * (cx2 - cx1);
-    cy1 = cy1 + t * (cy2 - cy1);
-    cz1 = 0.25;
-  } else if (cz2 < 0.25) {
-    const t = (0.25 - cz2) / (cz1 - cz2);
-    cx2 = cx2 + t * (cx1 - cx2);
-    cy2 = cy2 + t * (cy1 - cy2);
-    cz2 = 0.25;
-  }
-
-  // Grid fade based on average depth
-  const avgDepth = (cz1 + cz2) / 2;
-  const maxFadeRange = 90;
-  const alpha = Math.max(1.0 - avgDepth / maxFadeRange, 0);
-  if (alpha <= 0) return;
-
-  const s1 = camera.F / cz1;
-  const sx1 = camera.centerX + cx1 * s1;
-  const sy1 = camera.centerY - cy1 * s1;
-
-  const s2 = camera.F / cz2;
-  const sx2 = camera.centerX + cx2 * s2;
-  const sy2 = camera.centerY - cy2 * s2;
-
-  ctx.beginPath();
-  ctx.moveTo(sx1, sy1);
-  ctx.lineTo(sx2, sy2);
-  
-  // Custom transparent stroke matching grid
-  ctx.strokeStyle = `rgba(197, 203, 183, ${alpha})`;
-  ctx.lineWidth = w;
-  ctx.stroke();
-}
-
-// Retro boxy muscle car vertex transformer (scaled up 1.5x for visibility)
-function getCarVertices(px: number, py: number, pz: number, alpha: number) {
-  const local = [
-    // Chassis bottom
-    { x: -1.34, y: 0.1, z: 2.8 },   // 0: front-left-bottom
-    { x:  1.34, y: 0.1, z: 2.8 },   // 1: front-right-bottom
-    { x:  1.18, y: 0.1, z: -2.0 },  // 2: back-right-bottom
-    { x: -1.18, y: 0.1, z: -2.0 },  // 3: back-left-bottom
-    // Chassis top
-    { x: -1.16, y: 0.54, z: 2.2 },   // 4: front-left-mid
-    { x:  1.16, y: 0.54, z: 2.2 },   // 5: front-right-mid
-    { x:  1.02, y: 0.74, z: -1.75 }, // 6: back-right-mid
-    { x: -1.02, y: 0.74, z: -1.75 }, // 7: back-left-mid
-    
-    // Cabin base
-    { x: -0.96, y: 0.7, z: 1.0 },    // 8: cabin-front-left-base
-    { x:  0.96, y: 0.7, z: 1.0 },    // 9: cabin-front-right-base
-    { x:  0.74, y: 0.7, z: -0.95 },  // 10: cabin-back-right-base
-    { x: -0.74, y: 0.7, z: -0.95 },  // 11: cabin-back-left-base
-    // Cabin top
-    { x: -0.7, y: 1.1, z: 0.42 },   // 12: cabin-front-left-top
-    { x:  0.7, y: 1.1, z: 0.42 },   // 13: cabin-front-right-top
-    { x:  0.42, y: 0.96, z: -0.9 }, // 14: cabin-back-right-top
-    { x: -0.42, y: 0.96, z: -0.9 }, // 15: cabin-back-left-top
-  ];
-  
-  return local.map((v) => {
-    const wx = px + v.x * Math.cos(alpha) - v.z * Math.sin(alpha);
-    const wy = py + v.y;
-    const wz = pz + v.x * Math.sin(alpha) + v.z * Math.cos(alpha);
-    return { x: wx, y: wy, z: wz };
+function buildLayout(count: number, width: number, height: number) {
+  const cols = count > 4 ? 3 : 2;
+  const marginX = 90;
+  const marginY = 90;
+  const usableW = Math.max(width - marginX * 2, 200);
+  const usableH = Math.max(height - marginY * 2, 200);
+  return Array.from({ length: count }, (_, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const rows = Math.ceil(count / cols);
+    const jitterX = (Math.random() - 0.5) * 30;
+    const jitterY = (Math.random() - 0.5) * 20;
+    return {
+      x: marginX + (usableW / Math.max(cols - 1, 1)) * col + jitterX,
+      y: marginY + (usableH / Math.max(rows - 1, 1)) * row + jitterY,
+    };
   });
 }
 
-// ── Web Audio Synth System ──
-class SoundSystem {
-  ctx: AudioContext | null = null;
-  engineOsc: OscillatorNode | null = null;
-  engineGain: GainNode | null = null;
-  isMuted: boolean = true;
+function Building({ index, label, type }: { index: number; label: string; type: "house" | "plant" }) {
+  const palette = buildingPalette[index % buildingPalette.length];
 
-  constructor() {}
+  return (
+    <div className="absolute flex flex-col items-center" style={{ width: HOUSE_SIZE, pointerEvents: "none" }}>
+      {type === "house" ? (
+        <div className="relative" style={{ width: HOUSE_SIZE, height: HOUSE_SIZE }}>
+          {/* Roof */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2"
+            style={{
+              top: 0,
+              width: 0,
+              height: 0,
+              borderLeft: `${HOUSE_SIZE / 2 + 6}px solid transparent`,
+              borderRight: `${HOUSE_SIZE / 2 + 6}px solid transparent`,
+              borderBottom: `${HOUSE_SIZE * 0.38}px solid ${palette.roof}`,
+              filter: "drop-shadow(0 3px 2px rgba(0,0,0,0.12))",
+            }}
+          />
+          {/* Wall */}
+          <div
+            className="absolute rounded-b-[6px]"
+            style={{
+              left: 4,
+              right: 4,
+              top: HOUSE_SIZE * 0.34,
+              bottom: 0,
+              background: palette.wall,
+              boxShadow: "inset 0 -6px 10px rgba(0,0,0,0.08)",
+            }}
+          />
+          {/* Door */}
+          <div
+            className="absolute rounded-t-[4px]"
+            style={{
+              left: "50%",
+              transform: "translateX(-50%)",
+              bottom: 0,
+              width: HOUSE_SIZE * 0.26,
+              height: HOUSE_SIZE * 0.4,
+              background: palette.door,
+            }}
+          />
+          {/* Window */}
+          <div
+            className="absolute rounded-[2px]"
+            style={{ left: 10, top: HOUSE_SIZE * 0.52, width: 12, height: 12, background: "#FFF7E0", opacity: 0.9 }}
+          />
+        </div>
+      ) : (
+        <div className="relative" style={{ width: HOUSE_SIZE, height: HOUSE_SIZE }}>
+          {/* Leaves cluster */}
+          <div className="absolute rounded-full" style={{ left: HOUSE_SIZE * 0.12, top: HOUSE_SIZE * 0.16, width: HOUSE_SIZE * 0.5, height: HOUSE_SIZE * 0.5, background: palette.roof }} />
+          <div className="absolute rounded-full" style={{ left: HOUSE_SIZE * 0.42, top: HOUSE_SIZE * 0.06, width: HOUSE_SIZE * 0.42, height: HOUSE_SIZE * 0.42, background: palette.wall }} />
+          <div className="absolute rounded-full" style={{ left: HOUSE_SIZE * 0.5, top: HOUSE_SIZE * 0.3, width: HOUSE_SIZE * 0.34, height: HOUSE_SIZE * 0.34, background: palette.roof }} />
+          {/* Flower accent */}
+          <div className="absolute rounded-full" style={{ left: HOUSE_SIZE * 0.4, top: HOUSE_SIZE * 0.28, width: 10, height: 10, background: palette.door }} />
+          {/* Pot */}
+          <div
+            className="absolute"
+            style={{
+              left: "50%",
+              transform: "translateX(-50%)",
+              bottom: 0,
+              width: HOUSE_SIZE * 0.32,
+              height: HOUSE_SIZE * 0.22,
+              background: "#9A6B4A",
+              clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
+            }}
+          />
+        </div>
+      )}
 
-  init() {
-    if (this.ctx) return;
-    try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      this.ctx = new AudioCtx();
-    } catch (e) {
-      console.warn("Web Audio not supported", e);
-    }
-  }
+      <span
+        className="mt-1 rounded-full bg-white/85 backdrop-blur-sm px-2 py-0.5 text-[10px] font-medium text-stone-700 whitespace-nowrap shadow-sm border border-stone-200/70 font-[family-name:var(--font-mono)]"
+        style={{ pointerEvents: "none" }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
 
-  startEngine() {
-    this.init();
-    if (!this.ctx || this.isMuted) return;
-    if (this.engineOsc) return;
+function Character({ x, y, direction, walking, walkFrame }: { x: number; y: number; direction: Direction; walking: boolean; walkFrame: boolean }) {
+  const legOffset = walking ? 2 : 0;
+  const eyeTop = 5;
+  const eyeLeft = direction === "left" ? 3 : direction === "right" ? 9 : 5;
+  const showEyes = direction !== "up";
 
-    if (this.ctx.state === "suspended") {
-      this.ctx.resume();
-    }
-
-    this.engineOsc = this.ctx.createOscillator();
-    this.engineGain = this.ctx.createGain();
-
-    this.engineOsc.type = "sawtooth";
-    this.engineOsc.frequency.setValueAtTime(32, this.ctx.currentTime);
-
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.setValueAtTime(180, this.ctx.currentTime);
-
-    this.engineGain.gain.setValueAtTime(0.015, this.ctx.currentTime);
-
-    this.engineOsc.connect(filter);
-    filter.connect(this.engineGain);
-    this.engineGain.connect(this.ctx.destination);
-
-    this.engineOsc.start(0);
-  }
-
-  updateEngine(speed: number, maxSpeed: number) {
-    if (!this.engineOsc || this.isMuted || !this.ctx) return;
-    const absSpeed = Math.abs(speed);
-    const speedRatio = absSpeed / maxSpeed;
-    
-    const targetFreq = 30 + speedRatio * 90;
-    const targetVolume = 0.012 + speedRatio * 0.015;
-
-    this.engineOsc.frequency.setTargetAtTime(targetFreq, this.ctx.currentTime, 0.1);
-    this.engineGain!.gain.setTargetAtTime(targetVolume, this.ctx.currentTime, 0.1);
-  }
-
-  stopEngine() {
-    if (this.engineOsc) {
-      try {
-        this.engineOsc.stop();
-        this.engineOsc.disconnect();
-      } catch (e) {}
-      this.engineOsc = null;
-    }
-    if (this.engineGain) {
-      this.engineGain.disconnect();
-      this.engineGain = null;
-    }
-  }
-
-  playCollect() {
-    this.init();
-    if (!this.ctx || this.isMuted) return;
-    
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-    
-    osc.type = "sine";
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
-    
-    const now = this.ctx.currentTime;
-    gain.gain.setValueAtTime(0.08, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-    
-    osc.frequency.setValueAtTime(523.25, now); // C5
-    osc.frequency.setValueAtTime(783.99, now + 0.08); // G5
-    
-    osc.start(now);
-    osc.stop(now + 0.35);
-  }
-
-  playCollision() {
-    this.init();
-    if (!this.ctx || this.isMuted) return;
-
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-
-    osc.type = "triangle";
-    osc.connect(gain);
-    gain.connect(this.ctx.destination);
-
-    const now = this.ctx.currentTime;
-    gain.gain.setValueAtTime(0.12, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-
-    osc.frequency.setValueAtTime(140, now);
-    osc.frequency.exponentialRampToValueAtTime(45, now + 0.2);
-
-    osc.start(now);
-    osc.stop(now + 0.25);
-  }
+  return (
+    <div className="absolute" style={{ left: x, top: y, width: CHAR_W, height: CHAR_H }}>
+      {/* Legs */}
+      <div
+        className="absolute rounded-[2px] bg-stone-700"
+        style={{ left: 3, bottom: 0, width: 6, height: 9, transform: `translateY(${walkFrame ? -legOffset : 0}px)` }}
+      />
+      <div
+        className="absolute rounded-[2px] bg-stone-700"
+        style={{ right: 3, bottom: 0, width: 6, height: 9, transform: `translateY(${walkFrame ? 0 : -legOffset}px)` }}
+      />
+      {/* Body */}
+      <div className="absolute rounded-[3px]" style={{ left: 0, right: 0, top: 9, height: 13, background: "#D97706" }} />
+      {/* Head */}
+      <div className="absolute rounded-[3px]" style={{ left: 2, right: 2, top: 0, height: 12, background: "#F2C6A0" }}>
+        {showEyes && (
+          <>
+            <span className="absolute rounded-full bg-stone-800" style={{ width: 2, height: 2, top: eyeTop, left: eyeLeft }} />
+            {direction === "down" && (
+              <span className="absolute rounded-full bg-stone-800" style={{ width: 2, height: 2, top: eyeTop, left: eyeLeft + 4 }} />
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function Garden({ isMobile = false }: { isMobile?: boolean }) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const sounds = useRef<SoundSystem>(new SoundSystem());
+  const viewportRef = useRef<HTMLDivElement | null>(null);
 
-  // Game States
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
-  const [score, setScore] = useState(0);
-  const [dbStatus, setDbStatus] = useState<string>("");
+  const [viewMode, setViewMode] = useState<"walk" | "list">("walk");
+  const [ready, setReady] = useState(false);
+  const layoutRef = useRef<{ x: number; y: number }[]>([]);
+  const boundsRef = useRef({ width: 0, height: 0 });
 
-  // Input states
-  const keysPressed = useRef<{ [key: string]: boolean }>({});
-  const mobileInputs = useRef({ left: false, right: false, forward: false, reverse: false });
+  const [charState, setCharState] = useState({ x: 0, y: 0, direction: "down" as Direction, walking: false });
+  const charPosRef = useRef({ x: 0, y: 0 });
+  const directionRef = useRef<Direction>("down");
+  const [walkFrame, setWalkFrame] = useState(false);
 
-  // Game values refs
-  const px = useRef(0);
-  const pz = useRef(0);
-  const carAngle = useRef(0);
-  const speed = useRef(0);
-  const steer = useRef(0);
-  const screenShake = useRef(0);
-  const scoreRef = useRef(0);
-  const flowerSpin = useRef(0);
+  const [nearbyIndex, setNearbyIndex] = useState<number | null>(null);
+  const nearbyIndexRef = useRef<number | null>(null);
 
-  // Camera settings
-  const cx = useRef(0);
-  const cy = useRef(5);
-  const cz = useRef(-9);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const openIndexRef = useRef<number | null>(null);
 
-  // Physics constants
-  const maxSpeed = 0.55;
-  const accel = 0.015;
-  const friction = 0.95;
-  const py = 0; // Flat ground coordinate constant
+  const keysPressed = useRef<Record<string, boolean>>({});
+  const mobileInputs = useRef({ up: false, down: false, left: false, right: false });
 
-  // World objects
-  const worldItems = useRef<WorldItem[]>([]);
-  const particles = useRef<Particle[]>([]);
-
-  // Initialize objects once
+  // Measure container and lay out houses/plants once on mount
   useEffect(() => {
-    const items: WorldItem[] = [];
-    let idCounter = 0;
-
-    // 20 Trees
-    for (let i = 0; i < 20; i++) {
-      let tx = (Math.random() - 0.5) * 130;
-      let tz = (Math.random() - 0.5) * 130;
-      while (Math.sqrt(tx * tx + tz * tz) < 12) {
-        tx = (Math.random() - 0.5) * 130;
-        tz = (Math.random() - 0.5) * 130;
-      }
-      items.push({ id: idCounter++, x: tx, z: tz, type: "tree" });
-    }
-
-    // 12 Rocks
-    for (let i = 0; i < 12; i++) {
-      let rx = (Math.random() - 0.5) * 130;
-      let rz = (Math.random() - 0.5) * 130;
-      while (Math.sqrt(rx * rx + rz * rz) < 12) {
-        rx = (Math.random() - 0.5) * 130;
-        rz = (Math.random() - 0.5) * 130;
-      }
-      items.push({ id: idCounter++, x: rx, z: rz, type: "rock" });
-    }
-
-    // 8 Flowers
-    const flowerColors = ["#ec4899", "#ef4444", "#eab308", "#a855f7", "#3b82f6", "#10b981", "#c26f51", "#ec4899"];
-    for (let i = 0; i < 8; i++) {
-      items.push({
-        id: idCounter++,
-        x: (Math.random() - 0.5) * 140,
-        z: (Math.random() - 0.5) * 140,
-        type: "flower",
-        color: flowerColors[i % flowerColors.length],
-      });
-    }
-
-    worldItems.current = items;
+    const el = viewportRef.current;
+    if (!el) return;
+    const width = el.clientWidth;
+    const height = el.clientHeight;
+    boundsRef.current = { width, height };
+    layoutRef.current = buildLayout(workProjects.length, width, height);
+    charPosRef.current = { x: width / 2 - CHAR_W / 2, y: height / 2 - CHAR_H / 2 };
+    setCharState({ x: charPosRef.current.x, y: charPosRef.current.y, direction: "down", walking: false });
+    setReady(true);
   }, []);
 
-  // Sync volume state
-  useEffect(() => {
-    sounds.current.isMuted = isMuted;
-    if (isMuted) {
-      sounds.current.stopEngine();
-    } else if (isPlaying) {
-      sounds.current.startEngine();
-    }
-  }, [isMuted, isPlaying]);
+  useEffect(() => { openIndexRef.current = openIndex; }, [openIndex]);
 
-  // Audio Context auto-cleanup
-  useEffect(() => {
-    return () => {
-      sounds.current.stopEngine();
-    };
-  }, []);
-
-  // Database insert helper
-  const plantToDatabase = useCallback(async (flowerColor: string) => {
-    try {
-      setDbStatus("Planting...");
-      const rx = Math.random() * 100;
-      const ry = Math.random() * 100;
-      const flower_type = Math.floor(Math.random() * 6);
-
-      const { error } = await supabase
-        .from("flowers")
-        .insert({ x: rx, y: ry, flower_type, color: flowerColor });
-
-      if (error) throw error;
-
-      setDbStatus("🌸 Seed planted in DB!");
-      setTimeout(() => setDbStatus(""), 2000);
-    } catch (e) {
-      console.error(e);
-      setDbStatus("⚠️ DB Offline (saved locally)");
-      setTimeout(() => setDbStatus(""), 2000);
-    }
-  }, []);
-
-  // Start drive button handler
-  const handleStartGame = () => {
-    setIsPlaying(true);
-    setIsMuted(false);
-    sounds.current.isMuted = false;
-    sounds.current.startEngine();
-  };
-
-  // Keyboard events (Corrected case matching arrow keys to prevent scrolling)
+  // Keyboard input
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const k = e.key.toLowerCase();
       keysPressed.current[k] = true;
-
-      // Correctly identify key strings regardless of uppercase letters
-      if (["arrowup", "arrowdown", "arrowleft", "arrowright", " "].includes(k)) {
-        e.preventDefault();
+      if (["arrowup", "arrowdown", "arrowleft", "arrowright"].includes(k)) e.preventDefault();
+      if (k === "e" && openIndexRef.current === null && nearbyIndexRef.current !== null) {
+        setOpenIndex(nearbyIndexRef.current);
+      }
+      if (k === "escape" && openIndexRef.current !== null) {
+        setOpenIndex(null);
       }
     };
-
     const handleKeyUp = (e: KeyboardEvent) => {
-      const k = e.key.toLowerCase();
-      keysPressed.current[k] = false;
+      keysPressed.current[e.key.toLowerCase()] = false;
     };
-
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
 
-  // Canvas Resize logic
+  // Walk animation frame ticker
   useEffect(() => {
-    const handleResize = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const rect = canvas.parentElement?.getBoundingClientRect();
-      if (rect) {
-        canvas.width = rect.width;
-        canvas.height = rect.height;
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => window.removeEventListener("resize", handleResize);
+    const id = setInterval(() => setWalkFrame((f) => !f), WALK_FRAME_MS);
+    return () => clearInterval(id);
   }, []);
 
-  // Game loop effect
+  // Game loop
   useEffect(() => {
     let animId: number;
     let lastTime = performance.now();
 
     const loop = (timestamp: number) => {
       animId = requestAnimationFrame(loop);
-
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      const width = canvas.width;
-      const height = canvas.height;
-
       const dt = Math.min((timestamp - lastTime) / 16.666, 3);
       lastTime = timestamp;
 
-      // ── 1. Physics Update ──
-      if (isPlaying) {
-        const isUp = keysPressed.current["w"] || keysPressed.current["arrowup"] || mobileInputs.current.forward;
-        const isDown = keysPressed.current["s"] || keysPressed.current["arrowdown"] || mobileInputs.current.reverse;
-        const isLeft = keysPressed.current["a"] || keysPressed.current["arrowleft"] || mobileInputs.current.left;
-        const isRight = keysPressed.current["d"] || keysPressed.current["arrowright"] || mobileInputs.current.right;
+      if (!ready || viewMode !== "walk" || openIndexRef.current !== null) return;
 
-        if (isUp) {
-          speed.current += accel * dt;
-        } else if (isDown) {
-          speed.current -= accel * 0.8 * dt;
+      const isUp = keysPressed.current["w"] || keysPressed.current["arrowup"] || mobileInputs.current.up;
+      const isDown = keysPressed.current["s"] || keysPressed.current["arrowdown"] || mobileInputs.current.down;
+      const isLeft = keysPressed.current["a"] || keysPressed.current["arrowleft"] || mobileInputs.current.left;
+      const isRight = keysPressed.current["d"] || keysPressed.current["arrowright"] || mobileInputs.current.right;
+
+      let moveX = (isRight ? 1 : 0) - (isLeft ? 1 : 0);
+      let moveY = (isDown ? 1 : 0) - (isUp ? 1 : 0);
+      const walking = moveX !== 0 || moveY !== 0;
+
+      if (walking) {
+        const len = Math.sqrt(moveX * moveX + moveY * moveY);
+        moveX = (moveX / len) * CHAR_SPEED * dt;
+        moveY = (moveY / len) * CHAR_SPEED * dt;
+
+        let nextDirection = directionRef.current;
+        if (Math.abs(moveY) >= Math.abs(moveX)) {
+          nextDirection = moveY < 0 ? "up" : "down";
         } else {
-          speed.current *= Math.pow(friction, dt);
+          nextDirection = moveX < 0 ? "left" : "right";
         }
+        directionRef.current = nextDirection;
 
-        if (speed.current > maxSpeed) speed.current = maxSpeed;
-        if (speed.current < -maxSpeed * 0.4) speed.current = -maxSpeed * 0.4;
+        const { width, height } = boundsRef.current;
+        const houses = layoutRef.current;
+        const pos = charPosRef.current;
 
-        const steerTarget = isLeft ? 0.45 : isRight ? -0.45 : 0;
-        steer.current += (steerTarget - steer.current) * 0.15 * dt;
-
-        carAngle.current += steer.current * (speed.current / maxSpeed) * 0.08 * dt;
-        px.current += speed.current * Math.cos(carAngle.current) * dt;
-        pz.current += speed.current * Math.sin(carAngle.current) * dt;
-
-        sounds.current.updateEngine(speed.current, maxSpeed);
-
-        if (Math.abs(speed.current) > 0.1 && Math.random() < 0.18 * dt) {
-          const backX = px.current - 1.5 * Math.cos(carAngle.current);
-          const backZ = pz.current - 1.5 * Math.sin(carAngle.current);
-          particles.current.push({
-            x: backX + (Math.random() - 0.5) * 1.0,
-            y: 0.15,
-            z: backZ + (Math.random() - 0.5) * 1.0,
-            vx: (Math.random() - 0.5) * 0.05 - speed.current * Math.cos(carAngle.current) * 0.2,
-            vy: Math.random() * 0.05 + 0.02,
-            vz: (Math.random() - 0.5) * 0.05 - speed.current * Math.sin(carAngle.current) * 0.2,
-            color: "rgba(224, 215, 203, 0.45)",
-            size: Math.random() * 0.45 + 0.2,
-            life: 30,
-            maxLife: 30
+        const tryMove = (axis: "x" | "y", delta: number) => {
+          const next = { ...pos, [axis]: pos[axis] + delta };
+          const charRect: Rect = { x: next.x, y: next.y, w: CHAR_W, h: CHAR_H };
+          const blocked = houses.some((h) => {
+            const houseRect: Rect = { x: h.x - HOUSE_SIZE / 2 + 10, y: h.y - HOUSE_SIZE / 2 + HOUSE_SIZE * 0.34, w: HOUSE_SIZE - 20, h: HOUSE_SIZE * 0.66 };
+            return rectsOverlap(charRect, houseRect);
           });
-        }
-
-        const bounds = 80;
-        if (Math.abs(px.current) > bounds) {
-          px.current = Math.sign(px.current) * bounds;
-          speed.current = -speed.current * 0.3;
-          screenShake.current = 5;
-          sounds.current.playCollision();
-        }
-        if (Math.abs(pz.current) > bounds) {
-          pz.current = Math.sign(pz.current) * bounds;
-          speed.current = -speed.current * 0.3;
-          screenShake.current = 5;
-          sounds.current.playCollision();
-        }
-
-        worldItems.current.forEach((item) => {
-          const dx = px.current - item.x;
-          const dz = pz.current - item.z;
-          const dist = Math.sqrt(dx * dx + dz * dz);
-
-          if (item.type === "flower") {
-            if (dist < 2.5) {
-              sounds.current.playCollect();
-              setScore((s) => {
-                const next = s + 1;
-                scoreRef.current = next;
-                return next;
-              });
-
-              const pColor = item.color || "#ec4899";
-              for (let p = 0; p < 12; p++) {
-                particles.current.push({
-                  x: item.x,
-                  y: 0.8,
-                  z: item.z,
-                  vx: (Math.random() - 0.5) * 0.25,
-                  vy: Math.random() * 0.25 + 0.1,
-                  vz: (Math.random() - 0.5) * 0.25,
-                  color: pColor,
-                  size: Math.random() * 0.25 + 0.15,
-                  life: 40,
-                  maxLife: 40
-                });
-              }
-
-              plantToDatabase(pColor);
-
-              item.x = (Math.random() - 0.5) * 140;
-              item.z = (Math.random() - 0.5) * 140;
-            }
-          } else {
-            // Larger collision bounding check
-            const colDist = item.type === "tree" ? 2.8 : 2.6;
-            if (dist < colDist) {
-              const overlap = colDist - dist;
-              const pushX = (dx / dist) * overlap;
-              const pushZ = (dz / dist) * overlap;
-
-              px.current += pushX;
-              pz.current += pushZ;
-
-              speed.current = -speed.current * 0.4;
-              screenShake.current = 7;
-              sounds.current.playCollision();
-
-              for (let p = 0; p < 4; p++) {
-                particles.current.push({
-                  x: px.current + (Math.random() - 0.5) * 2.0,
-                  y: 0.3,
-                  z: pz.current + (Math.random() - 0.5) * 2.0,
-                  vx: (Math.random() - 0.5) * 0.15,
-                  vy: Math.random() * 0.1 + 0.05,
-                  vz: (Math.random() - 0.5) * 0.15,
-                  color: "#857d76",
-                  size: Math.random() * 0.18 + 0.08,
-                  life: 20,
-                  maxLife: 20
-                });
-              }
-            }
+          if (!blocked) {
+            pos[axis] = Math.min(Math.max(next[axis], 0), (axis === "x" ? width - CHAR_W : height - CHAR_H));
           }
-        });
+        };
+
+        tryMove("x", moveX);
+        tryMove("y", moveY);
       }
 
-      flowerSpin.current = (flowerSpin.current + 0.04 * dt) % (Math.PI * 2);
-
-      particles.current = particles.current.filter((p) => {
-        p.x += p.vx * dt;
-        p.y += p.vy * dt;
-        p.z += p.vz * dt;
-        p.vy -= 0.006 * dt;
-        p.life -= dt;
-        if (p.y < 0) {
-          p.y = 0;
-          p.vx *= 0.8;
-          p.vz *= 0.8;
-        }
-        return p.life > 0;
-      });
-
-      // ── 2. Camera Chase Logic (Brings camera closer for better scale visibility) ──
-      const followDist = 5.2;
-      const followHeight = 2.4;
-      let targetCx, targetCz;
-      
-      if (isPlaying) {
-        targetCx = px.current - followDist * Math.cos(carAngle.current);
-        targetCz = pz.current - followDist * Math.sin(carAngle.current);
-      } else {
-        const spinTime = timestamp * 0.0006;
-        targetCx = px.current - 7 * Math.cos(spinTime);
-        targetCz = pz.current - 7 * Math.sin(spinTime);
-      }
-      
-      const targetCy = py + followHeight;
-
-      cx.current += (targetCx - cx.current) * 0.09 * dt;
-      cy.current += (targetCy - cy.current) * 0.09 * dt;
-      cz.current += (targetCz - cz.current) * 0.09 * dt;
-
-      const dx = px.current - cx.current;
-      const dz = pz.current - cz.current;
-      const yaw = Math.atan2(dz, dx);
-      const dist2D = Math.sqrt(dx * dx + dz * dz);
-      const pitch = Math.atan2(cy.current - py, dist2D);
-
-      const camera: Camera = {
-        cx: cx.current,
-        cy: cy.current,
-        cz: cz.current,
-        theta: yaw,
-        phi: pitch,
-        F: 320,
-        centerX: width / 2,
-        centerY: height / 2 + 10,
-      };
-
-      // ── 3. Screen Shake ──
-      ctx.save();
-      if (screenShake.current > 0.1) {
-        const shakeX = (Math.random() - 0.5) * screenShake.current;
-        const shakeY = (Math.random() - 0.5) * screenShake.current;
-        ctx.translate(shakeX, shakeY);
-        screenShake.current *= Math.pow(0.85, dt);
-      }
-
-      // ── 4. Render Background & Sky ──
-      ctx.clearRect(0, 0, width, height);
-      const horizonY = camera.centerY - Math.tan(camera.phi) * camera.F;
-
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
-      skyGrad.addColorStop(0, "#fcf7f2");
-      skyGrad.addColorStop(0.7, "#fed7aa");
-      skyGrad.addColorStop(1, "#fdba74");
-      ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, width, Math.max(horizonY, 0));
-
-      const sunProj = projectPoint(px.current + 80 * Math.cos(carAngle.current + 0.4), 16, pz.current + 80 * Math.sin(carAngle.current + 0.4), camera);
-      if (sunProj) {
-        ctx.beginPath();
-        ctx.arc(sunProj.x, sunProj.y, 25, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255, 237, 213, 0.9)";
-        ctx.shadowBlur = 35;
-        ctx.shadowColor = "#fde047";
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-
-      ctx.fillStyle = "#e2e8d5";
-      ctx.fillRect(0, Math.max(horizonY, 0), width, height - Math.max(horizonY, 0));
-
-      // ── 5. Draw 3D Infinite Grid ──
-      const gridStep = 8;
-      const gridRange = 120;
-      
-      const startGridX = Math.floor(px.current / gridStep) * gridStep - gridRange;
-      const endGridX = Math.floor(px.current / gridStep) * gridStep + gridRange;
-      const startGridZ = Math.floor(pz.current / gridStep) * gridStep - gridRange;
-      const endGridZ = Math.floor(pz.current / gridStep) * gridStep + gridRange;
-
-      for (let x = startGridX; x <= endGridX; x += gridStep) {
-        draw3DLine(ctx, x, 0, startGridZ, x, 0, endGridZ, camera, "#c5cbb7", 0.6);
-      }
-      for (let z = startGridZ; z <= endGridZ; z += gridStep) {
-        draw3DLine(ctx, startGridX, 0, z, endGridX, 0, z, camera, "#c5cbb7", 0.6);
-      }
-
-      // ── 6. Build Scene Polygons ──
-      interface Poly3D {
-        pts: { x: number; y: number }[];
-        avgDepth: number;
-        color: string;
-        strokeColor: string;
-        isWireframeOnly?: boolean;
-      }
-      let scenePolys: Poly3D[] = [];
-      const vehicleAngle = carAngle.current - Math.PI / 2;
-
-      worldItems.current.forEach((item) => {
-        let verts: { x: number; y: number; z: number }[] = [];
-        let faces: { indices: number[]; color: string; stroke: string }[] = [];
-
-        if (item.type === "tree") {
-          verts = [
-            { x: item.x - 0.25, y: 0, z: item.z - 0.25 },
-            { x: item.x + 0.25, y: 0, z: item.z - 0.25 },
-            { x: item.x + 0.25, y: 0, z: item.z + 0.25 },
-            { x: item.x - 0.25, y: 0, z: item.z + 0.25 },
-            { x: item.x - 0.25, y: 1.1, z: item.z - 0.25 },
-            { x: item.x + 0.25, y: 1.1, z: item.z - 0.25 },
-            { x: item.x + 0.25, y: 1.1, z: item.z + 0.25 },
-            { x: item.x - 0.25, y: 1.1, z: item.z + 0.25 },
-            { x: item.x - 1.2, y: 1.1, z: item.z - 1.2 },
-            { x: item.x + 1.2, y: 1.1, z: item.z - 1.2 },
-            { x: item.x + 1.2, y: 1.1, z: item.z + 1.2 },
-            { x: item.x - 1.2, y: 1.1, z: item.z - 1.2 },
-            { x: item.x, y: 3.8, z: item.z },
-          ];
-
-          faces = [
-            { indices: [0, 1, 5, 4], color: "#78350f", stroke: "#5f2b0d" },
-            { indices: [1, 2, 6, 5], color: "#78350f", stroke: "#5f2b0d" },
-            { indices: [2, 3, 7, 6], color: "#78350f", stroke: "#5f2b0d" },
-            { indices: [3, 0, 4, 7], color: "#78350f", stroke: "#5f2b0d" },
-            { indices: [8, 11, 10, 9], color: "#14532d", stroke: "#14532d" },
-            { indices: [8, 9, 12], color: "#16a34a", stroke: "#15803d" },
-            { indices: [9, 10, 12], color: "#15803d", stroke: "#166534" },
-            { indices: [10, 11, 12], color: "#16a34a", stroke: "#15803d" },
-            { indices: [11, 8, 12], color: "#14532d", stroke: "#14532d" },
-          ];
-        } else if (item.type === "rock") {
-          verts = [
-            { x: item.x - 0.7, y: 0, z: item.z - 0.7 },
-            { x: item.x + 0.7, y: 0, z: item.z - 0.6 },
-            { x: item.x + 0.6, y: 0, z: item.z + 0.7 },
-            { x: item.x - 0.6, y: 0, z: item.z + 0.6 },
-            { x: item.x - 0.9, y: 0.6, z: item.z - 0.8 },
-            { x: item.x + 0.8, y: 0.7, z: item.z - 0.6 },
-            { x: item.x + 0.7, y: 0.5, z: item.z + 0.8 },
-            { x: item.x - 0.8, y: 0.6, z: item.z + 0.7 },
-            { x: item.x - 0.25, y: 1.1, z: item.z - 0.25 },
-            { x: item.x + 0.25, y: 1.2, z: item.z + 0.25 },
-          ];
-
-          faces = [
-            { indices: [0, 1, 5, 4], color: "#78716c", stroke: "#57534e" },
-            { indices: [1, 2, 6, 5], color: "#57534e", stroke: "#44403c" },
-            { indices: [2, 3, 7, 6], color: "#78716c", stroke: "#57534e" },
-            { indices: [3, 0, 4, 7], color: "#44403c", stroke: "#292524" },
-            { indices: [4, 5, 9, 8], color: "#878076", stroke: "#78716c" },
-            { indices: [5, 6, 9], color: "#78716c", stroke: "#57534e" },
-            { indices: [6, 7, 8, 9], color: "#78716c", stroke: "#57534e" },
-            { indices: [7, 4, 8], color: "#57534e", stroke: "#44403c" },
-          ];
-        } else if (item.type === "flower") {
-          const angle = flowerSpin.current + item.id;
-          
-          verts = [
-            { x: item.x, y: 0, z: item.z },
-            { x: item.x, y: 0.7, z: item.z },
-          ];
-          
-          const p1 = projectPoint(verts[0].x, verts[0].y, verts[0].z, camera);
-          const p2 = projectPoint(verts[1].x, verts[1].y, verts[1].z, camera);
-          
-          if (p1 && p2) {
-            scenePolys.push({
-              pts: [p1, p2],
-              avgDepth: (p1.depth + p2.depth) / 2,
-              color: "#15803d",
-              strokeColor: "#15803d",
-              isWireframeOnly: true
-            });
-          }
-
-          const r = 0.28;
-          const cyVal = 0.8;
-          verts = [];
-          for (let k = 0; k < 5; k++) {
-            const rad = (k * Math.PI * 2) / 5 + angle;
-            verts.push({
-              x: item.x + r * Math.cos(rad),
-              y: cyVal + r * Math.sin(rad),
-              z: item.z
-            });
-          }
-
-          const ptsProj = verts.map(v => projectPoint(v.x, v.y, v.z, camera));
-          const hasUnprojected = ptsProj.some(p => p === null);
-
-          if (!hasUnprojected) {
-            const validPts = ptsProj as { x: number; y: number; depth: number }[];
-            const sumDepth = validPts.reduce((acc, p) => acc + p.depth, 0);
-            scenePolys.push({
-              pts: validPts,
-              avgDepth: sumDepth / 5,
-              color: item.color || "#ec4899",
-              strokeColor: "#ffffff"
-            });
-          }
-
-          const cenProj = projectPoint(item.x, cyVal, item.z, camera);
-          if (cenProj) {
-            scenePolys.push({
-              pts: [{ x: cenProj.x - 3, y: cenProj.y - 3 }, { x: cenProj.x + 3, y: cenProj.y - 3 }, { x: cenProj.x + 3, y: cenProj.y + 3 }, { x: cenProj.x - 3, y: cenProj.y + 3 }],
-              avgDepth: cenProj.depth - 0.05,
-              color: "#facc15",
-              strokeColor: "#eab308"
-            });
-          }
-          return;
-        }
-
-        faces.forEach((face) => {
-          const pts = face.indices.map((idx) => projectPoint(verts[idx].x, verts[idx].y, verts[idx].z, camera));
-          if (pts.some((p) => p === null)) return;
-
-          const validPts = pts as { x: number; y: number; depth: number }[];
-          const sumZ = validPts.reduce((acc, p) => acc + p.depth, 0);
-
-          scenePolys.push({
-            pts: validPts,
-            avgDepth: sumZ / validPts.length,
-            color: face.color,
-            strokeColor: face.stroke
-          });
-        });
-      });
-
-      // B. Populate Particles
-      particles.current.forEach((p) => {
-        const pt = projectPoint(p.x, p.y, p.z, camera);
-        if (!pt) return;
-
-        const drawSize = (p.size * camera.F) / pt.depth;
-        if (drawSize < 0.5) return;
-
-        scenePolys.push({
-          pts: [
-            { x: pt.x - drawSize, y: pt.y - drawSize },
-            { x: pt.x + drawSize, y: pt.y - drawSize },
-            { x: pt.x + drawSize, y: pt.y + drawSize },
-            { x: pt.x - drawSize, y: pt.y + drawSize },
-          ],
-          avgDepth: pt.depth,
-          color: p.color,
-          strokeColor: "transparent"
-        });
-      });
-
-      // C. Populate Car Model (Utilizes 1.5x larger scale dimensions)
-      const cVerts = getCarVertices(px.current, py, pz.current, vehicleAngle);
-      
-      const cFaces = [
-        { indices: [0, 3, 2, 1], color: "#1c1917", stroke: "#1c1917" },
-        { indices: [0, 1, 5, 4], color: "#ca6642", stroke: "#8f3f27" },
-        { indices: [2, 3, 7, 6], color: "#7d301f", stroke: "#5f2417" },
-        { indices: [3, 0, 4, 7], color: "#b54f2d", stroke: "#8f3f27" },
-        { indices: [1, 2, 6, 5], color: "#9a3e28", stroke: "#6f2f1f" },
-        { indices: [4, 5, 9, 8], color: "#d6764f", stroke: "#a24f38" },
-        { indices: [10, 11, 7, 6], color: "#8b3926", stroke: "#6f2f1f" },
-        { indices: [8, 9, 13, 12], color: "#cfefff", stroke: "#ffffff" },
-        { indices: [10, 11, 15, 14], color: "#eaf6ff", stroke: "#ffffff" },
-        { indices: [11, 8, 12, 15], color: "#be5a3a", stroke: "#8f3f27" },
-        { indices: [9, 10, 14, 13], color: "#a94a2f", stroke: "#6f2f1f" },
-        { indices: [12, 13, 14, 15], color: "#f4d0c4", stroke: "#ffffff" },
-      ];
-
-      cFaces.forEach((face) => {
-        const pts = face.indices.map((idx) => projectPoint(cVerts[idx].x, cVerts[idx].y, cVerts[idx].z, camera));
-        if (pts.some((p) => p === null)) return;
-
-        const validPts = pts as { x: number; y: number; depth: number }[];
-        const sumZ = validPts.reduce((acc, p) => acc + p.depth, 0);
-
-        scenePolys.push({
-          pts: validPts,
-          avgDepth: sumZ / validPts.length,
-          color: face.color,
-          strokeColor: face.stroke
-        });
-      });
-
-      // Shadow below the car
-      const shadowPts: { x: number; y: number }[] = [];
-      const steps = 8;
-      for (let s = 0; s < steps; s++) {
-        const ang = (s * Math.PI * 2) / steps;
-        const radX = 1.5;
-        const radZ = 2.5;
-        const sx = px.current + radX * Math.cos(ang) * Math.cos(vehicleAngle) - radZ * Math.sin(ang) * Math.sin(vehicleAngle);
-        const sz = pz.current + radX * Math.cos(ang) * Math.sin(vehicleAngle) + radZ * Math.sin(ang) * Math.cos(vehicleAngle);
-        const pt = projectPoint(sx, 0.02, sz, camera);
-        if (pt) shadowPts.push(pt);
-      }
-      if (shadowPts.length === steps) {
-        const avgD = (shadowPts as any[]).reduce((sum, p) => sum + p.depth, 0) / steps;
-        scenePolys.push({
-          pts: shadowPts,
-          avgDepth: avgD + 0.1,
-          color: "rgba(35, 45, 30, 0.3)",
-          strokeColor: "transparent"
-        });
-      }
-
-      // Wheels (Adjusted dimensions for 1.5x scale model)
-      const wWidth = 0.38;
-      const wRadius = 0.54;
-      const wheelOffsets = [
-        { x: -1.14, z: 1.42 },
-        { x:  1.14, z: 1.42 },
-        { x: -1.14, z: -1.2 },
-        { x:  1.14, z: -1.2 },
-      ];
-
-      wheelOffsets.forEach((wo) => {
-        const wx = px.current + wo.x * Math.cos(vehicleAngle) - wo.z * Math.sin(vehicleAngle);
-        const wz = pz.current + wo.x * Math.sin(vehicleAngle) + wo.z * Math.cos(vehicleAngle);
-        const wy = wRadius;
-
-        const localW = [
-          { x: -wWidth/2, y: -wRadius, z:  wRadius },
-          { x: -wWidth/2, y:  wRadius, z:  wRadius },
-          { x: -wWidth/2, y:  wRadius, z: -wRadius },
-          { x: -wWidth/2, y: -wRadius, z: -wRadius },
-          { x:  wWidth/2, y: -wRadius, z:  wRadius },
-          { x:  wWidth/2, y:  wRadius, z:  wRadius },
-          { x:  wWidth/2, y:  wRadius, z: -wRadius },
-          { x:  wWidth/2, y: -wRadius, z: -wRadius },
-        ];
-
-        const wVerts = localW.map((v) => {
-          let rotateAngle = vehicleAngle;
-          if (wo.z > 0) {
-            rotateAngle += steer.current * 0.7;
-          }
-          const rotX = wx + v.x * Math.cos(rotateAngle) - v.z * Math.sin(rotateAngle);
-          const rotZ = wz + v.x * Math.sin(rotateAngle) + v.z * Math.cos(rotateAngle);
-          return { x: rotX, y: wy + v.y, z: rotZ };
-        });
-
-        const wFaces = [
-          { indices: [0, 1, 5, 4], color: "#1c1917", stroke: "#1c1917" },
-          { indices: [1, 2, 6, 5], color: "#1c1917", stroke: "#1c1917" },
-          { indices: [2, 3, 7, 6], color: "#1c1917", stroke: "#1c1917" },
-          { indices: [3, 0, 4, 7], color: "#1c1917", stroke: "#1c1917" },
-          { indices: [0, 3, 7, 4], color: "#292524", stroke: "#1c1917" },
-          { indices: [1, 2, 6, 5], color: "#292524", stroke: "#1c1917" },
-        ];
-
-        wFaces.forEach((face) => {
-          const pts = face.indices.map((idx) => projectPoint(wVerts[idx].x, wVerts[idx].y, wVerts[idx].z, camera));
-          if (pts.some((p) => p === null)) return;
-
-          const validPts = pts as { x: number; y: number; depth: number }[];
-          const sumZ = validPts.reduce((acc, p) => acc + p.depth, 0);
-
-          scenePolys.push({
-            pts: validPts,
-            avgDepth: sumZ / validPts.length,
-            color: face.color,
-            strokeColor: face.stroke
-          });
-        });
-      });
-
-      // Painter sorting
-      scenePolys.sort((a, b) => b.avgDepth - a.avgDepth);
-
-      scenePolys.forEach((p) => {
-        if (p.pts.length < 2) return;
-
-        if (p.isWireframeOnly) {
-          ctx.beginPath();
-          ctx.moveTo(p.pts[0].x, p.pts[0].y);
-          ctx.lineTo(p.pts[1].x, p.pts[1].y);
-          ctx.strokeStyle = p.color;
-          ctx.lineWidth = 2;
-          ctx.stroke();
-          return;
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(p.pts[0].x, p.pts[0].y);
-        for (let i = 1; i < p.pts.length; i++) {
-          ctx.lineTo(p.pts[i].x, p.pts[i].y);
-        }
-        ctx.closePath();
-
-        ctx.fillStyle = p.color;
-        ctx.fill();
-
-        if (p.strokeColor !== "transparent") {
-          ctx.strokeStyle = p.strokeColor;
-          ctx.lineWidth = 0.55;
-          ctx.stroke();
+      // Proximity check for nearby interactable
+      const pos = charPosRef.current;
+      const charCenter = { x: pos.x + CHAR_W / 2, y: pos.y + CHAR_H / 2 };
+      let closestIndex: number | null = null;
+      let closestDist = Infinity;
+      layoutRef.current.forEach((h, i) => {
+        const dist = Math.hypot(charCenter.x - h.x, charCenter.y - h.y);
+        if (dist < HOUSE_SIZE / 2 + INTERACT_PADDING && dist < closestDist) {
+          closestDist = dist;
+          closestIndex = i;
         }
       });
+      if (closestIndex !== nearbyIndexRef.current) {
+        nearbyIndexRef.current = closestIndex;
+        setNearbyIndex(closestIndex);
+      }
 
-      ctx.restore();
+      setCharState({ x: pos.x, y: pos.y, direction: directionRef.current, walking });
     };
 
     animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [ready, viewMode]);
 
-    return () => {
-      cancelAnimationFrame(animId);
-    };
-  }, [isPlaying]);
+  const openProject: WorkProject | null = openIndex !== null ? workProjects[openIndex] : null;
+  const nearbyProject = nearbyIndex !== null ? workProjects[nearbyIndex] : null;
+
+  const handleDpadDown = useCallback((dir: keyof typeof mobileInputs.current) => () => {
+    mobileInputs.current[dir] = true;
+  }, []);
+  const handleDpadUp = useCallback((dir: keyof typeof mobileInputs.current) => () => {
+    mobileInputs.current[dir] = false;
+  }, []);
 
   return (
-    <div ref={containerRef} className="h-full flex flex-col relative select-none">
-      
+    <div className="h-full flex flex-col relative select-none">
       {/* HUD Header */}
       <div className="flex items-center justify-between px-4 py-3 z-10">
         <div>
-          <div className="text-[12px] text-stone-400 uppercase tracking-[0.2em] font-[family-name:var(--font-courier-prime)]">3D Garden Tour</div>
+          <div className="text-[12px] text-stone-400 uppercase tracking-[0.2em] font-[family-name:var(--font-courier-prime)]">Project Garden</div>
           <div className="text-[13px] text-stone-500 font-[family-name:var(--font-noto)] mt-0.5">
-            Drive, collect flowers & auto-plant them in the community garden!
+            {viewMode === "walk" ? "Walk around and press E near a house to enter" : "Browsing as a plain list"}
           </div>
         </div>
+        <button
+          onClick={() => setViewMode((v) => (v === "walk" ? "list" : "walk"))}
+          className="text-[11px] font-medium text-stone-600 hover:text-stone-800 bg-[#fffdfa] border border-stone-200/80 px-3 py-1.5 rounded-full shadow-[0_2px_5px_rgba(0,0,0,0.05)] transition-colors font-[family-name:var(--font-courier-prime)]"
+        >
+          {viewMode === "walk" ? "View as list" : "Back to garden"}
+        </button>
+      </div>
 
-        <div className="flex items-center gap-3">
-          {dbStatus && (
-            <span className="text-[11px] font-bold bg-[#efe5d7] text-[#c26f51] px-2.5 py-1 rounded-full animate-pulse font-[family-name:var(--font-courier-prime)] border border-[#c26f51]/20">
-              {dbStatus}
-            </span>
+      {viewMode === "list" ? (
+        <div className="flex-1 relative mx-3 mb-3 rounded-[22px] border border-stone-200/80 shadow-[0_12px_28px_rgba(0,0,0,0.06)] overflow-y-auto bg-[#FAF8F5] p-3 space-y-2">
+          {workProjects.map((project, i) => (
+            <button
+              key={project.id}
+              onClick={() => setOpenIndex(i)}
+              className="w-full text-left rounded-xl border border-stone-200/70 bg-white/70 hover:bg-white px-4 py-3 transition-colors cursor-pointer flex items-center justify-between"
+            >
+              <div>
+                <p className="text-[13px] font-medium text-stone-700">{project.fileName}</p>
+                <p className="text-[11px] text-stone-400 mt-0.5">{project.role} · {project.year}</p>
+              </div>
+              <span className="text-[11px] text-stone-400">Open →</span>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div
+          ref={viewportRef}
+          className="flex-1 relative mx-3 mb-3 rounded-[22px] border border-stone-200/80 shadow-[0_12px_28px_rgba(0,0,0,0.06)] overflow-hidden"
+          style={{ background: "#e9f0dd" }}
+        >
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.15]"
+            style={{ backgroundImage: "url(/assets/textures/paper-texture.webp)", backgroundSize: "480px", backgroundRepeat: "repeat" }}
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: "radial-gradient(circle, rgba(120,140,90,0.15) 1.4px, transparent 1.4px)",
+              backgroundSize: "26px 26px",
+            }}
+          />
+
+          {ready &&
+            layoutRef.current.map((pos, i) => (
+              <div key={workProjects[i].id} className="absolute" style={{ left: pos.x - HOUSE_SIZE / 2, top: pos.y - HOUSE_SIZE / 2 }}>
+                <Building index={i} label={shortName(workProjects[i].label)} type={i % 2 === 0 ? "house" : "plant"} />
+              </div>
+            ))}
+
+          {ready && (
+            <Character x={charState.x} y={charState.y} direction={charState.direction} walking={charState.walking} walkFrame={walkFrame} />
           )}
 
-          <div className="flex items-center gap-2">
-            <span className="text-[13px] font-bold text-stone-700 bg-[#fffdfa] border border-stone-200/80 px-3.5 py-1 rounded-full shadow-[0_2px_5px_rgba(0,0,0,0.05)] font-[family-name:var(--font-courier-prime)]">
-              🌸 Collected: {score}
-            </span>
-            
-            <button
-              onClick={() => setIsMuted(!isMuted)}
-              className="text-[16px] text-stone-600 hover:text-stone-800 bg-[#fffdfa] border border-stone-200/80 p-1.5 rounded-full hover:bg-stone-50 shadow-[0_2px_5px_rgba(0,0,0,0.05)] flex items-center justify-center transition-all"
-              title={isMuted ? "Unmute sound" : "Mute sound"}
-            >
-              <span className="material-symbols-outlined text-[16px]">
-                {isMuted ? "volume_off" : "volume_up"}
-              </span>
-            </button>
-          </div>
+          {/* Interact prompt */}
+          <AnimatePresence>
+            {nearbyProject && openIndex === null && (
+              <motion.button
+                key={nearbyProject.id}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 6 }}
+                transition={{ duration: 0.15 }}
+                onClick={() => nearbyIndex !== null && setOpenIndex(nearbyIndex)}
+                className="absolute z-20 -translate-x-1/2 flex items-center gap-1.5 rounded-full bg-stone-900 text-white px-3 py-1.5 text-[11px] font-medium shadow-lg cursor-pointer font-[family-name:var(--font-mono)]"
+                style={{
+                  left: charState.x + CHAR_W / 2,
+                  top: charState.y - 34,
+                }}
+              >
+                <span className="bg-white/20 rounded px-1.5 py-0.5 text-[10px]">E</span>
+                Enter
+              </motion.button>
+            )}
+          </AnimatePresence>
+
+          {/* Mobile D-pad */}
+          {(isMobile || (typeof navigator !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) && (
+            <div className="absolute bottom-4 right-4 z-20 select-none" style={{ touchAction: "none" }}>
+              <div className="grid grid-cols-3 grid-rows-3 gap-1 w-[132px] h-[132px]">
+                <div />
+                <button
+                  onTouchStart={handleDpadDown("up")}
+                  onTouchEnd={handleDpadUp("up")}
+                  className="col-start-2 row-start-1 bg-white/70 active:bg-white/95 rounded-xl shadow-md border border-stone-200/60 flex items-center justify-center backdrop-blur-sm"
+                >
+                  <span className="material-symbols-outlined text-stone-700 text-[20px]">arrow_upward</span>
+                </button>
+                <div />
+                <button
+                  onTouchStart={handleDpadDown("left")}
+                  onTouchEnd={handleDpadUp("left")}
+                  className="col-start-1 row-start-2 bg-white/70 active:bg-white/95 rounded-xl shadow-md border border-stone-200/60 flex items-center justify-center backdrop-blur-sm"
+                >
+                  <span className="material-symbols-outlined text-stone-700 text-[20px]">arrow_back</span>
+                </button>
+                <div className="col-start-2 row-start-2" />
+                <button
+                  onTouchStart={handleDpadDown("right")}
+                  onTouchEnd={handleDpadUp("right")}
+                  className="col-start-3 row-start-2 bg-white/70 active:bg-white/95 rounded-xl shadow-md border border-stone-200/60 flex items-center justify-center backdrop-blur-sm"
+                >
+                  <span className="material-symbols-outlined text-stone-700 text-[20px]">arrow_forward</span>
+                </button>
+                <div />
+                <button
+                  onTouchStart={handleDpadDown("down")}
+                  onTouchEnd={handleDpadUp("down")}
+                  className="col-start-2 row-start-3 bg-white/70 active:bg-white/95 rounded-xl shadow-md border border-stone-200/60 flex items-center justify-center backdrop-blur-sm"
+                >
+                  <span className="material-symbols-outlined text-stone-700 text-[20px]">arrow_downward</span>
+                </button>
+                <div />
+              </div>
+            </div>
+          )}
+
+          {/* Keyboard hint */}
+          {!isMobile && (
+            <div className="absolute bottom-4 left-4 z-10 flex gap-2 pointer-events-none bg-[#fffdfa]/80 backdrop-blur-xs border border-stone-200/60 px-3 py-2 rounded-xl shadow-xs font-[family-name:var(--font-courier-prime)] text-[10px] text-stone-500">
+              <span>Move:</span>
+              <span className="bg-stone-200 px-1.5 py-0.5 rounded text-stone-700">WASD</span>
+              <span>/</span>
+              <span className="bg-stone-200 px-1.5 py-0.5 rounded text-stone-700">Arrows</span>
+              <span className="ml-2">Interact:</span>
+              <span className="bg-stone-200 px-1.5 py-0.5 rounded text-stone-700">E</span>
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
-      {/* Canvas container */}
-      <div className="flex-1 relative mx-3 mb-3 rounded-[22px] border border-stone-200/80 shadow-[0_12px_28px_rgba(0,0,0,0.06)] overflow-hidden">
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full block bg-[#e2e8d5]"
-        />
-
-        {/* Start Game Overlay */}
-        {!isPlaying && (
-          <div className="absolute inset-0 bg-[#1c1917]/70 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center z-30">
-            {/* Spinning Title card */}
-            <div className="relative overflow-hidden rounded-[26px] border border-stone-200/80 bg-[#fffdfa] shadow-[0_14px_30px_rgba(0,0,0,0.25)] max-w-sm w-full p-6 rotate-[-1deg]">
-              <div className="absolute inset-0 opacity-[0.16] pointer-events-none" style={{
-                backgroundImage: "radial-gradient(circle at 1px 1px, rgba(120,113,108,0.35) 1px, transparent 0)",
-                backgroundSize: "12px 12px",
-              }} />
-              <div className="absolute inset-x-0 top-0 h-[34%] bg-[linear-gradient(180deg,rgba(214,120,91,0.12),rgba(214,120,91,0))] pointer-events-none" />
-
-              <h2 className="text-[26px] font-bold text-stone-800 tracking-tight font-[family-name:var(--font-noto)]">
-                Car Driving 3D 🚗
-              </h2>
-              <p className="mt-2 text-stone-500 font-[family-name:var(--font-noto)] text-[13px] leading-relaxed">
-                Explore the low-poly garden! Drive around, collect spinning pixel flowers, and plant them in the database!
-              </p>
-
-              <div className="mt-4 flex flex-col gap-2 bg-[#f4efe8]/60 border border-stone-200/50 rounded-xl p-3 text-[11px] text-stone-500 text-left font-[family-name:var(--font-courier-prime)]">
-                <div>⌨️ <strong className="text-stone-700">W, A, S, D</strong> or <strong className="text-stone-700">Arrow keys</strong> to drive.</div>
-                <div>🌸 Collect flowers to earn points.</div>
-                <div>🔊 Web Audio Synth engine hums as you rev!</div>
+      {/* Project detail modal */}
+      <AnimatePresence>
+        {openProject && (
+          <motion.div
+            className="absolute inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            onClick={() => setOpenIndex(null)}
+          >
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label={openProject.label}
+              className="editor-window relative w-full max-w-[560px] max-h-[85%] flex flex-col font-[family-name:var(--font-mono)]"
+              initial={{ opacity: 0, y: 16, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: 0.96 }}
+              transition={{ duration: 0.18 }}
+            >
+              {/* Title bar */}
+              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-stone-300/30 bg-[#F0EDE6]/80 shrink-0">
+                <div className="flex gap-1.5">
+                  <div className="w-[11px] h-[11px] rounded-full bg-[#FF5F57] border border-[#E0443E]" />
+                  <div className="w-[11px] h-[11px] rounded-full bg-[#FEBC2E] border border-[#DEA123]" />
+                  <div className="w-[11px] h-[11px] rounded-full bg-[#28C840] border border-[#1AAB29]" />
+                </div>
+                <div className="flex-1 text-center">
+                  <span className="text-[11px] text-stone-400">~/ripaahyar/garden/{openProject.fileName}</span>
+                </div>
+                <button
+                  onClick={() => setOpenIndex(null)}
+                  aria-label="Close"
+                  className="text-stone-400 hover:text-stone-700 transition-colors cursor-pointer"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
               </div>
 
-              <button
-                onClick={handleStartGame}
-                className="mt-6 w-full py-3 bg-[#c26f51] hover:bg-[#a65338] text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg font-[family-name:var(--font-courier-prime)] flex items-center justify-center gap-2"
-              >
-                Start Engine & Drive
-                <span className="material-symbols-outlined text-[16px]">play_arrow</span>
-              </button>
-            </div>
-          </div>
-        )}
+              <div className="overflow-y-auto p-5 space-y-5 font-[family-name:var(--font-noto)]">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-stone-800 px-3 py-1 text-[11px] font-medium text-white">{openProject.role}</span>
+                  <span className="text-[11px] text-stone-400">{openProject.year}</span>
+                  <span className="h-1 w-1 rounded-full bg-stone-300" />
+                  {openProject.tags.map((tag) => (
+                    <span key={tag} className="rounded-full border border-stone-200 px-3 py-1 text-[11px] text-stone-500">{tag}</span>
+                  ))}
+                </div>
 
-        {/* Mobile controls overlay */}
-        {isPlaying && (isMobile || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && (
-          <div className="absolute inset-x-0 bottom-4 flex justify-between px-6 z-20 pointer-events-none">
-            {/* Steering Left/Right */}
-            <div className="flex gap-3 pointer-events-auto">
-              <button
-                onTouchStart={() => { mobileInputs.current.left = true; }}
-                onTouchEnd={() => { mobileInputs.current.left = false; }}
-                className="w-14 h-14 bg-white/70 active:bg-white/95 rounded-full shadow-lg border border-stone-200/60 flex items-center justify-center backdrop-blur-sm select-none"
-              >
-                <span className="material-symbols-outlined text-stone-700 text-[26px]">arrow_back</span>
-              </button>
-              <button
-                onTouchStart={() => { mobileInputs.current.right = true; }}
-                onTouchEnd={() => { mobileInputs.current.right = false; }}
-                className="w-14 h-14 bg-white/70 active:bg-white/95 rounded-full shadow-lg border border-stone-200/60 flex items-center justify-center backdrop-blur-sm select-none"
-              >
-                <span className="material-symbols-outlined text-stone-700 text-[26px]">arrow_forward</span>
-              </button>
-            </div>
+                <div className="space-y-2">
+                  <h3 className="text-[18px] font-medium text-stone-800">{openProject.label}</h3>
+                  <p className="text-[14px] leading-relaxed text-stone-600">{openProject.summary}</p>
+                </div>
 
-            {/* Acceleration Pedals */}
-            <div className="flex gap-3 pointer-events-auto">
-              <button
-                onTouchStart={() => { mobileInputs.current.reverse = true; }}
-                onTouchEnd={() => { mobileInputs.current.reverse = false; }}
-                className="w-14 h-14 bg-red-100/70 active:bg-red-200/90 rounded-full shadow-lg border border-red-200/60 flex items-center justify-center backdrop-blur-sm select-none"
-              >
-                <span className="material-symbols-outlined text-red-700 text-[26px]">navigation</span>
-                {/* rotated down */}
-                <style jsx>{`
-                  span { transform: rotate(180deg); }
-                `}</style>
-              </button>
-              <button
-                onTouchStart={() => { mobileInputs.current.forward = true; }}
-                onTouchEnd={() => { mobileInputs.current.forward = false; }}
-                className="w-16 h-16 bg-[#ecfdf5]/85 active:bg-[#d1fae5] rounded-full shadow-xl border border-emerald-300 flex items-center justify-center backdrop-blur-sm select-none -translate-y-2"
-              >
-                <span className="material-symbols-outlined text-emerald-700 text-[32px]">navigation</span>
-              </button>
-            </div>
-          </div>
-        )}
+                <div>
+                  {openProject.previewUrl.startsWith("/") ? (
+                    <Link
+                      href={openProject.previewUrl}
+                      className="inline-flex items-center rounded-lg border border-stone-700 px-4 py-2 text-[13px] font-medium text-stone-700 transition-colors hover:bg-stone-800 hover:text-white"
+                    >
+                      Preview Website
+                    </Link>
+                  ) : (
+                    <a
+                      href={openProject.previewUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center rounded-lg border border-stone-700 px-4 py-2 text-[13px] font-medium text-stone-700 transition-colors hover:bg-stone-800 hover:text-white"
+                    >
+                      Preview Website
+                    </a>
+                  )}
+                </div>
 
-        {/* Keyboard hints bottom overlay */}
-        {isPlaying && !isMobile && (
-          <div className="absolute bottom-4 left-4 z-10 flex gap-2 pointer-events-none bg-[#fffdfa]/80 backdrop-blur-xs border border-stone-200/60 px-3 py-2 rounded-xl shadow-xs font-[family-name:var(--font-courier-prime)] text-[10px] text-stone-500">
-            <span>Controls:</span>
-            <span className="bg-stone-200 px-1.5 py-0.5 rounded text-stone-700">▲ W</span>
-            <span className="bg-stone-200 px-1.5 py-0.5 rounded text-stone-700">◀ A</span>
-            <span className="bg-stone-200 px-1.5 py-0.5 rounded text-stone-700">▼ S</span>
-            <span className="bg-stone-200 px-1.5 py-0.5 rounded text-stone-700">▶ D</span>
-          </div>
+                <div className="space-y-2 pt-4 border-t border-stone-200/70">
+                  <p className="flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] text-stone-400">
+                    <span className="h-[3px] w-3 rounded-full bg-stone-400" />
+                    Problem
+                  </p>
+                  <p className="text-[14px] leading-relaxed text-stone-600 whitespace-pre-line">{openProject.problem}</p>
+                </div>
+
+                <div className="space-y-2 pt-4 border-t border-stone-200/70">
+                  <p className="flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] text-stone-400">
+                    <span className="h-[3px] w-3 rounded-full bg-stone-400" />
+                    What I Did
+                  </p>
+                  <div className="space-y-2">
+                    {openProject.contributions.map((item) => (
+                      <div key={item} className="flex gap-2 text-[14px] text-stone-600 leading-relaxed">
+                        <span className="mt-[7px] h-[5px] w-[5px] shrink-0 rounded-full bg-stone-400" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-2 pt-4 border-t border-stone-200/70">
+                  <p className="flex items-center gap-2 text-[12px] uppercase tracking-[0.18em] text-stone-400">
+                    <span className="h-[3px] w-3 rounded-full bg-[#8EB4CE]" />
+                    Outcome
+                  </p>
+                  <div className="space-y-2">
+                    {openProject.outcome.map((item) => (
+                      <div key={item} className="flex gap-2 text-[14px] text-stone-600 leading-relaxed">
+                        <span className="mt-[7px] h-[5px] w-[5px] shrink-0 rounded-full bg-[#8EB4CE]" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </div>
   );
 }
