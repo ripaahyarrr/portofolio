@@ -43,8 +43,9 @@ const folderContent = [
   },
   {
     title: "Design with AI",
-    description: 'I explore new tools to boost creativity and productivity, learning through hands-on experimentation.<br><br>Recently, I\'ve been vibe-coding with AI at the intersection of design and technology.<br><br><strong>Cozy Journaling</strong> won the Built with Claude Sonnet 4.5 Challenge – "Keep Creating" Award.',
-    cta: { label: "Dengerin projects", url: "https://cottenpanda.github.io/vibecodingplaylist" },
+    description: "**Dengerin Playlist: Music, Felt in Motion**\n\nA 15-second motion film for Dengerin Playlist, a web player that turns Spotify playlists into a more personal listening experience. A single terracotta dot grows into ripples, a vinyl record, the interface, and finally one closing symbol. Visuals and soundtrack are original, in a warm analog cinema style.",
+    note: "Motion design, UI/UX, and sound design: Ripa Ahyar",
+    cta: { label: "Dengerin projects", url: "https://dengerin-playlist.netlify.app/" },
   },
   {
     title: "Community Impact",
@@ -727,7 +728,7 @@ export function FolderWindowContent() {
                                     <div className="relative w-full aspect-video lg:aspect-auto lg:h-[340px] overflow-hidden">
                                       {openFolder === 1 ? (
                                         <video
-                                          src="/assets/videos/design-with-ai.mp4"
+                                          src="/assets/videos/Dengerin-Playlist.mp4"
                                           autoPlay
                                           muted
                                           loop

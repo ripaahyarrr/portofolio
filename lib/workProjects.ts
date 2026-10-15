@@ -5,7 +5,7 @@ export const workProjects = [
     label: "SIMT - Sistem Informasi Management Talenta",
     year: "2023",
     role: "UI/UX Designer (Freelance)",
-    previewVideo: "/assets/videos/projects-at-work.mp4",
+    previewVideo: "/assets/videos/SIMT-Showreel_Ripa-Ahyar.mp4",
     previewUrl: "https://simt.kemendikdasmen.go.id/",
     summary:
       "Talent data management in the education sector is often spread across multiple systems and handled manually. This creates inefficiencies in identifying, mapping, and developing talent, while also making the process difficult to monitor and more prone to data errors. To address this challenge, SIMT Kemendikdasmen was developed as a centralized platform that integrates the entire talent management process into one digital system.",
