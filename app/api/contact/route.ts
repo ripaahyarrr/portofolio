@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { getSupabase } from "@/lib/supabase";
+import { getDb } from "@/lib/db";
 
 export const runtime = "nodejs";
 
@@ -69,22 +69,14 @@ export async function POST(request: Request) {
 
   const { data } = validated;
 
-  let supabase;
   try {
-    supabase = getSupabase();
+    const sql = getDb();
+    await sql`
+      insert into contact_messages (name, email, message)
+      values (${data.name}, ${data.email}, ${data.message})
+    `;
   } catch (error) {
-    console.error("contact: supabase not configured", error);
-    return NextResponse.json({ error: "Could not save your message. Please try again shortly." }, { status: 500 });
-  }
-
-  const { error: dbError } = await supabase.from("contact_messages").insert({
-    name: data.name,
-    email: data.email,
-    message: data.message,
-  });
-
-  if (dbError) {
-    console.error("contact: failed to store submission", dbError);
+    console.error("contact: failed to store submission", error);
     return NextResponse.json({ error: "Could not save your message. Please try again shortly." }, { status: 500 });
   }
 
